@@ -9,14 +9,78 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StatsRouteImport } from './routes/stats'
+import { Route as SocialRouteImport } from './routes/social'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SessionsRouteImport } from './routes/sessions'
+import { Route as ResultsRouteImport } from './routes/results'
+import { Route as RequestSentRouteImport } from './routes/request-sent'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as MatchRouteImport } from './routes/match'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
+import { Route as ExplorerRouteImport } from './routes/explorer'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SocialNewRouteImport } from './routes/social.new'
+import { Route as PartnerIdRouteImport } from './routes/partner.$id'
+import { Route as ChatIdRouteImport } from './routes/chat.$id'
 
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SocialRoute = SocialRouteImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionsRoute = SessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestSentRoute = RequestSentRouteImport.update({
+  id: '/request-sent',
+  path: '/request-sent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatchRoute = MatchRouteImport.update({
+  id: '/match',
+  path: '/match',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -29,53 +93,253 @@ const HomeRoute = HomeRouteImport.update({
   path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExplorerRoute = ExplorerRouteImport.update({
+  id: '/explorer',
+  path: '/explorer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SocialNewRoute = SocialNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => SocialRoute,
+} as any)
+const PartnerIdRoute = PartnerIdRouteImport.update({
+  id: '/partner/$id',
+  path: '/partner/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatIdRoute = ChatIdRouteImport.update({
+  id: '/chat/$id',
+  path: '/chat/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/explorer': typeof ExplorerRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/match': typeof MatchRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/partners': typeof PartnersRoute
+  '/profile': typeof ProfileRoute
+  '/request-sent': typeof RequestSentRoute
+  '/results': typeof ResultsRoute
+  '/sessions': typeof SessionsRoute
+  '/settings': typeof SettingsRoute
+  '/social': typeof SocialRouteWithChildren
+  '/stats': typeof StatsRoute
+  '/chat/$id': typeof ChatIdRoute
+  '/partner/$id': typeof PartnerIdRoute
+  '/social/new': typeof SocialNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/explorer': typeof ExplorerRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/match': typeof MatchRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/partners': typeof PartnersRoute
+  '/profile': typeof ProfileRoute
+  '/request-sent': typeof RequestSentRoute
+  '/results': typeof ResultsRoute
+  '/sessions': typeof SessionsRoute
+  '/settings': typeof SettingsRoute
+  '/social': typeof SocialRouteWithChildren
+  '/stats': typeof StatsRoute
+  '/chat/$id': typeof ChatIdRoute
+  '/partner/$id': typeof PartnerIdRoute
+  '/social/new': typeof SocialNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/explorer': typeof ExplorerRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/match': typeof MatchRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/partners': typeof PartnersRoute
+  '/profile': typeof ProfileRoute
+  '/request-sent': typeof RequestSentRoute
+  '/results': typeof ResultsRoute
+  '/sessions': typeof SessionsRoute
+  '/settings': typeof SettingsRoute
+  '/social': typeof SocialRouteWithChildren
+  '/stats': typeof StatsRoute
+  '/chat/$id': typeof ChatIdRoute
+  '/partner/$id': typeof PartnerIdRoute
+  '/social/new': typeof SocialNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home' | '/login' | '/onboarding'
+  fullPaths:
+    | '/'
+    | '/explorer'
+    | '/home'
+    | '/login'
+    | '/match'
+    | '/notifications'
+    | '/onboarding'
+    | '/partners'
+    | '/profile'
+    | '/request-sent'
+    | '/results'
+    | '/sessions'
+    | '/settings'
+    | '/social'
+    | '/stats'
+    | '/chat/$id'
+    | '/partner/$id'
+    | '/social/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home' | '/login' | '/onboarding'
-  id: '__root__' | '/' | '/home' | '/login' | '/onboarding'
+  to:
+    | '/'
+    | '/explorer'
+    | '/home'
+    | '/login'
+    | '/match'
+    | '/notifications'
+    | '/onboarding'
+    | '/partners'
+    | '/profile'
+    | '/request-sent'
+    | '/results'
+    | '/sessions'
+    | '/settings'
+    | '/social'
+    | '/stats'
+    | '/chat/$id'
+    | '/partner/$id'
+    | '/social/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/explorer'
+    | '/home'
+    | '/login'
+    | '/match'
+    | '/notifications'
+    | '/onboarding'
+    | '/partners'
+    | '/profile'
+    | '/request-sent'
+    | '/results'
+    | '/sessions'
+    | '/settings'
+    | '/social'
+    | '/stats'
+    | '/chat/$id'
+    | '/partner/$id'
+    | '/social/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExplorerRoute: typeof ExplorerRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
+  MatchRoute: typeof MatchRoute
+  NotificationsRoute: typeof NotificationsRoute
   OnboardingRoute: typeof OnboardingRoute
+  PartnersRoute: typeof PartnersRoute
+  ProfileRoute: typeof ProfileRoute
+  RequestSentRoute: typeof RequestSentRoute
+  ResultsRoute: typeof ResultsRoute
+  SessionsRoute: typeof SessionsRoute
+  SettingsRoute: typeof SettingsRoute
+  SocialRoute: typeof SocialRouteWithChildren
+  StatsRoute: typeof StatsRoute
+  ChatIdRoute: typeof ChatIdRoute
+  PartnerIdRoute: typeof PartnerIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/social': {
+      id: '/social'
+      path: '/social'
+      fullPath: '/social'
+      preLoaderRoute: typeof SocialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sessions': {
+      id: '/sessions'
+      path: '/sessions'
+      fullPath: '/sessions'
+      preLoaderRoute: typeof SessionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/request-sent': {
+      id: '/request-sent'
+      path: '/request-sent'
+      fullPath: '/request-sent'
+      preLoaderRoute: typeof RequestSentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/match': {
+      id: '/match'
+      path: '/match'
+      fullPath: '/match'
+      preLoaderRoute: typeof MatchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -92,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/explorer': {
+      id: '/explorer'
+      path: '/explorer'
+      fullPath: '/explorer'
+      preLoaderRoute: typeof ExplorerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -99,14 +370,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/social/new': {
+      id: '/social/new'
+      path: '/new'
+      fullPath: '/social/new'
+      preLoaderRoute: typeof SocialNewRouteImport
+      parentRoute: typeof SocialRoute
+    }
+    '/partner/$id': {
+      id: '/partner/$id'
+      path: '/partner/$id'
+      fullPath: '/partner/$id'
+      preLoaderRoute: typeof PartnerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat/$id': {
+      id: '/chat/$id'
+      path: '/chat/$id'
+      fullPath: '/chat/$id'
+      preLoaderRoute: typeof ChatIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface SocialRouteChildren {
+  SocialNewRoute: typeof SocialNewRoute
+}
+
+const SocialRouteChildren: SocialRouteChildren = {
+  SocialNewRoute: SocialNewRoute,
+}
+
+const SocialRouteWithChildren =
+  SocialRoute._addFileChildren(SocialRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExplorerRoute: ExplorerRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
+  MatchRoute: MatchRoute,
+  NotificationsRoute: NotificationsRoute,
   OnboardingRoute: OnboardingRoute,
+  PartnersRoute: PartnersRoute,
+  ProfileRoute: ProfileRoute,
+  RequestSentRoute: RequestSentRoute,
+  ResultsRoute: ResultsRoute,
+  SessionsRoute: SessionsRoute,
+  SettingsRoute: SettingsRoute,
+  SocialRoute: SocialRouteWithChildren,
+  StatsRoute: StatsRoute,
+  ChatIdRoute: ChatIdRoute,
+  PartnerIdRoute: PartnerIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

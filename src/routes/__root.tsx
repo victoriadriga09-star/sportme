@@ -99,7 +99,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 // Routes qui n'affichent PAS la tab bar
-const HIDE_TAB_BAR = ["/", "/login", "/onboarding", "/match", "/request-sent"];
+const HIDE_TAB_BAR = ["/", "/login", "/onboarding", "/match", "/match-confirmed", "/request-sent"];
 const HIDE_TAB_BAR_PREFIX = ["/chat", "/partner"];
 
 function AppShell() {

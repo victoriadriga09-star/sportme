@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Camera, MapPin, Eye, EyeOff } from "lucide-react";
 import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
+import { saveUser } from "@/lib/store";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({ meta: [{ title: "Créer mon compte — ÉLAN" }] }),

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { ChevronLeft, ChevronRight, Camera, MapPin, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, ArrowRight, Camera, MapPin, Eye, EyeOff, Check, Sparkles } from "lucide-react";
 import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
 import { saveUser } from "@/lib/store";
@@ -36,38 +36,38 @@ function Onboarding() {
   const toggle = (k: "lieux" | "sports" | "jours" | "creneaux", v: string) =>
     setF((p) => ({ ...p, [k]: p[k].includes(v) ? p[k].filter((x) => x !== v) : [...p[k], v] }));
 
-  const steps: { title: string; sub?: string; ok: boolean; node: ReactNode }[] = [
-    { title: "Comment tu t'appelles ?", sub: "Ton prénom sera visible par les autres sportifs.", ok: f.prenom.trim().length >= 2,
+  const steps: { title: string; sub?: string; eyebrow: string; ok: boolean; node: ReactNode }[] = [
+    { eyebrow: "Profil", title: "Comment tu t'appelles ?", sub: "Ton prénom sera visible par les autres sportifs.", ok: f.prenom.trim().length >= 2,
       node: <Input value={f.prenom} onChange={(v) => update("prenom", v)} placeholder="Ton prénom" autoFocus /> },
-    { title: "Quelle est ta date de naissance ?", sub: "On ne l'affichera pas — c'est juste pour adapter ton expérience.", ok: f.dob.length === 10,
+    { eyebrow: "Profil", title: "Date de naissance", sub: "On ne l'affichera pas — c'est juste pour adapter ton expérience.", ok: f.dob.length === 10,
       node: <Input value={f.dob} onChange={(v) => update("dob", v)} placeholder="JJ / MM / AAAA" /> },
-    { title: "Comment tu te définis ?", sub: "Certains sportifs préfèrent s'entraîner avec une personne du même genre.", ok: !!f.gender,
+    { eyebrow: "Profil", title: "Comment tu te définis ?", sub: "Certains préfèrent s'entraîner avec une personne du même genre.", ok: !!f.gender,
       node: <CardChoices value={f.gender} onChange={(v) => update("gender", v)} options={["Femme", "Homme", "Non-binaire", "Je préfère ne pas dire"]} /> },
-    { title: "Ton adresse email", sub: "Pour ton compte et tes notifications.", ok: /.+@.+\..+/.test(f.email),
+    { eyebrow: "Compte", title: "Ton adresse email", sub: "Pour ton compte et tes notifications.", ok: /.+@.+\..+/.test(f.email),
       node: <Input type="email" value={f.email} onChange={(v) => update("email", v)} placeholder="email@exemple.com" /> },
-    { title: "Choisis un mot de passe", sub: "Minimum 8 caractères.", ok: f.password.length >= 8,
+    { eyebrow: "Compte", title: "Choisis un mot de passe", sub: "Minimum 8 caractères.", ok: f.password.length >= 8,
       node: <PasswordInput value={f.password} onChange={(v) => update("password", v)} /> },
-    { title: "Où est-ce que tu habites ?", sub: "Pour te proposer des partenaires près de chez toi.", ok: f.city.trim().length >= 2,
+    { eyebrow: "Localisation", title: "Où est-ce que tu habites ?", sub: "Pour te proposer des partenaires près de chez toi.", ok: f.city.trim().length >= 2,
       node: <CityInput value={f.city} onChange={(v) => update("city", v)} /> },
-    { title: "Où pratiques-tu le sport ?", sub: "Tu peux en choisir plusieurs.", ok: f.lieux.length > 0,
+    { eyebrow: "Localisation", title: "Où pratiques-tu le sport ?", sub: "Tu peux en choisir plusieurs.", ok: f.lieux.length > 0,
       node: <Grid2 selected={f.lieux} onToggle={(v) => toggle("lieux", v)} options={[
         { v: "Salle", emoji: "🏋️" }, { v: "Extérieur", emoji: "🌳" },
         { v: "Maison", emoji: "🏠" }, { v: "Visio", emoji: "💻" },
       ]} /> },
-    { title: "Dans quelle salle tu t'entraînes ?", sub: "Ça nous aide à te connecter avec des gens qui vont au même endroit.", ok: true,
+    { eyebrow: "Localisation", title: "Dans quelle salle tu t'entraînes ?", sub: "Ça nous aide à te connecter avec des gens qui vont au même endroit.", ok: true,
       node: f.lieux.includes("Salle")
         ? <Input value={f.salle} onChange={(v) => update("salle", v)} placeholder="Ex : FitZone Belleville" />
-        : <p className="text-center text-muted-foreground text-sm">On passe — tu n'as pas sélectionné « Salle ».</p>,
+        : <p className="text-center text-background/60 text-sm">On passe — tu n'as pas sélectionné « Salle ».</p>,
     },
-    { title: "Quels sports tu aimes ?", sub: "Choisis tout ce qui te parle.", ok: f.sports.length >= 1,
+    { eyebrow: "Sport", title: "Quels sports tu aimes ?", sub: "Choisis tout ce qui te parle.", ok: f.sports.length >= 1,
       node: (
-        <div className="flex flex-wrap gap-2 justify-center max-h-[50vh] overflow-y-auto no-scrollbar pb-4">
+        <div className="flex flex-wrap gap-2 justify-center max-h-[42vh] overflow-y-auto no-scrollbar pb-2">
           {SPORTS.map((s) => {
             const on = f.sports.includes(s.label);
             return (
               <button key={s.label} onClick={() => toggle("sports", s.label)}
                 className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
-                  on ? "bg-lime text-ink border-ink" : "bg-surface text-ink border-border"
+                  on ? "bg-lime text-ink border-lime lime-glow" : "bg-white/5 text-background border-white/15 backdrop-blur"
                 }`}>
                 <span className="mr-1">{s.emoji}</span> {s.label}
               </button>
@@ -75,14 +75,14 @@ function Onboarding() {
           })}
         </div>
       ) },
-    { title: "Quel est ton niveau ?", sub: "Pas de jugement — c'est pour trouver des partenaires au bon rythme.", ok: !!f.level,
+    { eyebrow: "Sport", title: "Quel est ton niveau ?", sub: "Pas de jugement — c'est pour trouver des partenaires au bon rythme.", ok: !!f.level,
       node: <CardChoices value={f.level} onChange={(v) => update("level", v)} options={[
         ["Débutant·e", "Je commence ou je reprends"],
         ["Intermédiaire", "Je pratique régulièrement"],
         ["Avancé·e", "Je m'entraîne sérieusement"],
         ["Expert·e", "Le sport, c'est ma vie"],
       ]} /> },
-    { title: "Qu'est-ce qui te motive ?", sub: "Choisis l'objectif qui te parle le plus.", ok: !!f.goal,
+    { eyebrow: "Sport", title: "Qu'est-ce qui te motive ?", sub: "Choisis l'objectif qui te parle le plus.", ok: !!f.goal,
       node: <CardChoices value={f.goal} onChange={(v) => update("goal", v)} options={[
         "💪 Me remettre en forme",
         "🔥 Perdre du poids",
@@ -91,51 +91,55 @@ function Onboarding() {
         "✨ Rejoindre une communauté",
         "🎉 Juste découvrir et m'amuser",
       ]} /> },
-    { title: "Combien de fois par semaine ?", sub: "Même une fois, c'est déjà bien.", ok: f.freq > 0,
+    { eyebrow: "Rythme", title: "Combien de fois par semaine ?", sub: "Même une fois, c'est déjà bien.", ok: f.freq > 0,
       node: <FreqPicker value={f.freq} onChange={(v) => update("freq", v)} /> },
-    { title: "Tes jours de sport sont plutôt…", ok: !!f.rythme,
+    { eyebrow: "Rythme", title: "Tes jours de sport sont plutôt…", ok: !!f.rythme,
       node: <CardChoices value={f.rythme} onChange={(v) => update("rythme", v)} options={[
         ["📅 Toujours les mêmes jours", "Tu as un planning régulier"],
         ["🔀 Ça change chaque semaine", "Tu t'adaptes selon ta dispo"],
       ]} /> },
-    { title: "Tu préfères bouger quand ?", sub: "Choisis un ou plusieurs créneaux.", ok: f.creneaux.length > 0,
+    { eyebrow: "Rythme", title: "Tu préfères bouger quand ?", sub: "Choisis un ou plusieurs créneaux.", ok: f.creneaux.length > 0,
       node: <Grid2 selected={f.creneaux} onToggle={(v) => toggle("creneaux", v)} options={[
         { v: "Tôt le matin", emoji: "🌅", hint: "Avant 9h" },
         { v: "Le midi", emoji: "☀️", hint: "12h-14h" },
         { v: "Fin de journée", emoji: "🌇", hint: "17h-20h" },
         { v: "Le soir", emoji: "🌙", hint: "Après 20h" },
       ]} /> },
-    { title: "Parle un peu de toi", sub: "Quelques mots pour donner envie. (Optionnel)", ok: true,
+    { eyebrow: "Bio", title: "Parle un peu de toi", sub: "Quelques mots pour donner envie. (Optionnel)", ok: true,
       node: (
         <div className="relative">
           <textarea
             value={f.bio} onChange={(e) => update("bio", e.target.value.slice(0, 300))}
             placeholder="Ex : J'adore courir le matin dans le parc. Je cherche quelqu'un pour me motiver les jours où Netflix gagne..."
-            className="w-full h-40 p-4 rounded-2xl bg-input focus:ring-2 focus:ring-lime outline-none resize-none"
+            className="w-full h-40 p-4 rounded-2xl bg-white/5 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none resize-none backdrop-blur"
           />
-          <span className="absolute bottom-3 right-4 text-[11px] text-muted-foreground">{f.bio.length}/300</span>
+          <span className="absolute bottom-3 right-4 text-[11px] text-background/50">{f.bio.length}/300</span>
         </div>
       ) },
-    { title: "Ajoute une photo", sub: "Les profils avec photo reçoivent 3× plus de demandes.", ok: true,
+    { eyebrow: "Profil", title: "Ajoute une photo", sub: "Les profils avec photo reçoivent 3× plus de demandes.", ok: true,
       node: (
         <div className="flex justify-center">
           <button
             onClick={() => update("photo", !f.photo)}
-            className={`size-32 rounded-full grid place-items-center transition ${
-              f.photo ? "bg-gradient-to-br from-lavender to-lime" : "bg-input"
+            className={`size-36 rounded-full grid place-items-center transition relative ${
+              f.photo ? "bg-gradient-to-br from-lavender to-lime ink-shadow" : "bg-white/5 border-2 border-dashed border-white/30 backdrop-blur"
             }`}
           >
-            <Camera className="size-9" strokeWidth={1.6} />
+            <Camera className={`size-10 ${f.photo ? "text-ink" : "text-background"}`} strokeWidth={1.6} />
+            {f.photo && <span className="absolute -top-1 -right-1 size-9 rounded-full bg-lime text-ink grid place-items-center ink-shadow"><Check className="size-5" strokeWidth={3} /></span>}
           </button>
         </div>
       ) },
-    { title: `Bienvenue, ${f.prenom || "champion"} !`, sub: "Ton profil est prêt. Trouve ton premier partenaire.", ok: true,
+    { eyebrow: "Terminé", title: `Bienvenue, ${f.prenom || "champion"} !`, sub: "Ton profil est prêt. Trouve ton premier partenaire.", ok: true,
       node: (
-        <div className="text-center">
+        <div className="text-center space-y-5">
+          <div className="mx-auto size-24 rounded-full grid place-items-center bg-lime lime-glow">
+            <Sparkles className="size-10 text-ink" strokeWidth={2} />
+          </div>
           <div className="flex flex-wrap gap-2 justify-center">
             {f.sports.slice(0, 3).map((s) => <Pill key={s} tone="lime" size="md">{s}</Pill>)}
             {f.city && <Pill tone="lavender" size="md">📍 {f.city}</Pill>}
-            {f.freq > 0 && <Pill tone="ink" size="md">{f.freq}×/sem</Pill>}
+            {f.freq > 0 && <Pill tone="white" size="md">{f.freq}×/sem</Pill>}
           </div>
         </div>
       ) },
@@ -143,9 +147,8 @@ function Onboarding() {
 
   const current = steps[step];
   const isLast = step === steps.length - 1;
-  const progress = ((step + 1) / steps.length) * 100;
+  const totalSegments = steps.length;
 
-  // Skip salle screen automatically
   const next = () => {
     let s = step + 1;
     if (s === 7 && !f.lieux.includes("Salle")) s = 8;
@@ -163,44 +166,73 @@ function Onboarding() {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-background">
-      {/* progress + back */}
-      <div className="px-5 pt-5 pb-3">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={prev}
-            disabled={step === 0}
-            className="size-9 grid place-items-center rounded-full bg-surface border border-border disabled:opacity-30"
-            aria-label="Retour"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-          <div className="flex-1 h-1.5 bg-input rounded-full overflow-hidden">
-            <div className="h-full bg-lime transition-[width] duration-400" style={{ width: `${progress}%` }} />
-          </div>
-          <span className="text-[11px] text-muted-foreground tabular-nums font-semibold w-10 text-right">
-            {step + 1}/{steps.length}
+    <div className="min-h-[100dvh] flex flex-col bg-ink text-background relative overflow-hidden">
+      {/* Ambient floating shapes */}
+      <div className="pointer-events-none absolute -top-24 -left-20 size-72 rounded-full bg-lavender/30 blur-3xl float-slow" />
+      <div className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-lime/20 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
+      <div className="pointer-events-none absolute bottom-0 left-1/4 size-64 rounded-full bg-lavender/20 blur-3xl float-slow" style={{ animationDelay: "3s" }} />
+
+      {/* Top bar — segmented progress */}
+      <div className="relative px-5 pt-6 pb-2 z-10">
+        <div className="flex items-center gap-1.5">
+          {Array.from({ length: totalSegments }).map((_, i) => (
+            <div key={i} className="flex-1 h-1 rounded-full overflow-hidden bg-white/10">
+              <div className={`h-full rounded-full transition-all duration-500 ${
+                i < step ? "bg-lime w-full" : i === step ? "bg-lime w-full" : "w-0"
+              }`} />
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex items-center justify-between">
+          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-lime">{current.eyebrow}</p>
+          <span className="text-[11px] tabular-nums font-semibold text-background/60">
+            étape {step + 1}/{totalSegments}
           </span>
         </div>
       </div>
 
-      <div key={step} className="flex-1 px-6 pt-6 flex flex-col animate-in fade-in slide-in-from-right-4 duration-300">
-        <h1 className="font-display font-extrabold text-[28px] leading-tight">{current.title}</h1>
-        {current.sub && <p className="text-sm text-muted-foreground mt-2">{current.sub}</p>}
-        <div className="flex-1 mt-8 flex flex-col justify-center">{current.node}</div>
+      {/* Content card — liquid glass on dark */}
+      <div className="relative z-10 flex-1 px-4 pt-4 flex flex-col">
+        <div
+          key={step}
+          className="glass-ink rounded-[36px] p-6 pt-7 flex-1 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400"
+        >
+          <h1 className="font-display font-extrabold text-[30px] leading-[1.05] text-background">
+            {current.title}
+          </h1>
+          {current.sub && <p className="text-sm text-background/65 mt-2.5 leading-relaxed">{current.sub}</p>}
+          <div className="flex-1 mt-7 flex flex-col justify-center">{current.node}</div>
+        </div>
       </div>
 
-      <div className="px-6 pb-10 pt-3">
-        <button
-          onClick={next}
-          disabled={!current.ok}
-          className="w-full pill bg-lime text-ink py-4 font-bold flex items-center justify-center gap-2 disabled:opacity-40 disabled:bg-input disabled:text-muted-foreground transition lime-glow"
-        >
-          {isLast ? "Trouver un partenaire" : "Continuer"} <ChevronRight className="size-4" />
-        </button>
+      {/* Footer — pill nav with paired buttons like the reference */}
+      <div className="relative z-10 px-5 pb-8 pt-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={prev}
+            disabled={step === 0}
+            aria-label="Retour"
+            className="size-14 grid place-items-center rounded-full bg-white text-ink ink-shadow disabled:opacity-30 disabled:bg-white/10 disabled:text-background shrink-0"
+          >
+            <ChevronLeft className="size-5" strokeWidth={2.5} />
+          </button>
+          <button
+            onClick={next}
+            disabled={!current.ok}
+            className="flex-1 h-14 pill bg-lime text-ink font-bold flex items-center justify-between gap-2 px-2 pl-6 disabled:opacity-40 disabled:bg-white/10 disabled:text-background transition lime-glow"
+          >
+            <span className="text-[15px]">{isLast ? "Trouver un partenaire" : "Continuer"}</span>
+            <span className="size-10 rounded-full bg-ink text-lime grid place-items-center">
+              <ArrowRight className="size-4" strokeWidth={2.5} />
+            </span>
+          </button>
+        </div>
         {isLast && (
-          <button onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }} className="block mx-auto mt-3 text-sm text-muted-foreground">
-            Explorer l'app
+          <button
+            onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }}
+            className="block mx-auto mt-4 text-xs text-background/60 underline-offset-4 hover:underline"
+          >
+            Explorer l'app sans matcher
           </button>
         )}
       </div>
@@ -216,7 +248,7 @@ function Input(props: { value: string; onChange: (v: string) => void; placeholde
       onChange={(e) => props.onChange(e.target.value)}
       placeholder={props.placeholder}
       autoFocus={props.autoFocus}
-      className="w-full h-14 px-5 rounded-2xl bg-input border-0 focus:ring-2 focus:ring-lime outline-none text-base font-medium"
+      className="w-full h-14 px-5 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime focus:border-lime outline-none text-base font-medium backdrop-blur"
     />
   );
 }
@@ -232,16 +264,16 @@ function PasswordInput({ value, onChange }: { value: string; onChange: (v: strin
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="••••••••"
-          className="w-full h-14 px-5 pr-14 rounded-2xl bg-input border-0 focus:ring-2 focus:ring-lime outline-none text-base font-medium"
+          className="w-full h-14 px-5 pr-14 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none text-base font-medium backdrop-blur"
         />
-        <button onClick={() => setShow(!show)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+        <button onClick={() => setShow(!show)} className="absolute right-4 top-1/2 -translate-y-1/2 text-background/60">
           {show ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
         </button>
       </div>
       <div className="flex gap-1.5 mt-3">
         {[0, 1, 2].map((i) => (
           <div key={i} className={`h-1.5 flex-1 rounded-full ${
-            i < strength ? (strength === 3 ? "bg-success" : strength === 2 ? "bg-lime" : "bg-warning") : "bg-input"
+            i < strength ? (strength === 3 ? "bg-success" : strength === 2 ? "bg-lime" : "bg-warning") : "bg-white/10"
           }`} />
         ))}
       </div>
@@ -253,15 +285,15 @@ function CityInput({ value, onChange }: { value: string; onChange: (v: string) =
   return (
     <div className="space-y-3">
       <div className="relative">
-        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
+        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-background/60" />
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Paris, Lyon, Marseille…"
-          className="w-full h-14 pl-12 pr-5 rounded-2xl bg-input border-0 focus:ring-2 focus:ring-lime outline-none text-base font-medium"
+          className="w-full h-14 pl-12 pr-5 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none text-base font-medium backdrop-blur"
         />
       </div>
-      <button onClick={() => onChange("Paris 11e")} className="w-full pill border border-ink py-3 text-sm font-semibold flex items-center justify-center gap-2">
+      <button onClick={() => onChange("Paris 11e")} className="w-full pill bg-lavender text-ink py-3 text-sm font-semibold flex items-center justify-center gap-2">
         <MapPin className="size-4" /> Utiliser ma position
       </button>
     </div>
@@ -280,12 +312,17 @@ function CardChoices({
           <button
             key={label}
             onClick={() => onChange(label)}
-            className={`w-full text-left rounded-2xl px-5 py-4 border-2 transition ${
-              on ? "bg-lime border-ink" : "bg-surface border-border"
+            className={`w-full text-left rounded-2xl px-5 py-4 border transition flex items-center justify-between gap-3 ${
+              on
+                ? "bg-lime border-lime text-ink lime-glow"
+                : "bg-white/5 border-white/15 text-background backdrop-blur hover:bg-white/10"
             }`}
           >
-            <p className="font-semibold text-ink">{label}</p>
-            {desc && <p className={`text-xs mt-0.5 ${on ? "text-ink/70" : "text-muted-foreground"}`}>{desc}</p>}
+            <div>
+              <p className="font-semibold">{label}</p>
+              {desc && <p className={`text-xs mt-0.5 ${on ? "text-ink/70" : "text-background/55"}`}>{desc}</p>}
+            </div>
+            {on && <span className="size-7 rounded-full bg-ink text-lime grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
           </button>
         );
       })}
@@ -304,13 +341,16 @@ function Grid2({
           <button
             key={o.v}
             onClick={() => onToggle(o.v)}
-            className={`aspect-square rounded-3xl border-2 flex flex-col items-center justify-center gap-2 transition ${
-              on ? "bg-lime border-ink" : "bg-surface border-border"
+            className={`aspect-square rounded-3xl border flex flex-col items-center justify-center gap-2 transition relative ${
+              on
+                ? "bg-lime border-lime text-ink lime-glow"
+                : "bg-white/5 border-white/15 text-background backdrop-blur hover:bg-white/10"
             }`}
           >
             <span className="text-3xl">{o.emoji}</span>
             <span className="font-semibold text-sm">{o.v}</span>
-            {o.hint && <span className="text-[11px] text-ink/60">{o.hint}</span>}
+            {o.hint && <span className={`text-[11px] ${on ? "text-ink/60" : "text-background/50"}`}>{o.hint}</span>}
+            {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-ink text-lime grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}
           </button>
         );
       })}
@@ -328,7 +368,9 @@ function FreqPicker({ value, onChange }: { value: number; onChange: (v: number) 
             key={n}
             onClick={() => onChange(n)}
             className={`rounded-full font-display font-extrabold transition-all grid place-items-center ${
-              on ? "bg-lime text-ink size-20 text-3xl lime-glow" : "bg-surface border border-border text-ink size-14 text-xl"
+              on
+                ? "bg-lime text-ink size-20 text-3xl lime-glow"
+                : "bg-white/5 border border-white/15 text-background size-14 text-xl backdrop-blur"
             }`}
           >
             {n}{n === 5 && "+"}

@@ -1,9 +1,10 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Paperclip, Send, Phone, MoreVertical } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
-import { CONVERSATIONS } from "@/data/mock";
+import { CONVERSATIONS, PARTNERS } from "@/data/mock";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/chat/$id")({
   loader: ({ params }) => {

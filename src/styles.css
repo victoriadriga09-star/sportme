@@ -5,15 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Syne", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-sans: "Manrope", system-ui, sans-serif;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
   --radius-3xl: 32px;
+  --radius-4xl: 40px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,71 +33,138 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
+  --color-warning: var(--warning);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
   --color-ink: var(--ink);
   --color-lime: var(--lime);
   --color-lavender: var(--lavender);
+  --color-lavender-soft: var(--lavender-soft);
+  --color-peach: var(--peach);
+  --color-sky: var(--sky);
+  --color-blush: var(--blush);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
 }
 
 :root {
-  /* ÉLAN palette */
-  --background: oklch(0.98 0.005 90);          /* #F5F5F0 cassé */
-  --foreground: oklch(0.18 0.005 270);         /* #1A1A1A ink */
-  --ink: oklch(0.18 0.005 270);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.005 270);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.005 270);
+  /* ÉLAN — palette inspirée des maquettes (lime + lavande + ink) */
+  --background: oklch(0.97 0.005 90);
+  --foreground: oklch(0.16 0.005 270);
+  --ink: oklch(0.14 0.005 270);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.96 0.005 90);
 
-  --primary: oklch(0.95 0.24 125);             /* #CCFF00 lime */
-  --primary-foreground: oklch(0.18 0.005 270);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.005 270);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.005 270);
+
+  --primary: oklch(0.95 0.24 125);          /* lime #CCFF00 */
+  --primary-foreground: oklch(0.14 0.005 270);
   --lime: oklch(0.95 0.24 125);
 
-  --secondary: oklch(0.18 0.005 270);          /* noir profond */
+  --secondary: oklch(0.14 0.005 270);
   --secondary-foreground: oklch(0.98 0.005 90);
 
-  --accent: oklch(0.82 0.09 295);              /* #C8B8FF lavande */
-  --accent-foreground: oklch(0.18 0.005 270);
+  --accent: oklch(0.82 0.09 295);           /* lavande #C8B8FF */
+  --accent-foreground: oklch(0.14 0.005 270);
   --lavender: oklch(0.82 0.09 295);
+  --lavender-soft: oklch(0.92 0.045 295);
 
-  --muted: oklch(0.93 0.004 270);
-  --muted-foreground: oklch(0.55 0.01 270);
+  --peach: oklch(0.86 0.11 65);
+  --sky: oklch(0.88 0.06 230);
+  --blush: oklch(0.88 0.07 350);
+
+  --muted: oklch(0.94 0.004 270);
+  --muted-foreground: oklch(0.55 0.012 270);
 
   --destructive: oklch(0.68 0.19 25);
   --destructive-foreground: oklch(0.98 0 0);
-
   --success: oklch(0.78 0.18 145);
+  --warning: oklch(0.85 0.14 75);
 
   --border: oklch(0.91 0.005 270);
-  --input: oklch(0.93 0.004 270);
+  --input: oklch(0.95 0.004 270);
   --ring: oklch(0.95 0.24 125);
 
-  --radius: 1rem;
+  --radius: 1.25rem;
 }
 
 @layer base {
   * { border-color: var(--color-border); }
-  html, body { background-color: var(--color-background); color: var(--color-foreground); }
+  html, body { background-color: var(--color-surface-2); color: var(--color-foreground); }
   body {
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+  button { font-family: var(--font-sans); }
 }
 
 @layer utilities {
   .font-display { font-family: var(--font-display); }
+
   .pill { border-radius: 9999px; }
+
   .glass-dark {
-    background: color-mix(in oklab, var(--ink) 88%, transparent);
-    backdrop-filter: blur(20px);
+    background: color-mix(in oklab, var(--ink) 92%, transparent);
+    backdrop-filter: blur(24px) saturate(160%);
   }
+  .glass-light {
+    background: color-mix(in oklab, var(--surface) 75%, transparent);
+    backdrop-filter: blur(20px) saturate(160%);
+  }
+
   .lime-glow {
-    box-shadow: 0 12px 40px -8px color-mix(in oklab, var(--lime) 60%, transparent);
+    box-shadow:
+      0 10px 30px -10px color-mix(in oklab, var(--lime) 55%, transparent),
+      0 2px 6px -2px rgba(0,0,0,0.08);
   }
-  .card-soft {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px -12px rgba(0,0,0,0.08);
+  .soft-shadow {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 12px 32px -16px rgba(20,20,30,0.12);
+  }
+  .ink-shadow {
+    box-shadow: 0 18px 44px -18px color-mix(in oklab, var(--ink) 55%, transparent);
+  }
+
+  /* hide scrollbar */
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* hero card pattern: subtle topographic dots */
+  .topo-dots {
+    background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 22%, transparent) 1px, transparent 0);
+    background-size: 14px 14px;
+  }
+  .topo-lines {
+    background-image:
+      repeating-linear-gradient(45deg, color-mix(in oklab, var(--ink) 10%, transparent) 0 1px, transparent 1px 8px);
+  }
+
+  /* mobile frame on wider screens */
+  .mobile-frame {
+    max-width: 430px;
+    margin-inline: auto;
+    min-height: 100dvh;
+    background: var(--color-background);
+    position: relative;
+    overflow-x: hidden;
+  }
+  @media (min-width: 640px) {
+    .mobile-frame {
+      margin-block: 24px;
+      border-radius: 44px;
+      box-shadow: 0 30px 80px -30px rgba(20,20,30,0.35), 0 4px 12px -4px rgba(20,20,30,0.15);
+      outline: 8px solid var(--color-ink);
+      min-height: calc(100dvh - 48px);
+    }
   }
 }

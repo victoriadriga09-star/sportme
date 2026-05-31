@@ -199,7 +199,7 @@ function Onboarding() {
           {isLast ? "Trouver un partenaire" : "Continuer"} <ChevronRight className="size-4" />
         </button>
         {isLast && (
-          <button onClick={() => nav({ to: "/home" })} className="block mx-auto mt-3 text-sm text-muted-foreground">
+          <button onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }} className="block mx-auto mt-3 text-sm text-muted-foreground">
             Explorer l'app
           </button>
         )}

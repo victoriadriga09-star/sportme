@@ -150,6 +150,7 @@ function Onboarding() {
     let s = step + 1;
     if (s === 7 && !f.lieux.includes("Salle")) s = 8;
     if (s >= steps.length) {
+      saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender });
       nav({ to: "/home" });
       return;
     }

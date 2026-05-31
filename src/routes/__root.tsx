@@ -112,6 +112,7 @@ function AppShell() {
     <div className="mobile-frame">
       <Outlet />
       {!hide && <BottomTabBar />}
+      <Toaster position="top-center" />
     </div>
   );
 }

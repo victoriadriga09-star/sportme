@@ -30,13 +30,26 @@ const SEED: Msg[] = [
 
 function Chat() {
   const c = Route.useLoaderData();
+  const nav = useNavigate();
   const [msgs, setMsgs] = useState<Msg[]>(SEED);
   const [draft, setDraft] = useState("");
+  const [proposalStatus, setProposalStatus] = useState<"pending" | "accepted" | "declined">("pending");
+  const partner = PARTNERS.find((p) => p.id === c.id);
+  const sport = partner?.sport ?? "Yoga";
 
   const send = () => {
     if (!draft.trim()) return;
     setMsgs((m) => [...m, { id: String(Date.now()), from: "me", text: draft.trim(), t: "now" }]);
     setDraft("");
+  };
+
+  const accept = () => {
+    setProposalStatus("accepted");
+    nav({ to: "/match-confirmed", search: { with: c.id, sport } });
+  };
+  const decline = () => {
+    setProposalStatus("declined");
+    toast("Proposition déclinée. On en retrouvera d'autres ✨");
   };
 
   return (

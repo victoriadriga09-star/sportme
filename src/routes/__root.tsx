@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { BottomTabBar } from "../components/BottomTabBar";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -98,7 +99,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 // Routes qui n'affichent PAS la tab bar
-const HIDE_TAB_BAR = ["/", "/login", "/onboarding", "/match", "/request-sent"];
+const HIDE_TAB_BAR = ["/", "/login", "/onboarding", "/match", "/match-confirmed", "/request-sent"];
 const HIDE_TAB_BAR_PREFIX = ["/chat", "/partner"];
 
 function AppShell() {
@@ -111,6 +112,7 @@ function AppShell() {
     <div className="mobile-frame">
       <Outlet />
       {!hide && <BottomTabBar />}
+      <Toaster position="top-center" />
     </div>
   );
 }

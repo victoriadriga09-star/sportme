@@ -2,11 +2,14 @@ export type Partner = {
   id: string;
   name: string;
   age: number;
+  gender: "Femme" | "Homme" | "Non-binaire";
   sport: string;
   level: "Débutant" | "Intermédiaire" | "Avancé" | "Expert";
   distanceKm: number;
   place: string;
   when: string;
+  timeShort: string;
+  mode: "Présentiel" | "Visio";
   bio: string;
   rating: number;
   sessions: number;
@@ -16,12 +19,14 @@ export type Partner = {
 };
 
 export const PARTNERS: Partner[] = [
-  { id: "lea",  name: "Léa Martin",     age: 26, sport: "Running",    level: "Intermédiaire", distanceKm: 0.8, place: "Parc des Buttes", when: "Ce soir 19h",  bio: "J'adore courir le matin dans le parc. Je cherche quelqu'un pour me motiver les jours où Netflix gagne.", rating: 4.9, sessions: 41, online: true, reliability: 96, tone: "lime" },
-  { id: "adam", name: "Adam Bensaïd",   age: 31, sport: "Boxe",       level: "Avancé",         distanceKm: 1.5, place: "BoxLab Belleville",when: "Demain 7h",     bio: "Boxe technique, pas de cogneurs. Cherche partenaire régulier pour shadow + sparring léger.",            rating: 4.7, sessions: 88, online: false, reliability: 92, tone: "lavender" },
-  { id: "ines", name: "Inès Roche",     age: 24, sport: "Pilates",    level: "Intermédiaire", distanceKm: 2.1, place: "Studio Mouv'",    when: "Ce soir 20h",   bio: "Pilates reformer + tapis. Bonne énergie, séances posées mais exigeantes.",                              rating: 4.8, sessions: 23, online: true,  reliability: 94, tone: "ink" },
-  { id: "theo", name: "Théo Lambert",   age: 29, sport: "Padel",      level: "Intermédiaire", distanceKm: 3.4, place: "Padel Up Paris",  when: "Sam. 10h",      bio: "Toujours partant pour un double. Niveau correct, esprit chill, on joue pour s'amuser d'abord.",         rating: 4.6, sessions: 56, online: false, reliability: 88, tone: "lime" },
-  { id: "marie",name: "Marie Dupont",   age: 28, sport: "Yoga",       level: "Avancé",         distanceKm: 1.2, place: "Salle FitZone",   when: "Demain 19h",    bio: "Vinyasa, ashtanga. Je guide parfois. Cherche quelqu'un de régulier sur des créneaux du soir.",          rating: 4.9, sessions: 102, online: true,  reliability: 98, tone: "lavender" },
-  { id: "yann", name: "Yann Petit",     age: 33, sport: "CrossFit",   level: "Avancé",         distanceKm: 4.0, place: "CrossFit 11e",    when: "Jeu. 18h",      bio: "WOD, force, gymnastique. J'aime pousser sans se prendre au sérieux.",                                    rating: 4.5, sessions: 71, online: false, reliability: 85, tone: "ink" },
+  { id: "lea",  name: "Léa Martin",     age: 26, gender: "Femme",       sport: "Running",    level: "Intermédiaire", distanceKm: 0.8, place: "Parc des Buttes", when: "Ce soir 19h",  timeShort: "19:00", mode: "Présentiel", bio: "J'adore courir le matin dans le parc. Je cherche quelqu'un pour me motiver les jours où Netflix gagne.", rating: 4.9, sessions: 41, online: true, reliability: 96, tone: "lime" },
+  { id: "adam", name: "Adam Bensaïd",   age: 31, gender: "Homme",       sport: "Boxe",       level: "Avancé",         distanceKm: 1.5, place: "BoxLab Belleville",when: "Demain 7h",     timeShort: "07:00", mode: "Présentiel", bio: "Boxe technique, pas de cogneurs. Cherche partenaire régulier pour shadow + sparring léger.",            rating: 4.7, sessions: 88, online: false, reliability: 92, tone: "lavender" },
+  { id: "ines", name: "Inès Roche",     age: 24, gender: "Femme",       sport: "Pilates",    level: "Intermédiaire", distanceKm: 2.1, place: "Studio Mouv'",    when: "Ce soir 20h",   timeShort: "20:00", mode: "Présentiel", bio: "Pilates reformer + tapis. Bonne énergie, séances posées mais exigeantes.",                              rating: 4.8, sessions: 23, online: true,  reliability: 94, tone: "ink" },
+  { id: "theo", name: "Théo Lambert",   age: 29, gender: "Homme",       sport: "Padel",      level: "Intermédiaire", distanceKm: 3.4, place: "Padel Up Paris",  when: "Sam. 10h",      timeShort: "10:00", mode: "Présentiel", bio: "Toujours partant pour un double. Niveau correct, esprit chill, on joue pour s'amuser d'abord.",         rating: 4.6, sessions: 56, online: false, reliability: 88, tone: "lime" },
+  { id: "marie",name: "Marie Dupont",   age: 28, gender: "Femme",       sport: "Yoga",       level: "Avancé",         distanceKm: 1.2, place: "Salle FitZone",   when: "Demain 19h",    timeShort: "19:00", mode: "Présentiel", bio: "Vinyasa, ashtanga. Je guide parfois. Cherche quelqu'un de régulier sur des créneaux du soir.",          rating: 4.9, sessions: 102, online: true,  reliability: 98, tone: "lavender" },
+  { id: "yann", name: "Yann Petit",     age: 33, gender: "Homme",       sport: "CrossFit",   level: "Avancé",         distanceKm: 4.0, place: "CrossFit 11e",    when: "Jeu. 18h",      timeShort: "18:00", mode: "Présentiel", bio: "WOD, force, gymnastique. J'aime pousser sans se prendre au sérieux.",                                    rating: 4.5, sessions: 71, online: false, reliability: 85, tone: "ink" },
+  { id: "sofia",name: "Sofia Lopez",    age: 27, gender: "Femme",       sport: "Yoga",       level: "Intermédiaire", distanceKm: 0.6, place: "À la maison",     when: "Maintenant",    timeShort: "live",  mode: "Visio",      bio: "Sessions visio le matin avant le boulot. Hatha doux, 30 min top chrono.",                                rating: 4.8, sessions: 35, online: true,  reliability: 95, tone: "lavender" },
+  { id: "noa",  name: "Noa Carvalho",   age: 30, gender: "Non-binaire", sport: "Running",    level: "Avancé",         distanceKm: 2.8, place: "Canal Saint-Martin", when: "Demain 7h", timeShort: "07:00", mode: "Présentiel", bio: "10k tempo, allure 4'30. Cherche partenaire constant·e pour les sorties longues du dimanche.",            rating: 4.7, sessions: 64, online: false, reliability: 90, tone: "lime" },
 ];
 
 export const SPORTS = [

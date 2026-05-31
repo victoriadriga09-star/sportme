@@ -1,9 +1,10 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Paperclip, Send, Phone, MoreVertical } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
-import { CONVERSATIONS } from "@/data/mock";
+import { CONVERSATIONS, PARTNERS } from "@/data/mock";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/chat/$id")({
   loader: ({ params }) => {
@@ -29,13 +30,26 @@ const SEED: Msg[] = [
 
 function Chat() {
   const c = Route.useLoaderData();
+  const nav = useNavigate();
   const [msgs, setMsgs] = useState<Msg[]>(SEED);
   const [draft, setDraft] = useState("");
+  const [proposalStatus, setProposalStatus] = useState<"pending" | "accepted" | "declined">("pending");
+  const partner = PARTNERS.find((p) => p.id === c.id);
+  const sport = partner?.sport ?? "Yoga";
 
   const send = () => {
     if (!draft.trim()) return;
     setMsgs((m) => [...m, { id: String(Date.now()), from: "me", text: draft.trim(), t: "now" }]);
     setDraft("");
+  };
+
+  const accept = () => {
+    setProposalStatus("accepted");
+    nav({ to: "/match-confirmed", search: { with: c.id, sport } });
+  };
+  const decline = () => {
+    setProposalStatus("declined");
+    toast("Proposition déclinée. On en retrouvera d'autres ✨");
   };
 
   return (
@@ -76,13 +90,21 @@ function Chat() {
 
         {/* session card */}
         <div className="flex justify-center pt-2">
-          <div className="rounded-2xl bg-lavender p-4 max-w-[80%] text-sm">
-            <p className="font-display font-bold text-ink">Yoga Vinyasa</p>
-            <p className="text-xs text-ink/70 mt-1">Demain · 19h · FitZone</p>
-            <div className="flex gap-2 mt-3">
-              <button className="pill bg-ink text-background px-3 py-1.5 text-xs font-semibold">Accepter</button>
-              <button className="pill bg-background text-ink px-3 py-1.5 text-xs font-semibold">Décliner</button>
-            </div>
+          <div className="glass-strong rounded-2xl p-4 max-w-[80%] text-sm border border-white/60">
+            <p className="font-display font-bold text-ink">{sport} · Séance proposée</p>
+            <p className="text-xs text-ink/70 mt-1">Demain · 19h · {partner?.place ?? "FitZone"}</p>
+            {proposalStatus === "pending" && (
+              <div className="flex gap-2 mt-3">
+                <button onClick={accept} className="pill bg-lime text-ink px-3 py-1.5 text-xs font-bold lime-glow">Accepter</button>
+                <button onClick={decline} className="pill bg-background text-ink px-3 py-1.5 text-xs font-semibold border border-border">Décliner</button>
+              </div>
+            )}
+            {proposalStatus === "accepted" && (
+              <Link to="/match-confirmed" search={{ with: c.id, sport }} className="inline-block mt-3 pill bg-ink text-background px-3 py-1.5 text-xs font-semibold">Voir la confirmation →</Link>
+            )}
+            {proposalStatus === "declined" && (
+              <p className="mt-2 text-xs text-ink/60 italic">Proposition déclinée</p>
+            )}
           </div>
         </div>
       </div>

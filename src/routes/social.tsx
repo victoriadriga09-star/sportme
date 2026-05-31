@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
+import { Plus, Heart, MessageCircle, Share2, MoreHorizontal, Search, X } from "lucide-react";
 import { Avatar } from "@/components/Avatar";
 import { Pill } from "@/components/Pill";
-import { POSTS, CONVERSATIONS } from "@/data/mock";
+import { POSTS, CONVERSATIONS, PARTNERS } from "@/data/mock";
 
 export const Route = createFileRoute("/social")({
   head: () => ({ meta: [{ title: "Communauté — ÉLAN" }] }),
@@ -12,14 +12,46 @@ export const Route = createFileRoute("/social")({
 
 function Social() {
   const [tab, setTab] = useState<"feed" | "messages">("feed");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const results = q.trim().length > 0
+    ? PARTNERS.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()) || p.sport.toLowerCase().includes(q.toLowerCase()))
+    : [];
+
   return (
     <main className="min-h-[100dvh] pb-32 bg-background">
       <header className="px-5 pt-5 pb-3 flex items-center justify-between">
         <h1 className="font-display font-extrabold text-[28px] tracking-tight">Communauté</h1>
-        <Link to="/social/new" className="size-11 grid place-items-center rounded-full bg-lime text-ink lime-glow" aria-label="Nouveau post">
-          <Plus className="size-5" strokeWidth={2.4} />
-        </Link>
+        <div className="flex gap-2">
+          <button onClick={() => setSearchOpen(true)} aria-label="Rechercher une personne" className="size-11 grid place-items-center rounded-full bg-surface border border-border">
+            <Search className="size-5" />
+          </button>
+          <Link to="/social/new" className="size-11 grid place-items-center rounded-full bg-lime text-ink lime-glow" aria-label="Nouveau post">
+            <Plus className="size-5" strokeWidth={2.4} />
+          </Link>
+        </div>
       </header>
+
+      {searchOpen && (
+        <div className="fixed inset-0 z-50 bg-ink/50 backdrop-blur-sm flex items-start justify-center pt-16 px-4" onClick={() => setSearchOpen(false)}>
+          <div className="w-full max-w-[420px] glass-strong rounded-3xl p-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-2 mb-3">
+              <Search className="size-5 text-ink/60" />
+              <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un nom ou un sport…" className="flex-1 h-11 bg-transparent outline-none text-sm font-medium text-ink placeholder:text-ink/40" />
+              <button onClick={() => setSearchOpen(false)} aria-label="Fermer"><X className="size-5 text-ink/60" /></button>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto space-y-2">
+              {results.length === 0 && q && <p className="text-sm text-ink/60 text-center py-6">Aucun résultat</p>}
+              {results.map((p) => (
+                <Link key={p.id} to="/partner/$id" params={{ id: p.id }} onClick={() => setSearchOpen(false)} className="flex items-center gap-3 p-2 rounded-2xl hover:bg-white/40">
+                  <Avatar name={p.name} size={40} ring={p.online ? "lime" : "none"} />
+                  <div className="flex-1 min-w-0"><p className="text-sm font-semibold text-ink">{p.name}</p><p className="text-[11px] text-ink/60">{p.sport} · {p.distanceKm} km</p></div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="px-5 mb-4">
         <div className="inline-flex bg-surface border border-border rounded-full p-1 w-full">

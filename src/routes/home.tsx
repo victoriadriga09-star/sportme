@@ -5,6 +5,7 @@ import {
 import { Avatar } from "@/components/Avatar";
 import { Pill } from "@/components/Pill";
 import { PARTNERS, POSTS } from "@/data/mock";
+import { useUser } from "@/lib/store";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -17,21 +18,23 @@ export const Route = createFileRoute("/home")({
 });
 
 function Home() {
+  const [user] = useUser();
+  const firstName = (user.prenom || "champion").split(" ")[0];
   return (
     <main className="min-h-[100dvh] pb-32">
       {/* Header */}
       <header className="px-5 pt-5 pb-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Avatar name="Sofia Lopez" size={44} ring="lime" />
+          <Avatar name={user.prenom || "Toi"} size={44} ring="lime" />
           <div>
             <p className="text-xs text-muted-foreground leading-none">Bonsoir,</p>
-            <p className="font-display font-bold text-lg leading-tight mt-1">Sofia</p>
+            <p className="font-display font-bold text-lg leading-tight mt-1">{firstName}</p>
           </div>
         </div>
         <Link
           to="/notifications"
           aria-label="Notifications"
-          className="relative size-11 grid place-items-center rounded-full bg-surface border border-border"
+          className="relative size-11 grid place-items-center rounded-full glass border border-white/50"
         >
           <Bell className="size-5" strokeWidth={1.8} />
           <span className="absolute top-2.5 right-2.5 size-2 rounded-full bg-destructive ring-2 ring-background" />

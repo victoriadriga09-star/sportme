@@ -2,13 +2,6 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Search, Zap, MessageCircle, User } from "lucide-react";
 import type { ReactNode } from "react";
 
-const TABS = [
-  { to: "/home", label: "Accueil", icon: <Home className="size-[22px]" strokeWidth={1.8} /> },
-  { to: "/explorer", label: "Explorer", icon: <Search className="size-[22px]" strokeWidth={1.8} /> },
-  { to: "/social", label: "Social", icon: <MessageCircle className="size-[22px]" strokeWidth={1.8} /> },
-  { to: "/profile", label: "Profil", icon: <User className="size-[22px]" strokeWidth={1.8} /> },
-] as const;
-
 export function BottomTabBar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (to: string) =>
@@ -24,11 +17,12 @@ export function BottomTabBar() {
           <TabItem to="/home" label="Accueil" active={isActive("/home")}>
             <Home className="size-[22px]" strokeWidth={1.8} />
           </TabItem>
-          <TabItem to="/explorer" label="Explorer" active={isActive("/explorer")}>
+          {/* Loupe = parcourir les partenaires disponibles maintenant */}
+          <TabItem to="/results" label="Disponibles" active={pathname === "/results"}>
             <Search className="size-[22px]" strokeWidth={1.8} />
           </TabItem>
 
-          {/* FAB éclair lime central */}
+          {/* FAB éclair lime central = créer une nouvelle séance (filtres) */}
           <div className="w-16 shrink-0" aria-hidden />
           <Link
             to="/explorer"

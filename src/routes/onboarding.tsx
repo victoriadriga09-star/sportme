@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Camera, MapPin, Eye, EyeOff } from "lucide-react";
 import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
+import { saveUser } from "@/lib/store";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({ meta: [{ title: "Créer mon compte — ÉLAN" }] }),
@@ -149,6 +150,7 @@ function Onboarding() {
     let s = step + 1;
     if (s === 7 && !f.lieux.includes("Salle")) s = 8;
     if (s >= steps.length) {
+      saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender });
       nav({ to: "/home" });
       return;
     }
@@ -197,7 +199,7 @@ function Onboarding() {
           {isLast ? "Trouver un partenaire" : "Continuer"} <ChevronRight className="size-4" />
         </button>
         {isLast && (
-          <button onClick={() => nav({ to: "/home" })} className="block mx-auto mt-3 text-sm text-muted-foreground">
+          <button onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }} className="block mx-auto mt-3 text-sm text-muted-foreground">
             Explorer l'app
           </button>
         )}

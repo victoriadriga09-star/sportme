@@ -19,6 +19,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as MatchConfirmedRouteImport } from './routes/match-confirmed'
 import { Route as MatchRouteImport } from './routes/match'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
@@ -78,6 +79,11 @@ const NotificationsRoute = NotificationsRouteImport.update({
   path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MatchConfirmedRoute = MatchConfirmedRouteImport.update({
+  id: '/match-confirmed',
+  path: '/match-confirmed',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MatchRoute = MatchRouteImport.update({
   id: '/match',
   path: '/match',
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/match': typeof MatchRoute
+  '/match-confirmed': typeof MatchConfirmedRoute
   '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/partners': typeof PartnersRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/match': typeof MatchRoute
+  '/match-confirmed': typeof MatchConfirmedRoute
   '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/partners': typeof PartnersRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/match': typeof MatchRoute
+  '/match-confirmed': typeof MatchConfirmedRoute
   '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/partners': typeof PartnersRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/match'
+    | '/match-confirmed'
     | '/notifications'
     | '/onboarding'
     | '/partners'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/match'
+    | '/match-confirmed'
     | '/notifications'
     | '/onboarding'
     | '/partners'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/match'
+    | '/match-confirmed'
     | '/notifications'
     | '/onboarding'
     | '/partners'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   MatchRoute: typeof MatchRoute
+  MatchConfirmedRoute: typeof MatchConfirmedRoute
   NotificationsRoute: typeof NotificationsRoute
   OnboardingRoute: typeof OnboardingRoute
   PartnersRoute: typeof PartnersRoute
@@ -335,6 +348,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/match-confirmed': {
+      id: '/match-confirmed'
+      path: '/match-confirmed'
+      fullPath: '/match-confirmed'
+      preLoaderRoute: typeof MatchConfirmedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/match': {
       id: '/match'
       path: '/match'
@@ -411,6 +431,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   MatchRoute: MatchRoute,
+  MatchConfirmedRoute: MatchConfirmedRoute,
   NotificationsRoute: NotificationsRoute,
   OnboardingRoute: OnboardingRoute,
   PartnersRoute: PartnersRoute,

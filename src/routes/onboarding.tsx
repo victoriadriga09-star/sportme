@@ -53,8 +53,8 @@ function Onboarding() {
       node: <CityInput value={f.city} onChange={(v) => update("city", v)} /> },
     { eyebrow: "Localisation", title: "Où pratiques-tu le sport ?", sub: "Tu peux en choisir plusieurs.", ok: f.lieux.length > 0,
       node: <Grid2 selected={f.lieux} onToggle={(v) => toggle("lieux", v)} options={[
-        { v: "Salle", emoji: "🏋️" }, { v: "Extérieur", emoji: "🌳" },
-        { v: "Maison", emoji: "🏠" }, { v: "Visio", emoji: "💻" },
+        { v: "Salle", icon: LIEU_ICONS.Salle }, { v: "Extérieur", icon: LIEU_ICONS.Extérieur },
+        { v: "Maison", icon: LIEU_ICONS.Maison }, { v: "Visio", icon: LIEU_ICONS.Visio },
       ]} /> },
     { eyebrow: "Localisation", title: "Dans quelle salle tu t'entraînes ?", sub: "Ça nous aide à te connecter avec des gens qui vont au même endroit.", ok: true,
       node: f.lieux.includes("Salle")

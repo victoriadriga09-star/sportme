@@ -124,29 +124,35 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
     { l: "28%", t: "65%" }, { l: "50%", t: "20%" }, { l: "44%", t: "78%" },
     { l: "82%", t: "45%" }, { l: "15%", t: "50%" },
   ];
+  // Carte Google Static réelle de la ville (style minimal lavande)
+  const browserKey = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY as string | undefined;
+  const styleParams = [
+    "feature:poi|visibility:off",
+    "feature:transit|visibility:off",
+    "feature:road|element:labels|visibility:off",
+    "feature:administrative|element:labels.text.fill|color:0x6b6485",
+    "feature:water|color:0xd9e2ef",
+    "feature:landscape|color:0xf3eefb",
+    "feature:road|color:0xffffff",
+  ].map((s) => `style=${encodeURIComponent(s)}`).join("&");
+  const mapUrl = browserKey
+    ? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(city)}&zoom=13&size=600x900&scale=2&${styleParams}&key=${browserKey}`
+    : null;
+
   return (
-    <div className="relative rounded-3xl overflow-hidden border border-border h-[70vh] bg-[#e8eef5]">
-      {/* faux ville map */}
-      <svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full opacity-90">
-        <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#c8d4e3" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="400" height="600" fill="url(#grid)" />
-        {/* Seine / rivière */}
-        <path d="M -20,360 C 80,300 160,400 240,340 C 320,290 380,360 420,320 L 420,420 C 380,460 320,400 240,440 C 160,490 80,420 -20,460 Z" fill="#b8d4e8" opacity="0.6" />
-        {/* avenues */}
-        <path d="M 0,200 L 400,260" stroke="#c8d4e3" strokeWidth="6" fill="none" />
-        <path d="M 200,0 L 240,600" stroke="#c8d4e3" strokeWidth="6" fill="none" />
-        <path d="M 50,600 L 350,0" stroke="#c8d4e3" strokeWidth="4" fill="none" opacity="0.6" />
-        {/* parks */}
-        <circle cx="100" cy="150" r="35" fill="#c8e0b8" opacity="0.7" />
-        <ellipse cx="320" cy="480" rx="55" ry="35" fill="#c8e0b8" opacity="0.7" />
-        {/* labels */}
-        <text x="100" y="155" textAnchor="middle" fontSize="9" fill="#5a7a4a" fontFamily="system-ui" fontWeight="600">Parc</text>
-        <text x="320" y="485" textAnchor="middle" fontSize="9" fill="#5a7a4a" fontFamily="system-ui" fontWeight="600">Square</text>
-      </svg>
+    <div className="relative rounded-3xl overflow-hidden border border-border h-[70vh] bg-[#f3eefb]">
+      {mapUrl ? (
+        <img
+          src={mapUrl}
+          alt={`Carte de ${city}`}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+      ) : (
+        <div className="absolute inset-0 grid place-items-center text-xs text-muted-foreground p-6 text-center">
+          Carte indisponible — connecte Google Maps pour voir la ville réelle.
+        </div>
+      )}
 
       {/* city pill */}
       <div className="absolute top-3 left-3 glass-strong pill px-3 py-1.5 text-[11px] font-bold text-ink flex items-center gap-1.5">
@@ -154,7 +160,7 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
       </div>
 
       {/* radius */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-64 rounded-full bg-lime/15 border-2 border-lime/50" />
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-64 rounded-full bg-lime/15 border-2 border-lime/60" />
       {/* user */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-6 rounded-full bg-ink ring-4 ring-background grid place-items-center">
         <span className="size-2 rounded-full bg-lime animate-pulse" />
@@ -169,7 +175,6 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
         return (
           <Link to="/partner/$id" params={{ id: p.id }} key={p.id} style={{ left: pos.l, top: pos.t }}
             className="absolute -translate-x-1/2 -translate-y-1/2 group">
-            {/* info card above */}
             <div className="absolute left-1/2 -translate-x-1/2 -top-12 glass-strong pill px-2 py-1 text-[10px] font-bold text-ink whitespace-nowrap flex items-center gap-1.5">
               <Clock className="size-2.5" /> {p.timeShort}
               <span className="text-muted-foreground">·</span>
@@ -184,7 +189,7 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
 
       {/* bottom sheet preview */}
       <div className="absolute inset-x-3 bottom-3 glass-strong rounded-2xl p-3 flex items-center gap-3">
-        <Avatar name={list[0].name} size={42} ring="lime" />
+        <Avatar name={list[0].name} size={42} ring="lavender" />
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm leading-none text-ink">{list[0].name.split(" ")[0]} · {list[0].sport}</p>
           <p className="text-[11px] text-ink/70 mt-1">{list[0].distanceKm} km · {list[0].when}</p>

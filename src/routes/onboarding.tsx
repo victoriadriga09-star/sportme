@@ -102,10 +102,10 @@ function Onboarding() {
       ]} /> },
     { eyebrow: "Rythme", title: "Tu préfères bouger quand ?", sub: "Choisis un ou plusieurs créneaux.", ok: f.creneaux.length > 0,
       node: <Grid2 selected={f.creneaux} onToggle={(v) => toggle("creneaux", v)} options={[
-        { v: "Tôt le matin", emoji: "🌅", hint: "Avant 9h" },
-        { v: "Le midi", emoji: "☀️", hint: "12h-14h" },
-        { v: "Fin de journée", emoji: "🌇", hint: "17h-20h" },
-        { v: "Le soir", emoji: "🌙", hint: "Après 20h" },
+        { v: "Tôt le matin", icon: CRENEAU_ICONS["Tôt le matin"], hint: "Avant 9h" },
+        { v: "Le midi", icon: CRENEAU_ICONS["Le midi"], hint: "12h-14h" },
+        { v: "Fin de journée", icon: CRENEAU_ICONS["Fin de journée"], hint: "17h-20h" },
+        { v: "Le soir", icon: CRENEAU_ICONS["Le soir"], hint: "Après 20h" },
       ]} /> },
     { eyebrow: "Bio", title: "Parle un peu de toi", sub: "Quelques mots pour donner envie. (Optionnel)", ok: true,
       node: (

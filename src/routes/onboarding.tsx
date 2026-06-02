@@ -89,20 +89,20 @@ function Onboarding() {
         ["Expert·e", "Le sport, c'est ma vie"],
       ]} /> },
     { eyebrow: "Sport", title: "Qu'est-ce qui te motive ?", sub: "Choisis l'objectif qui te parle le plus.", ok: !!f.goal,
-      node: <CardChoices value={f.goal} onChange={(v) => update("goal", v)} options={[
-        "💪 Me remettre en forme",
-        "🔥 Perdre du poids",
-        "🧘 Gagner en souplesse",
-        "🤝 Trouver un·e partenaire d'entraînement",
-        "✨ Rejoindre une communauté",
-        "🎉 Juste découvrir et m'amuser",
+      node: <CardChoices value={f.goal} onChange={(v) => update("goal", v)} iconMap={GOAL_ICONS} options={[
+        "Me remettre en forme",
+        "Perdre du poids",
+        "Gagner en souplesse",
+        "Trouver un·e partenaire d'entraînement",
+        "Rejoindre une communauté",
+        "Juste découvrir et m'amuser",
       ]} /> },
     { eyebrow: "Rythme", title: "Combien de fois par semaine ?", sub: "Même une fois, c'est déjà bien.", ok: f.freq > 0,
       node: <FreqPicker value={f.freq} onChange={(v) => update("freq", v)} /> },
     { eyebrow: "Rythme", title: "Tes jours de sport sont plutôt…", ok: !!f.rythme,
-      node: <CardChoices value={f.rythme} onChange={(v) => update("rythme", v)} options={[
-        ["📅 Toujours les mêmes jours", "Tu as un planning régulier"],
-        ["🔀 Ça change chaque semaine", "Tu t'adaptes selon ta dispo"],
+      node: <CardChoices value={f.rythme} onChange={(v) => update("rythme", v)} iconMap={RYTHME_ICONS} options={[
+        ["Toujours les mêmes jours", "Tu as un planning régulier"],
+        ["Ça change chaque semaine", "Tu t'adaptes selon ta dispo"],
       ]} /> },
     { eyebrow: "Rythme", title: "Tu préfères bouger quand ?", sub: "Choisis un ou plusieurs créneaux.", ok: f.creneaux.length > 0,
       node: <Grid2 selected={f.creneaux} onToggle={(v) => toggle("creneaux", v)} options={[

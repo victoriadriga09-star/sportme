@@ -251,7 +251,7 @@ function Input(props: { value: string; onChange: (v: string) => void; placeholde
       onChange={(e) => props.onChange(e.target.value)}
       placeholder={props.placeholder}
       autoFocus={props.autoFocus}
-      className="w-full h-14 px-5 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime focus:border-lime outline-none text-base font-medium backdrop-blur"
+      className="w-full h-14 px-5 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink focus:border-ink outline-none text-base font-medium"
     />
   );
 }
@@ -267,16 +267,16 @@ function PasswordInput({ value, onChange }: { value: string; onChange: (v: strin
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="••••••••"
-          className="w-full h-14 px-5 pr-14 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none text-base font-medium backdrop-blur"
+          className="w-full h-14 px-5 pr-14 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none text-base font-medium"
         />
-        <button onClick={() => setShow(!show)} className="absolute right-4 top-1/2 -translate-y-1/2 text-background/60">
+        <button onClick={() => setShow(!show)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
           {show ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
         </button>
       </div>
       <div className="flex gap-1.5 mt-3">
         {[0, 1, 2].map((i) => (
           <div key={i} className={`h-1.5 flex-1 rounded-full ${
-            i < strength ? (strength === 3 ? "bg-success" : strength === 2 ? "bg-lime" : "bg-warning") : "bg-white/10"
+            i < strength ? (strength === 3 ? "bg-success" : strength === 2 ? "bg-ink" : "bg-warning") : "bg-ink/10"
           }`} />
         ))}
       </div>
@@ -288,12 +288,12 @@ function CityInput({ value, onChange }: { value: string; onChange: (v: string) =
   return (
     <div className="space-y-3">
       <div className="relative">
-        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-background/60" />
+        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Paris, Lyon, Marseille…"
-          className="w-full h-14 pl-12 pr-5 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none text-base font-medium backdrop-blur"
+          className="w-full h-14 pl-12 pr-5 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none text-base font-medium"
         />
       </div>
       <button onClick={() => onChange("Paris 11e")} className="w-full pill bg-lavender text-ink py-3 text-sm font-semibold flex items-center justify-center gap-2">
@@ -317,15 +317,15 @@ function CardChoices({
             onClick={() => onChange(label)}
             className={`w-full text-left rounded-2xl px-5 py-4 border transition flex items-center justify-between gap-3 ${
               on
-                ? "bg-lime border-lime text-ink lime-glow"
-                : "bg-white/5 border-white/15 text-background backdrop-blur hover:bg-white/10"
+                ? "bg-ink border-ink text-background ink-shadow"
+                : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
             <div>
               <p className="font-semibold">{label}</p>
-              {desc && <p className={`text-xs mt-0.5 ${on ? "text-ink/70" : "text-background/55"}`}>{desc}</p>}
+              {desc && <p className={`text-xs mt-0.5 ${on ? "text-background/70" : "text-muted-foreground"}`}>{desc}</p>}
             </div>
-            {on && <span className="size-7 rounded-full bg-ink text-lime grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
+            {on && <span className="size-7 rounded-full bg-lime text-ink grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
           </button>
         );
       })}
@@ -346,14 +346,14 @@ function Grid2({
             onClick={() => onToggle(o.v)}
             className={`aspect-square rounded-3xl border flex flex-col items-center justify-center gap-2 transition relative ${
               on
-                ? "bg-lime border-lime text-ink lime-glow"
-                : "bg-white/5 border-white/15 text-background backdrop-blur hover:bg-white/10"
+                ? "bg-ink border-ink text-background ink-shadow"
+                : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
             <span className="text-3xl">{o.emoji}</span>
             <span className="font-semibold text-sm">{o.v}</span>
-            {o.hint && <span className={`text-[11px] ${on ? "text-ink/60" : "text-background/50"}`}>{o.hint}</span>}
-            {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-ink text-lime grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}
+            {o.hint && <span className={`text-[11px] ${on ? "text-background/60" : "text-muted-foreground"}`}>{o.hint}</span>}
+            {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-lime text-ink grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}
           </button>
         );
       })}
@@ -372,8 +372,8 @@ function FreqPicker({ value, onChange }: { value: number; onChange: (v: number) 
             onClick={() => onChange(n)}
             className={`rounded-full font-display font-extrabold transition-all grid place-items-center ${
               on
-                ? "bg-lime text-ink size-20 text-3xl lime-glow"
-                : "bg-white/5 border border-white/15 text-background size-14 text-xl backdrop-blur"
+                ? "bg-ink text-background size-20 text-3xl ink-shadow"
+                : "bg-surface border border-border text-ink size-14 text-xl"
             }`}
           >
             {n}{n === 5 && "+"}

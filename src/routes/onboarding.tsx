@@ -310,26 +310,34 @@ function CityInput({ value, onChange }: { value: string; onChange: (v: string) =
 }
 
 function CardChoices({
-  value, onChange, options,
-}: { value: string; onChange: (v: string) => void; options: (string | [string, string])[] }) {
+  value, onChange, options, iconMap,
+}: { value: string; onChange: (v: string) => void; options: (string | [string, string])[]; iconMap?: Record<string, LucideIcon> }) {
   return (
     <div className="space-y-2.5">
       {options.map((opt) => {
         const [label, desc] = Array.isArray(opt) ? opt : [opt, undefined];
         const on = value === label;
+        const Icon = iconMap?.[label];
         return (
           <button
             key={label}
             onClick={() => onChange(label)}
-            className={`w-full text-left rounded-2xl px-5 py-4 border transition flex items-center justify-between gap-3 ${
+            className={`w-full text-left rounded-2xl px-4 py-4 border transition flex items-center justify-between gap-3 ${
               on
                 ? "bg-ink border-ink text-background ink-shadow"
                 : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
-            <div>
-              <p className="font-semibold">{label}</p>
-              {desc && <p className={`text-xs mt-0.5 ${on ? "text-background/70" : "text-muted-foreground"}`}>{desc}</p>}
+            <div className="flex items-center gap-3 min-w-0">
+              {Icon && (
+                <span className={`size-10 rounded-2xl grid place-items-center shrink-0 ${on ? "bg-background/15" : "bg-lavender-soft/70"}`}>
+                  <Icon className={`size-5 ${on ? "text-background" : "text-ink"}`} strokeWidth={2} />
+                </span>
+              )}
+              <div className="min-w-0">
+                <p className="font-semibold">{label}</p>
+                {desc && <p className={`text-xs mt-0.5 ${on ? "text-background/70" : "text-muted-foreground"}`}>{desc}</p>}
+              </div>
             </div>
             {on && <span className="size-7 rounded-full bg-lime text-ink grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
           </button>

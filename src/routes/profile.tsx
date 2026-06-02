@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Pencil, ChevronRight, Calendar, Users, BarChart3, Settings, HelpCircle, LogOut } from "lucide-react";
+import { Pencil, ChevronRight, Calendar, Users, BarChart3, Settings, HelpCircle, LogOut, Sparkles, PersonStanding, Dumbbell } from "lucide-react";
 import { Avatar } from "@/components/Avatar";
 import { Pill } from "@/components/Pill";
 

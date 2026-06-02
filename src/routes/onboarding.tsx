@@ -166,63 +166,66 @@ function Onboarding() {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-ink text-background relative overflow-hidden">
-      {/* Ambient floating shapes */}
-      <div className="pointer-events-none absolute -top-24 -left-20 size-72 rounded-full bg-lavender/30 blur-3xl float-slow" />
-      <div className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-lime/20 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
-      <div className="pointer-events-none absolute bottom-0 left-1/4 size-64 rounded-full bg-lavender/20 blur-3xl float-slow" style={{ animationDelay: "3s" }} />
+    <div className="min-h-[100dvh] flex flex-col bg-background text-ink relative overflow-hidden">
+      {/* Ambient floating shapes — pastel sur fond clair */}
+      <div className="pointer-events-none absolute -top-24 -left-20 size-72 rounded-full bg-lavender/50 blur-3xl float-slow" />
+      <div className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-lime/30 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
+      <div className="pointer-events-none absolute bottom-0 left-1/4 size-64 rounded-full bg-lavender-soft/70 blur-3xl float-slow" style={{ animationDelay: "3s" }} />
 
       {/* Top bar — segmented progress */}
       <div className="relative px-5 pt-6 pb-2 z-10">
         <div className="flex items-center gap-1.5">
           {Array.from({ length: totalSegments }).map((_, i) => (
-            <div key={i} className="flex-1 h-1 rounded-full overflow-hidden bg-white/10">
+            <div key={i} className="flex-1 h-1 rounded-full overflow-hidden bg-ink/10">
               <div className={`h-full rounded-full transition-all duration-500 ${
-                i < step ? "bg-lime w-full" : i === step ? "bg-lime w-full" : "w-0"
+                i <= step ? "bg-ink w-full" : "w-0"
               }`} />
             </div>
           ))}
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-lime">{current.eyebrow}</p>
-          <span className="text-[11px] tabular-nums font-semibold text-background/60">
+          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-ink/70">{current.eyebrow}</p>
+          <span className="text-[11px] tabular-nums font-semibold text-muted-foreground">
             étape {step + 1}/{totalSegments}
           </span>
         </div>
       </div>
 
-      {/* Content card — liquid glass on dark */}
-      <div className="relative z-10 flex-1 px-4 pt-4 flex flex-col">
+      {/* Content card — liquid glass clair, contenu centré */}
+      <div className="relative z-10 flex-1 px-4 pt-6 pb-2 flex flex-col">
         <div
           key={step}
-          className="glass-ink rounded-[36px] p-6 pt-7 flex-1 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400"
+          className="glass-strong rounded-[36px] p-7 pt-8 flex-1 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400"
         >
-          <h1 className="font-display font-extrabold text-[30px] leading-[1.05] text-background">
-            {current.title}
-          </h1>
-          {current.sub && <p className="text-sm text-background/65 mt-2.5 leading-relaxed">{current.sub}</p>}
-          <div className="flex-1 mt-7 flex flex-col justify-center">{current.node}</div>
+          <div className="text-center max-w-[340px] mx-auto">
+            <h1 className="font-display font-extrabold text-[28px] leading-[1.08] text-ink">
+              {current.title}
+            </h1>
+            {current.sub && <p className="text-sm text-muted-foreground mt-2.5 leading-relaxed">{current.sub}</p>}
+          </div>
+          {/* Réponses placées plus bas, à mi-hauteur de la carte */}
+          <div className="flex-1 mt-10 flex flex-col justify-center">{current.node}</div>
         </div>
       </div>
 
-      {/* Footer — pill nav with paired buttons like the reference */}
+      {/* Footer — pill nav */}
       <div className="relative z-10 px-5 pb-8 pt-4">
         <div className="flex items-center gap-3">
           <button
             onClick={prev}
             disabled={step === 0}
             aria-label="Retour"
-            className="size-14 grid place-items-center rounded-full bg-white text-ink ink-shadow disabled:opacity-30 disabled:bg-white/10 disabled:text-background shrink-0"
+            className="size-14 grid place-items-center rounded-full bg-surface border border-border text-ink soft-shadow disabled:opacity-30 shrink-0"
           >
             <ChevronLeft className="size-5" strokeWidth={2.5} />
           </button>
           <button
             onClick={next}
             disabled={!current.ok}
-            className="flex-1 h-14 pill bg-lime text-ink font-bold flex items-center justify-between gap-2 px-2 pl-6 disabled:opacity-40 disabled:bg-white/10 disabled:text-background transition lime-glow"
+            className="flex-1 h-14 pill bg-ink text-background font-bold flex items-center justify-between gap-2 px-2 pl-6 disabled:opacity-30 transition ink-shadow"
           >
             <span className="text-[15px]">{isLast ? "Trouver un partenaire" : "Continuer"}</span>
-            <span className="size-10 rounded-full bg-ink text-lime grid place-items-center">
+            <span className="size-10 rounded-full bg-lime text-ink grid place-items-center">
               <ArrowRight className="size-4" strokeWidth={2.5} />
             </span>
           </button>
@@ -230,7 +233,7 @@ function Onboarding() {
         {isLast && (
           <button
             onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }}
-            className="block mx-auto mt-4 text-xs text-background/60 underline-offset-4 hover:underline"
+            className="block mx-auto mt-4 text-xs text-muted-foreground underline-offset-4 hover:underline"
           >
             Explorer l'app sans matcher
           </button>

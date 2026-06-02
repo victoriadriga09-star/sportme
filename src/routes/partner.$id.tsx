@@ -81,7 +81,7 @@ function Detail() {
           <Link to="/chat/$id" params={{ id: p.id }} className="flex-1 pill border border-ink text-ink py-3.5 font-semibold flex items-center justify-center gap-2">
             <MessageCircle className="size-4" /> Écrire
           </Link>
-          <Link to="/request-sent" className="flex-1 pill bg-lime text-ink py-3.5 font-bold lime-glow text-center">
+          <Link to="/request-sent" className="flex-1 pill bg-[#7C5CFF] text-white py-3.5 font-bold violet-glow text-center shadow-lg">
             S'entraîner ensemble
           </Link>
         </div>

@@ -144,7 +144,7 @@ function Onboarding() {
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
             {f.sports.slice(0, 3).map((s) => <Pill key={s} tone="lime" size="md">{s}</Pill>)}
-            {f.city && <Pill tone="lavender" size="md">📍 {f.city}</Pill>}
+            {f.city && <Pill tone="lavender" size="md"><MapPin className="size-3.5 inline -mt-0.5 mr-1" />{f.city}</Pill>}
             {f.freq > 0 && <Pill tone="white" size="md">{f.freq}×/sem</Pill>}
           </div>
         </div>

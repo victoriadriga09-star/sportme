@@ -67,7 +67,7 @@ function Onboarding() {
             return (
               <button key={s.label} onClick={() => toggle("sports", s.label)}
                 className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
-                  on ? "bg-lime text-ink border-lime lime-glow" : "bg-white/5 text-background border-white/15 backdrop-blur"
+                  on ? "bg-ink text-background border-ink ink-shadow" : "bg-surface text-ink border-border"
                 }`}>
                 <span className="mr-1">{s.emoji}</span> {s.label}
               </button>
@@ -111,9 +111,9 @@ function Onboarding() {
           <textarea
             value={f.bio} onChange={(e) => update("bio", e.target.value.slice(0, 300))}
             placeholder="Ex : J'adore courir le matin dans le parc. Je cherche quelqu'un pour me motiver les jours où Netflix gagne..."
-            className="w-full h-40 p-4 rounded-2xl bg-white/5 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none resize-none backdrop-blur"
+            className="w-full h-40 p-4 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none resize-none"
           />
-          <span className="absolute bottom-3 right-4 text-[11px] text-background/50">{f.bio.length}/300</span>
+          <span className="absolute bottom-3 right-4 text-[11px] text-muted-foreground">{f.bio.length}/300</span>
         </div>
       ) },
     { eyebrow: "Profil", title: "Ajoute une photo", sub: "Les profils avec photo reçoivent 3× plus de demandes.", ok: true,
@@ -122,18 +122,18 @@ function Onboarding() {
           <button
             onClick={() => update("photo", !f.photo)}
             className={`size-36 rounded-full grid place-items-center transition relative ${
-              f.photo ? "bg-gradient-to-br from-lavender to-lime ink-shadow" : "bg-white/5 border-2 border-dashed border-white/30 backdrop-blur"
+              f.photo ? "orb-3d ink-shadow" : "bg-surface border-2 border-dashed border-border"
             }`}
           >
-            <Camera className={`size-10 ${f.photo ? "text-ink" : "text-background"}`} strokeWidth={1.6} />
-            {f.photo && <span className="absolute -top-1 -right-1 size-9 rounded-full bg-lime text-ink grid place-items-center ink-shadow"><Check className="size-5" strokeWidth={3} /></span>}
+            <Camera className={`size-10 ${f.photo ? "text-ink" : "text-muted-foreground"}`} strokeWidth={1.6} />
+            {f.photo && <span className="absolute -top-1 -right-1 size-9 rounded-full bg-ink text-background grid place-items-center ink-shadow"><Check className="size-5" strokeWidth={3} /></span>}
           </button>
         </div>
       ) },
     { eyebrow: "Terminé", title: `Bienvenue, ${f.prenom || "champion"} !`, sub: "Ton profil est prêt. Trouve ton premier partenaire.", ok: true,
       node: (
         <div className="text-center space-y-5">
-          <div className="mx-auto size-24 rounded-full grid place-items-center bg-lime lime-glow">
+          <div className="mx-auto size-24 rounded-full grid place-items-center orb-3d violet-glow">
             <Sparkles className="size-10 text-ink" strokeWidth={2} />
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
@@ -166,63 +166,66 @@ function Onboarding() {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-ink text-background relative overflow-hidden">
-      {/* Ambient floating shapes */}
-      <div className="pointer-events-none absolute -top-24 -left-20 size-72 rounded-full bg-lavender/30 blur-3xl float-slow" />
-      <div className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-lime/20 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
-      <div className="pointer-events-none absolute bottom-0 left-1/4 size-64 rounded-full bg-lavender/20 blur-3xl float-slow" style={{ animationDelay: "3s" }} />
+    <div className="min-h-[100dvh] flex flex-col bg-background text-ink relative overflow-hidden">
+      {/* Ambient floating shapes — pastel sur fond clair */}
+      <div className="pointer-events-none absolute -top-24 -left-20 size-72 rounded-full bg-lavender/50 blur-3xl float-slow" />
+      <div className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-lime/30 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
+      <div className="pointer-events-none absolute bottom-0 left-1/4 size-64 rounded-full bg-lavender-soft/70 blur-3xl float-slow" style={{ animationDelay: "3s" }} />
 
       {/* Top bar — segmented progress */}
       <div className="relative px-5 pt-6 pb-2 z-10">
         <div className="flex items-center gap-1.5">
           {Array.from({ length: totalSegments }).map((_, i) => (
-            <div key={i} className="flex-1 h-1 rounded-full overflow-hidden bg-white/10">
+            <div key={i} className="flex-1 h-1 rounded-full overflow-hidden bg-ink/10">
               <div className={`h-full rounded-full transition-all duration-500 ${
-                i < step ? "bg-lime w-full" : i === step ? "bg-lime w-full" : "w-0"
+                i <= step ? "bg-ink w-full" : "w-0"
               }`} />
             </div>
           ))}
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-lime">{current.eyebrow}</p>
-          <span className="text-[11px] tabular-nums font-semibold text-background/60">
+          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-ink/70">{current.eyebrow}</p>
+          <span className="text-[11px] tabular-nums font-semibold text-muted-foreground">
             étape {step + 1}/{totalSegments}
           </span>
         </div>
       </div>
 
-      {/* Content card — liquid glass on dark */}
-      <div className="relative z-10 flex-1 px-4 pt-4 flex flex-col">
+      {/* Content card — liquid glass clair, contenu centré */}
+      <div className="relative z-10 flex-1 px-4 pt-6 pb-2 flex flex-col">
         <div
           key={step}
-          className="glass-ink rounded-[36px] p-6 pt-7 flex-1 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400"
+          className="glass-strong rounded-[36px] p-7 pt-8 flex-1 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400"
         >
-          <h1 className="font-display font-extrabold text-[30px] leading-[1.05] text-background">
-            {current.title}
-          </h1>
-          {current.sub && <p className="text-sm text-background/65 mt-2.5 leading-relaxed">{current.sub}</p>}
-          <div className="flex-1 mt-7 flex flex-col justify-center">{current.node}</div>
+          <div className="text-center max-w-[340px] mx-auto">
+            <h1 className="font-display font-extrabold text-[28px] leading-[1.08] text-ink">
+              {current.title}
+            </h1>
+            {current.sub && <p className="text-sm text-muted-foreground mt-2.5 leading-relaxed">{current.sub}</p>}
+          </div>
+          {/* Réponses placées plus bas, à mi-hauteur de la carte */}
+          <div className="flex-1 mt-10 flex flex-col justify-center">{current.node}</div>
         </div>
       </div>
 
-      {/* Footer — pill nav with paired buttons like the reference */}
+      {/* Footer — pill nav */}
       <div className="relative z-10 px-5 pb-8 pt-4">
         <div className="flex items-center gap-3">
           <button
             onClick={prev}
             disabled={step === 0}
             aria-label="Retour"
-            className="size-14 grid place-items-center rounded-full bg-white text-ink ink-shadow disabled:opacity-30 disabled:bg-white/10 disabled:text-background shrink-0"
+            className="size-14 grid place-items-center rounded-full bg-surface border border-border text-ink soft-shadow disabled:opacity-30 shrink-0"
           >
             <ChevronLeft className="size-5" strokeWidth={2.5} />
           </button>
           <button
             onClick={next}
             disabled={!current.ok}
-            className="flex-1 h-14 pill bg-lime text-ink font-bold flex items-center justify-between gap-2 px-2 pl-6 disabled:opacity-40 disabled:bg-white/10 disabled:text-background transition lime-glow"
+            className="flex-1 h-14 pill bg-ink text-background font-bold flex items-center justify-between gap-2 px-2 pl-6 disabled:opacity-30 transition ink-shadow"
           >
             <span className="text-[15px]">{isLast ? "Trouver un partenaire" : "Continuer"}</span>
-            <span className="size-10 rounded-full bg-ink text-lime grid place-items-center">
+            <span className="size-10 rounded-full bg-lime text-ink grid place-items-center">
               <ArrowRight className="size-4" strokeWidth={2.5} />
             </span>
           </button>
@@ -230,7 +233,7 @@ function Onboarding() {
         {isLast && (
           <button
             onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }}
-            className="block mx-auto mt-4 text-xs text-background/60 underline-offset-4 hover:underline"
+            className="block mx-auto mt-4 text-xs text-muted-foreground underline-offset-4 hover:underline"
           >
             Explorer l'app sans matcher
           </button>
@@ -248,7 +251,7 @@ function Input(props: { value: string; onChange: (v: string) => void; placeholde
       onChange={(e) => props.onChange(e.target.value)}
       placeholder={props.placeholder}
       autoFocus={props.autoFocus}
-      className="w-full h-14 px-5 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime focus:border-lime outline-none text-base font-medium backdrop-blur"
+      className="w-full h-14 px-5 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink focus:border-ink outline-none text-base font-medium"
     />
   );
 }
@@ -264,16 +267,16 @@ function PasswordInput({ value, onChange }: { value: string; onChange: (v: strin
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="••••••••"
-          className="w-full h-14 px-5 pr-14 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none text-base font-medium backdrop-blur"
+          className="w-full h-14 px-5 pr-14 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none text-base font-medium"
         />
-        <button onClick={() => setShow(!show)} className="absolute right-4 top-1/2 -translate-y-1/2 text-background/60">
+        <button onClick={() => setShow(!show)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
           {show ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
         </button>
       </div>
       <div className="flex gap-1.5 mt-3">
         {[0, 1, 2].map((i) => (
           <div key={i} className={`h-1.5 flex-1 rounded-full ${
-            i < strength ? (strength === 3 ? "bg-success" : strength === 2 ? "bg-lime" : "bg-warning") : "bg-white/10"
+            i < strength ? (strength === 3 ? "bg-success" : strength === 2 ? "bg-ink" : "bg-warning") : "bg-ink/10"
           }`} />
         ))}
       </div>
@@ -285,12 +288,12 @@ function CityInput({ value, onChange }: { value: string; onChange: (v: string) =
   return (
     <div className="space-y-3">
       <div className="relative">
-        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-background/60" />
+        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Paris, Lyon, Marseille…"
-          className="w-full h-14 pl-12 pr-5 rounded-2xl bg-white/8 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none text-base font-medium backdrop-blur"
+          className="w-full h-14 pl-12 pr-5 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none text-base font-medium"
         />
       </div>
       <button onClick={() => onChange("Paris 11e")} className="w-full pill bg-lavender text-ink py-3 text-sm font-semibold flex items-center justify-center gap-2">
@@ -314,15 +317,15 @@ function CardChoices({
             onClick={() => onChange(label)}
             className={`w-full text-left rounded-2xl px-5 py-4 border transition flex items-center justify-between gap-3 ${
               on
-                ? "bg-lime border-lime text-ink lime-glow"
-                : "bg-white/5 border-white/15 text-background backdrop-blur hover:bg-white/10"
+                ? "bg-ink border-ink text-background ink-shadow"
+                : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
             <div>
               <p className="font-semibold">{label}</p>
-              {desc && <p className={`text-xs mt-0.5 ${on ? "text-ink/70" : "text-background/55"}`}>{desc}</p>}
+              {desc && <p className={`text-xs mt-0.5 ${on ? "text-background/70" : "text-muted-foreground"}`}>{desc}</p>}
             </div>
-            {on && <span className="size-7 rounded-full bg-ink text-lime grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
+            {on && <span className="size-7 rounded-full bg-lime text-ink grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
           </button>
         );
       })}
@@ -343,14 +346,14 @@ function Grid2({
             onClick={() => onToggle(o.v)}
             className={`aspect-square rounded-3xl border flex flex-col items-center justify-center gap-2 transition relative ${
               on
-                ? "bg-lime border-lime text-ink lime-glow"
-                : "bg-white/5 border-white/15 text-background backdrop-blur hover:bg-white/10"
+                ? "bg-ink border-ink text-background ink-shadow"
+                : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
             <span className="text-3xl">{o.emoji}</span>
             <span className="font-semibold text-sm">{o.v}</span>
-            {o.hint && <span className={`text-[11px] ${on ? "text-ink/60" : "text-background/50"}`}>{o.hint}</span>}
-            {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-ink text-lime grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}
+            {o.hint && <span className={`text-[11px] ${on ? "text-background/60" : "text-muted-foreground"}`}>{o.hint}</span>}
+            {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-lime text-ink grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}
           </button>
         );
       })}
@@ -369,8 +372,8 @@ function FreqPicker({ value, onChange }: { value: number; onChange: (v: number) 
             onClick={() => onChange(n)}
             className={`rounded-full font-display font-extrabold transition-all grid place-items-center ${
               on
-                ? "bg-lime text-ink size-20 text-3xl lime-glow"
-                : "bg-white/5 border border-white/15 text-background size-14 text-xl backdrop-blur"
+                ? "bg-ink text-background size-20 text-3xl ink-shadow"
+                : "bg-surface border border-border text-ink size-14 text-xl"
             }`}
           >
             {n}{n === 5 && "+"}

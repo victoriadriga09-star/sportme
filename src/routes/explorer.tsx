@@ -35,23 +35,23 @@ function Explorer() {
       />
 
       <div className="px-5 space-y-7 mt-2">
-        {/* Intro liquid-glass card */}
-        <section className="relative overflow-hidden rounded-[28px] p-5 bg-lavender">
-          <div className="absolute -right-10 -top-10 size-44 rounded-full bg-lime/40 blur-3xl" />
-          <div className="absolute inset-0 topo-dots opacity-30" />
-          <div className="relative flex items-start gap-3">
-            <div className="size-11 rounded-2xl bg-ink text-lime grid place-items-center shrink-0">
-              <Sparkles className="size-5" />
-            </div>
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.2em] text-ink/70">SALUT {(user.prenom || "TOI").toUpperCase()}</p>
-              <h2 className="font-display font-extrabold text-[20px] leading-tight mt-1 text-ink">Trouve ton partenaire idéal</h2>
+        {/* Intro hero — gradient lavande + orbe 3D */}
+        <section className="relative overflow-hidden rounded-[28px] p-5 bg-gradient-to-br from-lavender via-lavender-soft to-surface border border-white/60 soft-shadow">
+          <div className="absolute -right-16 -top-16 size-56 rounded-full bg-lime/40 blur-3xl" />
+          <div className="absolute -left-10 -bottom-12 size-44 rounded-full bg-lavender/60 blur-3xl" />
+          <div className="absolute inset-0 topo-dots opacity-25" />
+          <div className="relative flex items-start gap-4">
+            <div className="size-14 rounded-2xl orb-3d grid place-items-center shrink-0 violet-glow" aria-hidden />
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold tracking-[0.22em] text-ink/70">SALUT {(user.prenom || "TOI").toUpperCase()}</p>
+              <h2 className="font-display font-extrabold text-[22px] leading-tight mt-1 text-ink">Trouve ton partenaire idéal</h2>
               <p className="text-sm text-ink/75 mt-1.5 leading-snug">
                 Choisis ton sport, ton créneau, ta zone — on te montre les sportifs disponibles près de toi.
               </p>
             </div>
           </div>
         </section>
+
 
         {/* Sport */}
         <section>

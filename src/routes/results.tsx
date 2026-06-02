@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon } from "lucide-react";
+import { motion, AnimatePresence, useMotionValue, useTransform, type PanInfo } from "framer-motion";
+import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
 import { Pill } from "@/components/Pill";
@@ -203,59 +204,162 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
 function SwipeView({ list }: { list: Partner[] }) {
   const [idx, setIdx] = useState(0);
   const { isFav, toggle } = useFavorites();
-  const p = list[idx % list.length];
-  const next = () => setIdx((i) => i + 1);
-  const fav = isFav(p.id);
+  const visible = [0, 1, 2].map((o) => list[(idx + o) % list.length]);
+  const top = visible[0];
+  const fav = isFav(top.id);
+
+  const advance = (dir: "left" | "right") => {
+    if (dir === "right") toast.success(`${top.name.split(" ")[0]} invité·e ✨`);
+    setIdx((i) => i + 1);
+  };
+
   return (
-    <div className="relative h-[65vh]">
-      {/* stack derrière */}
-      <div className="absolute inset-x-6 top-3 h-full rounded-[28px] bg-input scale-95 opacity-60" />
-      <div className="absolute inset-x-3 top-1.5 h-full rounded-[28px] bg-surface border border-border scale-[0.98] opacity-80" />
+    <div className="relative h-[68vh] select-none">
+      <AnimatePresence initial={false}>
+        {visible.map((p, layer) => (
+          <SwipeCard
+            key={`${p.id}-${idx + layer}`}
+            partner={p}
+            layer={layer}
+            onSwipe={layer === 0 ? advance : undefined}
+          />
+        ))}
+      </AnimatePresence>
 
-      <article className="absolute inset-0 rounded-[28px] bg-surface border border-border overflow-hidden soft-shadow">
-        <div className={`h-[60%] relative ${p.tone === "lime" ? "bg-lime" : p.tone === "lavender" ? "bg-lavender" : "bg-ink"}`}>
-          <div className="absolute inset-0 topo-dots opacity-30" />
-          <div className="absolute inset-0 grid place-items-center">
-            <Avatar name={p.name} size={140} />
-          </div>
-          <div className="absolute top-3 left-3 glass-strong pill px-2.5 py-1 text-[10px] font-bold text-ink flex items-center gap-1">
-            <Clock className="size-3" /> {p.timeShort} · {p.distanceKm} km
-          </div>
-        </div>
-        <div className="p-5">
-          <div className="flex items-center justify-between">
-            <h3 className="font-display font-extrabold text-2xl">{p.name.split(" ")[0]}, {p.age}</h3>
-            <span className="text-xs text-muted-foreground flex items-center gap-1">
-              <Star className="size-3 fill-warning text-warning" /> {p.rating}
-            </span>
-          </div>
-          <div className="flex gap-2 mt-2">
-            <Pill tone="lime" size="sm">{p.sport}</Pill>
-            <Pill tone="lavender" size="sm">{p.level}</Pill>
-          </div>
-          <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-            <MapPin className="size-3" /> {p.distanceKm} km · {p.when}
-          </p>
-          <p className="text-sm mt-3 line-clamp-2 text-ink/80">{p.bio}</p>
-        </div>
-      </article>
-
-      <div className="absolute inset-x-0 -bottom-2 flex justify-center items-center gap-5">
-        <button onClick={next} aria-label="Passer" className="size-14 rounded-full bg-surface border border-border grid place-items-center soft-shadow active:scale-95">
-          <X className="size-6 text-destructive" strokeWidth={2.2} />
-        </button>
-        <button
-          onClick={() => { toggle(p.id); toast(fav ? "Retiré des favoris" : `${p.name.split(" ")[0]} ajouté·e à tes favoris ❤`); }}
-          aria-label="Favori"
-          aria-pressed={fav}
-          className={`size-12 rounded-full grid place-items-center soft-shadow active:scale-95 transition ${fav ? "bg-lavender border-2 border-ink" : "bg-surface border border-border"}`}
+      <div className="absolute inset-x-0 -bottom-2 z-30 flex justify-center items-center gap-5">
+        <motion.button
+          whileTap={{ scale: 0.85 }}
+          onClick={() => advance("left")}
+          aria-label="Passer"
+          className="size-14 rounded-full bg-white/80 backdrop-blur-xl border border-white/70 grid place-items-center shadow-lg"
         >
-          <Heart className={`size-5 ${fav ? "text-ink" : "text-lavender"}`} fill={fav ? "currentColor" : "none"} strokeWidth={2} />
-        </button>
-        <Link to="/match" aria-label="Inviter" className="size-14 rounded-full bg-lime grid place-items-center lime-glow active:scale-95">
-          <Check className="size-7 text-ink" strokeWidth={2.4} />
-        </Link>
+          <X className="size-6 text-destructive" strokeWidth={2.4} />
+        </motion.button>
+        <motion.button
+          whileTap={{ scale: 0.85 }}
+          onClick={() => { toggle(top.id); toast(fav ? "Retiré des favoris" : `${top.name.split(" ")[0]} ajouté·e ❤`); }}
+          aria-label="Favori"
+          className={`size-12 rounded-full grid place-items-center shadow-lg backdrop-blur-xl transition ${fav ? "bg-[#7C5CFF] border border-white/70" : "bg-white/80 border border-white/70"}`}
+        >
+          <Heart className={`size-5 ${fav ? "text-white" : "text-[#7C5CFF]"}`} fill={fav ? "currentColor" : "none"} strokeWidth={2.2} />
+        </motion.button>
+        <motion.div whileTap={{ scale: 0.85 }}>
+          <Link
+            to="/match"
+            aria-label="Inviter"
+            className="size-14 rounded-full bg-gradient-to-br from-[#9B7BFF] to-[#5B3FD1] grid place-items-center violet-glow shadow-xl"
+          >
+            <Check className="size-7 text-white" strokeWidth={2.6} />
+          </Link>
+        </motion.div>
       </div>
     </div>
+  );
+}
+
+function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: number; onSwipe?: (dir: "left" | "right") => void }) {
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-220, 0, 220], [-18, 0, 18]);
+  const likeOpacity = useTransform(x, [40, 140], [0, 1]);
+  const nopeOpacity = useTransform(x, [-140, -40], [1, 0]);
+  const isTop = layer === 0;
+
+  const handleEnd = (_: unknown, info: PanInfo) => {
+    if (!onSwipe) return;
+    if (info.offset.x > 110 || info.velocity.x > 600) onSwipe("right");
+    else if (info.offset.x < -110 || info.velocity.x < -600) onSwipe("left");
+  };
+
+  const gradient =
+    partner.tone === "lime"
+      ? "from-[#9B7BFF] via-[#7C5CFF] to-[#5B3FD1]"
+      : partner.tone === "lavender"
+      ? "from-[#FFB58D] via-[#FF8A65] to-[#FF6B6B]"
+      : "from-[#1F1B3A] via-[#2D2658] to-[#0F0C24]";
+
+  return (
+    <motion.article
+      drag={isTop ? "x" : false}
+      dragElastic={0.6}
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={handleEnd}
+      style={isTop ? { x, rotate, zIndex: 20 } : { zIndex: 20 - layer }}
+      initial={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: layer > 2 ? 0 : 1 }}
+      animate={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: 1 }}
+      exit={{ x: x.get() > 0 ? 600 : -600, opacity: 0, rotate: x.get() > 0 ? 24 : -24, transition: { duration: 0.35 } }}
+      transition={{ type: "spring", stiffness: 260, damping: 28 }}
+      className={`absolute inset-x-2 top-0 h-[64vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-grab active:cursor-grabbing" : ""}`}
+    >
+      {/* gradient base */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
+      {/* glass orbs */}
+      <div className="absolute -top-20 -left-12 size-56 rounded-full bg-white/30 blur-3xl" />
+      <div className="absolute -bottom-24 -right-10 size-64 rounded-full bg-white/20 blur-3xl" />
+      <div className="absolute inset-0 topo-dots opacity-15 mix-blend-overlay" />
+
+      {/* avatar */}
+      <div className="absolute inset-0 grid place-items-center">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-white/30 blur-2xl scale-110" />
+          <div className="relative rounded-full p-1.5 bg-white/25 backdrop-blur-xl border border-white/40 shadow-2xl">
+            <Avatar name={partner.name} size={150} />
+          </div>
+        </div>
+      </div>
+
+      {/* top pill */}
+      <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+        <div className="pill bg-white/25 backdrop-blur-xl border border-white/40 px-3 py-1.5 text-[11px] font-bold text-white flex items-center gap-1.5 shadow-sm">
+          <span className="size-1.5 rounded-full bg-emerald-300 animate-pulse" /> Actif·ve
+        </div>
+        <div className="pill bg-white/25 backdrop-blur-xl border border-white/40 px-3 py-1.5 text-[11px] font-bold text-white flex items-center gap-1.5 shadow-sm">
+          <Clock className="size-3" /> {partner.timeShort}
+        </div>
+      </div>
+
+      {/* like / nope stamps */}
+      {isTop && (
+        <>
+          <motion.div
+            style={{ opacity: likeOpacity }}
+            className="absolute top-12 left-6 rotate-[-14deg] pill border-4 border-emerald-300 px-4 py-1.5 text-emerald-200 font-display font-extrabold text-2xl tracking-widest"
+          >
+            LIKE
+          </motion.div>
+          <motion.div
+            style={{ opacity: nopeOpacity }}
+            className="absolute top-12 right-6 rotate-[14deg] pill border-4 border-rose-300 px-4 py-1.5 text-rose-200 font-display font-extrabold text-2xl tracking-widest"
+          >
+            NOPE
+          </motion.div>
+        </>
+      )}
+
+      {/* glass info card bottom */}
+      <div className="absolute inset-x-3 bottom-3 rounded-3xl p-4 bg-white/20 backdrop-blur-2xl border border-white/40 shadow-2xl text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="font-display font-extrabold text-2xl leading-none drop-shadow-sm">
+              {partner.name.split(" ")[0]}, {partner.age}
+            </h3>
+            <p className="text-xs mt-1.5 flex items-center gap-1 text-white/85">
+              <MapPin className="size-3" /> {partner.place} · {partner.distanceKm} km
+            </p>
+          </div>
+          <span className="text-xs flex items-center gap-1 bg-white/25 pill px-2 py-1 font-bold">
+            <Star className="size-3 fill-current" /> {partner.rating}
+          </span>
+        </div>
+        <div className="flex gap-1.5 mt-3">
+          <span className="pill bg-white/25 border border-white/40 px-2.5 py-1 text-[11px] font-bold flex items-center gap-1">
+            <Sparkles className="size-3" /> {partner.sport}
+          </span>
+          <span className="pill bg-white/25 border border-white/40 px-2.5 py-1 text-[11px] font-bold">{partner.level}</span>
+          <span className="pill bg-white/25 border border-white/40 px-2.5 py-1 text-[11px] font-bold flex items-center gap-1">
+            {partner.mode === "Visio" ? <Video className="size-3" /> : <UsersIcon className="size-3" />} {partner.mode}
+          </span>
+        </div>
+      </div>
+    </motion.article>
   );
 }

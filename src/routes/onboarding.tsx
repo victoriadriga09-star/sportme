@@ -337,11 +337,12 @@ function CardChoices({
 
 function Grid2({
   selected, onToggle, options,
-}: { selected: string[]; onToggle: (v: string) => void; options: { v: string; emoji: string; hint?: string }[] }) {
+}: { selected: string[]; onToggle: (v: string) => void; options: { v: string; icon: LucideIcon; hint?: string }[] }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {options.map((o) => {
         const on = selected.includes(o.v);
+        const Icon = o.icon;
         return (
           <button
             key={o.v}
@@ -352,7 +353,9 @@ function Grid2({
                 : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
-            <span className="text-3xl">{o.emoji}</span>
+            <span className={`size-12 rounded-2xl grid place-items-center ${on ? "bg-background/15" : "bg-lavender-soft/70"}`}>
+              <Icon className={`size-6 ${on ? "text-background" : "text-ink"}`} strokeWidth={2} />
+            </span>
             <span className="font-semibold text-sm">{o.v}</span>
             {o.hint && <span className={`text-[11px] ${on ? "text-background/60" : "text-muted-foreground"}`}>{o.hint}</span>}
             {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-lime text-ink grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}

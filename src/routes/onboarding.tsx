@@ -1,9 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { ChevronLeft, ArrowRight, Camera, MapPin, Eye, EyeOff, Check, Sparkles } from "lucide-react";
+import { ChevronLeft, ArrowRight, Camera, MapPin, Eye, EyeOff, Check, Sparkles, type LucideIcon } from "lucide-react";
 import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
 import { saveUser } from "@/lib/store";
+import { LIEU_ICONS, CRENEAU_ICONS, GOAL_ICONS, RYTHME_ICONS, SPORT_ICONS } from "@/lib/icons";
+
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({ meta: [{ title: "Créer mon compte — ÉLAN" }] }),

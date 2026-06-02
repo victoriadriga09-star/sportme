@@ -41,16 +41,16 @@ function Profile() {
       <section className="px-5 space-y-5">
         <Block title="Mes sports">
           <div className="flex flex-wrap gap-2">
-            <Pill tone="lime">🧘 Yoga</Pill>
-            <Pill tone="lime">🏃 Running</Pill>
-            <Pill tone="lime">🤸 Pilates</Pill>
+            <Pill tone="lime"><PersonStanding className="size-3.5 inline -mt-0.5 mr-1" />Yoga</Pill>
+            <Pill tone="lime"><PersonStanding className="size-3.5 inline -mt-0.5 mr-1" />Running</Pill>
+            <Pill tone="lime"><Dumbbell className="size-3.5 inline -mt-0.5 mr-1" />Pilates</Pill>
             <Pill tone="ghost">+ Ajouter</Pill>
           </div>
         </Block>
 
         <Block title="Mon objectif">
           <div className="rounded-2xl bg-lavender-soft p-4 flex items-center justify-between">
-            <p className="text-sm font-semibold text-ink">✨ Rejoindre une communauté</p>
+            <p className="text-sm font-semibold text-ink flex items-center gap-2"><Sparkles className="size-4" /> Rejoindre une communauté</p>
             <button className="text-xs font-semibold text-ink underline">Modifier</button>
           </div>
         </Block>

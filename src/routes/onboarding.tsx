@@ -111,9 +111,9 @@ function Onboarding() {
           <textarea
             value={f.bio} onChange={(e) => update("bio", e.target.value.slice(0, 300))}
             placeholder="Ex : J'adore courir le matin dans le parc. Je cherche quelqu'un pour me motiver les jours où Netflix gagne..."
-            className="w-full h-40 p-4 rounded-2xl bg-white/5 border border-white/15 text-background placeholder:text-background/40 focus:ring-2 focus:ring-lime outline-none resize-none backdrop-blur"
+            className="w-full h-40 p-4 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none resize-none"
           />
-          <span className="absolute bottom-3 right-4 text-[11px] text-background/50">{f.bio.length}/300</span>
+          <span className="absolute bottom-3 right-4 text-[11px] text-muted-foreground">{f.bio.length}/300</span>
         </div>
       ) },
     { eyebrow: "Profil", title: "Ajoute une photo", sub: "Les profils avec photo reçoivent 3× plus de demandes.", ok: true,
@@ -122,18 +122,18 @@ function Onboarding() {
           <button
             onClick={() => update("photo", !f.photo)}
             className={`size-36 rounded-full grid place-items-center transition relative ${
-              f.photo ? "bg-gradient-to-br from-lavender to-lime ink-shadow" : "bg-white/5 border-2 border-dashed border-white/30 backdrop-blur"
+              f.photo ? "orb-3d ink-shadow" : "bg-surface border-2 border-dashed border-border"
             }`}
           >
-            <Camera className={`size-10 ${f.photo ? "text-ink" : "text-background"}`} strokeWidth={1.6} />
-            {f.photo && <span className="absolute -top-1 -right-1 size-9 rounded-full bg-lime text-ink grid place-items-center ink-shadow"><Check className="size-5" strokeWidth={3} /></span>}
+            <Camera className={`size-10 ${f.photo ? "text-ink" : "text-muted-foreground"}`} strokeWidth={1.6} />
+            {f.photo && <span className="absolute -top-1 -right-1 size-9 rounded-full bg-ink text-background grid place-items-center ink-shadow"><Check className="size-5" strokeWidth={3} /></span>}
           </button>
         </div>
       ) },
     { eyebrow: "Terminé", title: `Bienvenue, ${f.prenom || "champion"} !`, sub: "Ton profil est prêt. Trouve ton premier partenaire.", ok: true,
       node: (
         <div className="text-center space-y-5">
-          <div className="mx-auto size-24 rounded-full grid place-items-center bg-lime lime-glow">
+          <div className="mx-auto size-24 rounded-full grid place-items-center orb-3d violet-glow">
             <Sparkles className="size-10 text-ink" strokeWidth={2} />
           </div>
           <div className="flex flex-wrap gap-2 justify-center">

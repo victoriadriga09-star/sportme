@@ -21,24 +21,31 @@ export const Route = createFileRoute("/partner/$id")({
 
 function Detail() {
   const p = Route.useLoaderData();
-  const bg = p.tone === "lime" ? "bg-lime" : p.tone === "lavender" ? "bg-lavender" : "bg-ink";
   return (
     <main className="min-h-[100dvh] pb-32 bg-background">
-      {/* hero */}
-      <div className={`relative h-[44vh] ${bg} ${p.tone === "ink" ? "text-background" : ""}`}>
-        <div className="absolute inset-0 topo-dots opacity-30" />
+      {/* hero — violet liquid glass */}
+      <div className="relative h-[48vh] overflow-hidden text-background">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#7C5CFF] via-[#9B7BFF] to-[#5B3FD1]" />
+        <div className="absolute -top-24 -left-16 w-72 h-72 rounded-full bg-white/30 blur-3xl float-slow" />
+        <div className="absolute -bottom-24 -right-10 w-80 h-80 rounded-full bg-[#C9B8FF]/60 blur-3xl float-slow" style={{ animationDelay: "1.4s" }} />
+        <div className="absolute inset-0 topo-dots opacity-20" />
         <div className="relative z-10">
           <MobileHeader back transparent />
         </div>
-        <div className="absolute inset-0 grid place-items-center">
-          <Avatar name={p.name} size={160} />
+        <div className="absolute inset-0 grid place-items-center pointer-events-none">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-white/30 blur-2xl scale-110" />
+            <div className="relative rounded-full p-1.5 bg-white/25 backdrop-blur-xl border border-white/40 shadow-2xl">
+              <Avatar name={p.name} size={156} />
+            </div>
+          </div>
         </div>
         <div className="absolute inset-x-5 bottom-6">
-          <h1 className="font-display font-extrabold text-4xl leading-none">{p.name.split(" ")[0]}, {p.age}</h1>
+          <h1 className="font-display font-extrabold text-4xl leading-none drop-shadow-sm">{p.name.split(" ")[0]}, {p.age}</h1>
           <div className="flex gap-2 mt-3 text-xs font-semibold">
-            <span className="pill bg-background/20 backdrop-blur px-3 py-1.5 flex items-center gap-1"><Star className="size-3 fill-current" /> {p.rating}</span>
-            <span className="pill bg-background/20 backdrop-blur px-3 py-1.5">{p.sessions} séances</span>
-            <span className="pill bg-background/20 backdrop-blur px-3 py-1.5 flex items-center gap-1"><Shield className="size-3" /> {p.reliability}%</span>
+            <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5 flex items-center gap-1"><Star className="size-3 fill-current" /> {p.rating}</span>
+            <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5">{p.sessions} séances</span>
+            <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5 flex items-center gap-1"><Shield className="size-3" /> {p.reliability}%</span>
           </div>
         </div>
       </div>
@@ -74,7 +81,7 @@ function Detail() {
           <Link to="/chat/$id" params={{ id: p.id }} className="flex-1 pill border border-ink text-ink py-3.5 font-semibold flex items-center justify-center gap-2">
             <MessageCircle className="size-4" /> Écrire
           </Link>
-          <Link to="/request-sent" className="flex-1 pill bg-lime text-ink py-3.5 font-bold lime-glow text-center">
+          <Link to="/request-sent" className="flex-1 pill bg-[#7C5CFF] text-white py-3.5 font-bold violet-glow text-center shadow-lg">
             S'entraîner ensemble
           </Link>
         </div>

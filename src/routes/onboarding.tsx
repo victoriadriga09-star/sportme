@@ -66,12 +66,16 @@ function Onboarding() {
         <div className="flex flex-wrap gap-2 justify-center max-h-[42vh] overflow-y-auto no-scrollbar pb-2">
           {SPORTS.map((s) => {
             const on = f.sports.includes(s.label);
+            const Icon = SPORT_ICONS[s.label] ?? Sparkles;
             return (
               <button key={s.label} onClick={() => toggle("sports", s.label)}
-                className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
+                className={`pill text-sm font-semibold pl-2.5 pr-4 py-2 border transition flex items-center gap-2 ${
                   on ? "bg-ink text-background border-ink ink-shadow" : "bg-surface text-ink border-border"
                 }`}>
-                <span className="mr-1">{s.emoji}</span> {s.label}
+                <span className={`size-7 rounded-full grid place-items-center ${on ? "bg-background/15" : "bg-lavender-soft/70"}`}>
+                  <Icon className="size-3.5" strokeWidth={2.2} />
+                </span>
+                {s.label}
               </button>
             );
           })}

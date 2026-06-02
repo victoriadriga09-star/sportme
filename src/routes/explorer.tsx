@@ -1,8 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users } from "lucide-react";
+import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { Pill } from "@/components/Pill";
 import { MobileHeader } from "@/components/MobileHeader";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useFilters, useUser } from "@/lib/store";
 
 export const Route = createFileRoute("/explorer")({
@@ -12,7 +16,7 @@ export const Route = createFileRoute("/explorer")({
 
 const SPORTS_PILLS = ["Yoga", "Running", "Boxe", "Pilates", "Padel", "CrossFit"];
 const DURATIONS = ["20 min", "30 min", "45 min", "1h", "1h30", "2h+"];
-const QUICK_TIMES = ["Maintenant", "Aujourd'hui", "Demain", "Choisir…"];
+const QUICK_TIMES = ["Maintenant", "Aujourd'hui", "Demain"];
 
 function Explorer() {
   const nav = useNavigate();
@@ -20,6 +24,8 @@ function Explorer() {
   const [f, setF] = useFilters();
   const [open, setOpen] = useState(false);
   const [customDur, setCustomDur] = useState(false);
+  const [pickedDate, setPickedDate] = useState<Date | undefined>();
+  const [dateOpen, setDateOpen] = useState(false);
 
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
 

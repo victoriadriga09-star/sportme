@@ -67,7 +67,7 @@ function Onboarding() {
             return (
               <button key={s.label} onClick={() => toggle("sports", s.label)}
                 className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
-                  on ? "bg-lime text-ink border-lime lime-glow" : "bg-white/5 text-background border-white/15 backdrop-blur"
+                  on ? "bg-ink text-background border-ink ink-shadow" : "bg-surface text-ink border-border"
                 }`}>
                 <span className="mr-1">{s.emoji}</span> {s.label}
               </button>

@@ -1,9 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { ChevronLeft, ArrowRight, Camera, MapPin, Eye, EyeOff, Check, Sparkles } from "lucide-react";
+import { ChevronLeft, ArrowRight, Camera, MapPin, Eye, EyeOff, Check, Sparkles, type LucideIcon } from "lucide-react";
 import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
 import { saveUser } from "@/lib/store";
+import { LIEU_ICONS, CRENEAU_ICONS, GOAL_ICONS, RYTHME_ICONS, SPORT_ICONS } from "@/lib/icons";
+
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({ meta: [{ title: "Créer mon compte — ÉLAN" }] }),
@@ -51,8 +53,8 @@ function Onboarding() {
       node: <CityInput value={f.city} onChange={(v) => update("city", v)} /> },
     { eyebrow: "Localisation", title: "Où pratiques-tu le sport ?", sub: "Tu peux en choisir plusieurs.", ok: f.lieux.length > 0,
       node: <Grid2 selected={f.lieux} onToggle={(v) => toggle("lieux", v)} options={[
-        { v: "Salle", emoji: "🏋️" }, { v: "Extérieur", emoji: "🌳" },
-        { v: "Maison", emoji: "🏠" }, { v: "Visio", emoji: "💻" },
+        { v: "Salle", icon: LIEU_ICONS.Salle }, { v: "Extérieur", icon: LIEU_ICONS.Extérieur },
+        { v: "Maison", icon: LIEU_ICONS.Maison }, { v: "Visio", icon: LIEU_ICONS.Visio },
       ]} /> },
     { eyebrow: "Localisation", title: "Dans quelle salle tu t'entraînes ?", sub: "Ça nous aide à te connecter avec des gens qui vont au même endroit.", ok: true,
       node: f.lieux.includes("Salle")
@@ -64,12 +66,16 @@ function Onboarding() {
         <div className="flex flex-wrap gap-2 justify-center max-h-[42vh] overflow-y-auto no-scrollbar pb-2">
           {SPORTS.map((s) => {
             const on = f.sports.includes(s.label);
+            const Icon = SPORT_ICONS[s.label] ?? Sparkles;
             return (
               <button key={s.label} onClick={() => toggle("sports", s.label)}
-                className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
+                className={`pill text-sm font-semibold pl-2.5 pr-4 py-2 border transition flex items-center gap-2 ${
                   on ? "bg-ink text-background border-ink ink-shadow" : "bg-surface text-ink border-border"
                 }`}>
-                <span className="mr-1">{s.emoji}</span> {s.label}
+                <span className={`size-7 rounded-full grid place-items-center ${on ? "bg-background/15" : "bg-lavender-soft/70"}`}>
+                  <Icon className="size-3.5" strokeWidth={2.2} />
+                </span>
+                {s.label}
               </button>
             );
           })}
@@ -83,27 +89,27 @@ function Onboarding() {
         ["Expert·e", "Le sport, c'est ma vie"],
       ]} /> },
     { eyebrow: "Sport", title: "Qu'est-ce qui te motive ?", sub: "Choisis l'objectif qui te parle le plus.", ok: !!f.goal,
-      node: <CardChoices value={f.goal} onChange={(v) => update("goal", v)} options={[
-        "💪 Me remettre en forme",
-        "🔥 Perdre du poids",
-        "🧘 Gagner en souplesse",
-        "🤝 Trouver un·e partenaire d'entraînement",
-        "✨ Rejoindre une communauté",
-        "🎉 Juste découvrir et m'amuser",
+      node: <CardChoices value={f.goal} onChange={(v) => update("goal", v)} iconMap={GOAL_ICONS} options={[
+        "Me remettre en forme",
+        "Perdre du poids",
+        "Gagner en souplesse",
+        "Trouver un·e partenaire d'entraînement",
+        "Rejoindre une communauté",
+        "Juste découvrir et m'amuser",
       ]} /> },
     { eyebrow: "Rythme", title: "Combien de fois par semaine ?", sub: "Même une fois, c'est déjà bien.", ok: f.freq > 0,
       node: <FreqPicker value={f.freq} onChange={(v) => update("freq", v)} /> },
     { eyebrow: "Rythme", title: "Tes jours de sport sont plutôt…", ok: !!f.rythme,
-      node: <CardChoices value={f.rythme} onChange={(v) => update("rythme", v)} options={[
-        ["📅 Toujours les mêmes jours", "Tu as un planning régulier"],
-        ["🔀 Ça change chaque semaine", "Tu t'adaptes selon ta dispo"],
+      node: <CardChoices value={f.rythme} onChange={(v) => update("rythme", v)} iconMap={RYTHME_ICONS} options={[
+        ["Toujours les mêmes jours", "Tu as un planning régulier"],
+        ["Ça change chaque semaine", "Tu t'adaptes selon ta dispo"],
       ]} /> },
     { eyebrow: "Rythme", title: "Tu préfères bouger quand ?", sub: "Choisis un ou plusieurs créneaux.", ok: f.creneaux.length > 0,
       node: <Grid2 selected={f.creneaux} onToggle={(v) => toggle("creneaux", v)} options={[
-        { v: "Tôt le matin", emoji: "🌅", hint: "Avant 9h" },
-        { v: "Le midi", emoji: "☀️", hint: "12h-14h" },
-        { v: "Fin de journée", emoji: "🌇", hint: "17h-20h" },
-        { v: "Le soir", emoji: "🌙", hint: "Après 20h" },
+        { v: "Tôt le matin", icon: CRENEAU_ICONS["Tôt le matin"], hint: "Avant 9h" },
+        { v: "Le midi", icon: CRENEAU_ICONS["Le midi"], hint: "12h-14h" },
+        { v: "Fin de journée", icon: CRENEAU_ICONS["Fin de journée"], hint: "17h-20h" },
+        { v: "Le soir", icon: CRENEAU_ICONS["Le soir"], hint: "Après 20h" },
       ]} /> },
     { eyebrow: "Bio", title: "Parle un peu de toi", sub: "Quelques mots pour donner envie. (Optionnel)", ok: true,
       node: (
@@ -138,7 +144,7 @@ function Onboarding() {
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
             {f.sports.slice(0, 3).map((s) => <Pill key={s} tone="lime" size="md">{s}</Pill>)}
-            {f.city && <Pill tone="lavender" size="md">📍 {f.city}</Pill>}
+            {f.city && <Pill tone="lavender" size="md"><MapPin className="size-3.5 inline -mt-0.5 mr-1" />{f.city}</Pill>}
             {f.freq > 0 && <Pill tone="white" size="md">{f.freq}×/sem</Pill>}
           </div>
         </div>
@@ -304,26 +310,34 @@ function CityInput({ value, onChange }: { value: string; onChange: (v: string) =
 }
 
 function CardChoices({
-  value, onChange, options,
-}: { value: string; onChange: (v: string) => void; options: (string | [string, string])[] }) {
+  value, onChange, options, iconMap,
+}: { value: string; onChange: (v: string) => void; options: (string | [string, string])[]; iconMap?: Record<string, LucideIcon> }) {
   return (
     <div className="space-y-2.5">
       {options.map((opt) => {
         const [label, desc] = Array.isArray(opt) ? opt : [opt, undefined];
         const on = value === label;
+        const Icon = iconMap?.[label];
         return (
           <button
             key={label}
             onClick={() => onChange(label)}
-            className={`w-full text-left rounded-2xl px-5 py-4 border transition flex items-center justify-between gap-3 ${
+            className={`w-full text-left rounded-2xl px-4 py-4 border transition flex items-center justify-between gap-3 ${
               on
                 ? "bg-ink border-ink text-background ink-shadow"
                 : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
-            <div>
-              <p className="font-semibold">{label}</p>
-              {desc && <p className={`text-xs mt-0.5 ${on ? "text-background/70" : "text-muted-foreground"}`}>{desc}</p>}
+            <div className="flex items-center gap-3 min-w-0">
+              {Icon && (
+                <span className={`size-10 rounded-2xl grid place-items-center shrink-0 ${on ? "bg-background/15" : "bg-lavender-soft/70"}`}>
+                  <Icon className={`size-5 ${on ? "text-background" : "text-ink"}`} strokeWidth={2} />
+                </span>
+              )}
+              <div className="min-w-0">
+                <p className="font-semibold">{label}</p>
+                {desc && <p className={`text-xs mt-0.5 ${on ? "text-background/70" : "text-muted-foreground"}`}>{desc}</p>}
+              </div>
             </div>
             {on && <span className="size-7 rounded-full bg-lime text-ink grid place-items-center shrink-0"><Check className="size-4" strokeWidth={3} /></span>}
           </button>
@@ -335,11 +349,12 @@ function CardChoices({
 
 function Grid2({
   selected, onToggle, options,
-}: { selected: string[]; onToggle: (v: string) => void; options: { v: string; emoji: string; hint?: string }[] }) {
+}: { selected: string[]; onToggle: (v: string) => void; options: { v: string; icon: LucideIcon; hint?: string }[] }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {options.map((o) => {
         const on = selected.includes(o.v);
+        const Icon = o.icon;
         return (
           <button
             key={o.v}
@@ -350,7 +365,9 @@ function Grid2({
                 : "bg-surface border-border text-ink hover:border-ink/40"
             }`}
           >
-            <span className="text-3xl">{o.emoji}</span>
+            <span className={`size-12 rounded-2xl grid place-items-center ${on ? "bg-background/15" : "bg-lavender-soft/70"}`}>
+              <Icon className={`size-6 ${on ? "text-background" : "text-ink"}`} strokeWidth={2} />
+            </span>
             <span className="font-semibold text-sm">{o.v}</span>
             {o.hint && <span className={`text-[11px] ${on ? "text-background/60" : "text-muted-foreground"}`}>{o.hint}</span>}
             {on && <span className="absolute top-3 right-3 size-6 rounded-full bg-lime text-ink grid place-items-center"><Check className="size-3.5" strokeWidth={3} /></span>}

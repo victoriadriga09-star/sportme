@@ -1,8 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users } from "lucide-react";
+import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { Pill } from "@/components/Pill";
 import { MobileHeader } from "@/components/MobileHeader";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useFilters, useUser } from "@/lib/store";
 
 export const Route = createFileRoute("/explorer")({
@@ -12,7 +16,7 @@ export const Route = createFileRoute("/explorer")({
 
 const SPORTS_PILLS = ["Yoga", "Running", "Boxe", "Pilates", "Padel", "CrossFit"];
 const DURATIONS = ["20 min", "30 min", "45 min", "1h", "1h30", "2h+"];
-const QUICK_TIMES = ["Maintenant", "Aujourd'hui", "Demain", "Choisir…"];
+const QUICK_TIMES = ["Maintenant", "Aujourd'hui", "Demain"];
 
 function Explorer() {
   const nav = useNavigate();
@@ -20,6 +24,8 @@ function Explorer() {
   const [f, setF] = useFilters();
   const [open, setOpen] = useState(false);
   const [customDur, setCustomDur] = useState(false);
+  const [pickedDate, setPickedDate] = useState<Date | undefined>();
+  const [dateOpen, setDateOpen] = useState(false);
 
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
 
@@ -71,12 +77,35 @@ function Explorer() {
           <Label>Quand ?</Label>
           <div className="flex flex-wrap gap-2 mt-3">
             {QUICK_TIMES.map((t) => (
-              <button key={t} onClick={() => set("when", t)}
+              <button key={t} onClick={() => { set("when", t); setPickedDate(undefined); }}
                 className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
-                  t === f.when ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
+                  t === f.when && !pickedDate ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
                 }`}>{t}</button>
             ))}
+            <Popover open={dateOpen} onOpenChange={setDateOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  className={`pill text-sm font-semibold px-4 py-2.5 border transition flex items-center gap-1.5 ${
+                    pickedDate ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
+                  }`}
+                >
+                  <CalendarIcon className="size-3.5" />
+                  {pickedDate ? format(pickedDate, "EEE d MMM", { locale: fr }) : "Choisir…"}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 rounded-2xl" align="start">
+                <Calendar
+                  mode="single"
+                  selected={pickedDate}
+                  onSelect={(d) => { if (d) { setPickedDate(d); set("when", format(d, "EEE d MMM", { locale: fr })); setDateOpen(false); } }}
+                  initialFocus
+                  className="p-3 pointer-events-auto"
+                  locale={fr}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
+
 
           <div className="flex items-center justify-between mt-5 mb-2">
             <p className="text-xs text-muted-foreground font-semibold">Durée</p>

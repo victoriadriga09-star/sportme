@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { MapPin, Star, Clock, MessageCircle, Shield } from "lucide-react";
+import { MapPin, Star, Clock, MessageCircle, Shield, Dumbbell, Sparkles, Quote } from "lucide-react";
+import { motion } from "framer-motion";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
-import { Pill } from "@/components/Pill";
 import { PARTNERS } from "@/data/mock";
 
 export const Route = createFileRoute("/partner/$id")({
@@ -18,6 +18,20 @@ export const Route = createFileRoute("/partner/$id")({
   notFoundComponent: () => <div className="p-10 text-center text-muted-foreground">Partenaire introuvable.</div>,
   component: Detail,
 });
+
+const REVIEWS = [
+  { id: "r1", name: "Marie D.", sport: "Yoga", rating: 5, text: "Super partenaire, ponctuel et motivant. On a tenu un rythme top sur 6 semaines.", tone: "lavender" as const },
+  { id: "r2", name: "Léa M.",   sport: "Running", rating: 5, text: "Énergie au top dès 7h du matin. Sans lui je n'aurais jamais couru sous la pluie.", tone: "peach"    as const },
+  { id: "r3", name: "Adam B.",  sport: "Padel",  rating: 4, text: "Bon niveau, esprit fair-play. Toujours dispo pour rejouer.",                          tone: "sky"      as const },
+  { id: "r4", name: "Inès R.",  sport: "Pilates", rating: 5, text: "Hyper respectueux, séances vraiment cadrées. Je recommande à 100%.",                  tone: "lime"     as const },
+];
+
+const TONE_BG: Record<string, string> = {
+  lavender: "bg-lavender-soft",
+  peach: "bg-peach",
+  sky: "bg-sky-100",
+  lime: "bg-lime/40",
+};
 
 function Detail() {
   const p = Route.useLoaderData();
@@ -50,17 +64,50 @@ function Detail() {
         </div>
       </div>
 
-      <div className="px-5 -mt-4 relative space-y-5 pt-2">
-        <section className="rounded-3xl bg-surface border border-border p-5 soft-shadow">
-          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Sport</p>
-          <div className="flex flex-wrap gap-2 mt-2">
-            <Pill tone="lime">{p.sport}</Pill>
-            <Pill tone="lavender">{p.level}</Pill>
+      <div className="px-5 -mt-6 relative space-y-6 pt-2">
+        {/* Sport · Dispo · Lieu — restylé */}
+        <section className="relative rounded-[28px] bg-surface border border-white/60 p-5 soft-shadow overflow-hidden">
+          <div className="absolute -top-12 -right-12 size-40 rounded-full bg-lavender/40 blur-3xl" />
+          <div className="absolute inset-0 topo-dots opacity-30 pointer-events-none" />
+
+          {/* Sport */}
+          <div className="relative flex items-start gap-3">
+            <div className="size-11 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#5B3FD1] grid place-items-center shrink-0 shadow-lg">
+              <Dumbbell className="size-5 text-white" strokeWidth={2.2} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] tracking-[0.22em] font-bold text-muted-foreground">SPORT</p>
+              <p className="font-display font-extrabold text-[26px] leading-tight mt-0.5 text-ink">{p.sport}</p>
+              <div className="mt-1.5 inline-flex pill bg-lavender-soft text-ink px-3 py-1 text-[11px] font-bold border border-white/60">
+                {p.level}
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mt-5">Dispo</p>
-          <p className="mt-2 text-sm flex items-center gap-2 font-semibold text-emerald-700"><Clock className="size-4" /> {p.when}</p>
-          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mt-5">Lieu</p>
-          <p className="mt-2 text-sm flex items-center gap-2"><MapPin className="size-4" /> {p.place} · {p.distanceKm} km</p>
+
+          <div className="relative h-px bg-gradient-to-r from-transparent via-border to-transparent my-5" />
+
+          {/* Dispo + Lieu en split */}
+          <div className="relative grid grid-cols-2 gap-4">
+            <div>
+              <div className="flex items-center gap-1.5">
+                <Clock className="size-3.5 text-emerald-600" />
+                <p className="text-[10px] tracking-[0.22em] font-bold text-muted-foreground">DISPO</p>
+              </div>
+              <p className="font-display font-bold text-[18px] leading-tight mt-1 text-emerald-700">{p.when}</p>
+              <div className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700">
+                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Confirmé
+              </div>
+            </div>
+            <div className="border-l border-border pl-4">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="size-3.5 text-[#7C5CFF]" />
+                <p className="text-[10px] tracking-[0.22em] font-bold text-muted-foreground">LIEU</p>
+              </div>
+              <p className="font-display font-bold text-[18px] leading-tight mt-1 text-ink">{p.place}</p>
+              <p className="text-[11px] text-muted-foreground font-semibold mt-1">à {p.distanceKm} km de toi</p>
+            </div>
+          </div>
         </section>
 
         <section>
@@ -72,6 +119,47 @@ function Detail() {
           <Stat value={p.sessions} label="Séances" />
           <Stat value={14} label="Partenaires" />
           <Stat value={`${p.reliability}%`} label="Fiabilité" />
+        </section>
+
+        {/* Reviews — horizontal scroll */}
+        <section>
+          <div className="flex items-end justify-between mb-3">
+            <div>
+              <h2 className="font-display font-extrabold text-[22px] tracking-tight leading-none">Avis</h2>
+              <p className="text-[12px] text-muted-foreground mt-1 font-medium">Ce que ses partenaires disent</p>
+            </div>
+            <span className="pill bg-lavender-soft text-ink px-3 py-1 text-[11px] font-bold flex items-center gap-1">
+              <Sparkles className="size-3" /> {REVIEWS.length}
+            </span>
+          </div>
+
+          <div className="flex gap-3 overflow-x-auto no-scrollbar -mx-5 px-5 snap-x snap-mandatory pb-2">
+            {REVIEWS.map((r, i) => (
+              <motion.article
+                key={r.id}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                className={`shrink-0 snap-start w-[78%] rounded-[24px] ${TONE_BG[r.tone]} border border-white/60 p-5 soft-shadow relative overflow-hidden`}
+              >
+                <Quote className="absolute top-3 right-3 size-7 text-ink/15" strokeWidth={2.5} />
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, k) => (
+                    <Star key={k} className={`size-3.5 ${k < r.rating ? "fill-ink text-ink" : "text-ink/20"}`} />
+                  ))}
+                </div>
+                <p className="mt-3 text-[14px] leading-snug text-ink font-medium">"{r.text}"</p>
+                <div className="mt-4 flex items-center gap-2.5">
+                  <Avatar name={r.name} size={36} />
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-bold text-ink leading-tight">{r.name}</p>
+                    <p className="text-[11px] text-ink/60 font-semibold">{r.sport}</p>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </section>
       </div>
 

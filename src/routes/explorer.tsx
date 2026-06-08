@@ -1,12 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon } from "lucide-react";
+import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { AnimatePresence } from "framer-motion";
 import { Pill } from "@/components/Pill";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { SearchWaves } from "@/components/SearchWaves";
 import { useFilters, useUser } from "@/lib/store";
 
 export const Route = createFileRoute("/explorer")({
@@ -26,8 +28,14 @@ function Explorer() {
   const [customDur, setCustomDur] = useState(false);
   const [pickedDate, setPickedDate] = useState<Date | undefined>();
   const [dateOpen, setDateOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
+
+  const launchSearch = () => {
+    setSearching(true);
+    setTimeout(() => nav({ to: "/results" }), 1700);
+  };
 
   return (
     <main className="min-h-[100dvh] pb-40 bg-background">

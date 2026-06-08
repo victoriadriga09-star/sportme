@@ -231,11 +231,17 @@ function Explorer() {
 
       <div className="fixed bottom-0 inset-x-0 px-5 pb-28 pt-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
         <div className="max-w-[430px] mx-auto pointer-events-auto">
-          <button onClick={() => nav({ to: "/results" })} className="w-full pill bg-lime text-ink py-4 font-bold flex items-center justify-center lime-glow">
-            Chercher des partenaires
+          <button
+            onClick={launchSearch}
+            disabled={searching}
+            className="w-full pill bg-[#7C5CFF] text-white py-4 font-bold flex items-center justify-center gap-2 violet-glow shadow-lg active:scale-[0.99] transition"
+          >
+            <Zap className="size-4 fill-current" /> Chercher des partenaires
           </button>
         </div>
       </div>
+
+      <AnimatePresence>{searching && <SearchWaves />}</AnimatePresence>
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap } from "lucide-react";
+import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap, Hand } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AnimatePresence } from "framer-motion";

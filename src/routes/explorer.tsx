@@ -63,12 +63,12 @@ function Explorer() {
           {/* hero orb */}
           <div className="absolute -right-6 -top-6 size-32 rounded-full orb-3d shadow-2xl violet-glow rotate-12" aria-hidden />
 
-          <div className="relative max-w-[78%]">
-            <div className="inline-flex items-center gap-1.5 pill bg-white/70 backdrop-blur-md border border-white/80 px-3 py-1">
-              <Sparkles className="size-3 text-[#7C5CFF]" />
-              <p className="text-[10px] font-extrabold tracking-[0.22em] text-ink/80">SALUT {(user.prenom || "TOI").toUpperCase()}</p>
+          <div className="relative max-w-[82%]">
+            <div className="inline-flex items-center gap-2 pill bg-white/75 backdrop-blur-md border border-white/80 px-3.5 py-1.5">
+              <Hand className="size-3.5 text-[#7C5CFF]" strokeWidth={2.4} />
+              <p className="text-[12px] font-extrabold text-ink/80">Salut {user.prenom || "toi"}</p>
             </div>
-            <h2 className="font-display font-extrabold text-[30px] leading-[0.95] mt-3 text-ink tracking-tight">
+            <h2 className="font-display font-extrabold text-[44px] leading-[0.92] mt-4 text-ink tracking-tight">
               Trouve ton<br />
               <span className="italic font-display text-[#5B3FD1]">partenaire</span> idéal
             </h2>

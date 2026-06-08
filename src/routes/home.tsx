@@ -47,11 +47,18 @@ function Home() {
   const nextSession = days.find((d) => d.session)!;
   const livePartners = useMemo(() => PARTNERS.filter((p) => p.online).slice(0, 6), []);
 
+  const heroSession = active.session ?? nextSession.session!;
+  const heroDate = active.session ? active.date : nextSession.date;
+  const heroDayLabel = heroDate.toLocaleDateString("fr-FR", { weekday: "long" });
+  const heroFullDate = heroDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+
   return (
     <main className="min-h-[100dvh] pb-32 bg-surface">
       {/* Header */}
       <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_44px] items-center gap-3">
-        <Avatar name={user.prenom || "Toi"} size={44} ring="lavender" />
+        <Link to="/profile" aria-label="Mon profil" className="rounded-full">
+          <Avatar name={user.prenom || "Toi"} size={44} ring="lavender" />
+        </Link>
         <div className="text-center">
           <p className="font-display font-bold text-[17px] leading-tight">Hello, {firstName}</p>
           <p className="text-[12px] text-muted-foreground mt-0.5">Aujourd'hui {today}</p>
@@ -67,39 +74,50 @@ function Home() {
 
       <div className="px-5 mt-4 space-y-5">
         {/* HERO — Prochaine séance (remplace Daily challenge) */}
-        <Link
-          to="/sessions"
-          className="relative block overflow-hidden rounded-[28px] bg-gradient-to-br from-[#E9E1FF] via-lavender to-[#C9B8FF] p-6 min-h-[210px] soft-shadow active:scale-[0.99] transition-transform border border-white/60"
-        >
-          <div className="absolute -right-10 -top-12 size-44 rounded-full bg-white/40 blur-3xl float-slow" />
-          <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-[#7C5CFF]/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
-          <div className="absolute inset-0 topo-dots opacity-25" />
+        {/* HERO — Séance du jour sélectionné */}
+        {heroSession ? (
+          <Link
+            to="/sessions"
+            className="relative block overflow-hidden rounded-[28px] bg-gradient-to-br from-[#E9E1FF] via-lavender to-[#C9B8FF] p-6 min-h-[220px] soft-shadow active:scale-[0.99] transition-transform border border-white/60"
+          >
+            <div className="absolute -right-10 -top-12 size-44 rounded-full bg-white/40 blur-3xl float-slow" />
+            <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-[#7C5CFF]/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
+            <div className="absolute inset-0 topo-dots opacity-25" />
 
-          <div className="relative flex items-center gap-2">
-            <span className="size-2 rounded-full bg-[#7C5CFF] animate-pulse" />
-            <p className="text-[10px] font-extrabold tracking-[0.22em] text-ink/70">PROCHAINE SÉANCE</p>
-          </div>
-          <h2 className="relative font-display font-extrabold text-[34px] leading-[0.95] text-ink tracking-tight mt-2">
-            {nextSession.session!.sport}
-          </h2>
-          <div className="relative flex items-center gap-3 mt-3 text-[12px] text-ink/75 font-semibold">
-            <span className="flex items-center gap-1"><Clock className="size-3" /> {nextSession.session!.time}</span>
-            <span className="flex items-center gap-1"><MapPin className="size-3" /> {nextSession.session!.place}</span>
-          </div>
-          <div className="relative mt-4 flex items-center gap-2.5">
-            <Avatar name={nextSession.session!.with} size={36} ring="lavender" />
-            <div className="text-[12px] leading-tight">
-              <p className="text-ink/60">Avec</p>
-              <p className="font-bold text-ink">{nextSession.session!.with}</p>
+            <div className="relative flex items-center gap-2">
+              <span className="size-2 rounded-full bg-[#7C5CFF] animate-pulse" />
+              <p className="text-[11px] font-extrabold tracking-[0.22em] text-ink/70 uppercase">
+                {active.session ? "Séance" : "Prochaine séance"} · {heroDayLabel}
+              </p>
             </div>
-            <ChevronRight className="ml-auto size-5 text-ink/60" />
-          </div>
-          <img
-            src={heroShapes}
-            alt=""
-            className="absolute -right-4 -bottom-4 w-[42%] max-w-[180px] object-contain pointer-events-none select-none opacity-95"
-          />
-        </Link>
+            <motion.h2
+              key={heroSession.sport + heroDate.toISOString()}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative font-display font-extrabold text-[34px] leading-[0.95] text-ink tracking-tight mt-2"
+            >
+              {heroSession.sport}
+            </motion.h2>
+            <div className="relative flex items-center gap-3 mt-3 text-[12px] text-ink/75 font-semibold">
+              <span className="flex items-center gap-1"><Clock className="size-3" /> {heroSession.time}</span>
+              <span className="flex items-center gap-1"><MapPin className="size-3" /> {heroSession.place}</span>
+            </div>
+            <div className="relative mt-4 flex items-center gap-2.5">
+              <Avatar name={heroSession.with} size={36} ring="lavender" />
+              <div className="text-[12px] leading-tight">
+                <p className="text-ink/60">Avec</p>
+                <p className="font-bold text-ink">{heroSession.with}</p>
+              </div>
+              <ChevronRight className="ml-auto size-5 text-ink/60" />
+            </div>
+            <img
+              src={heroShapes}
+              alt=""
+              className="absolute -right-4 -bottom-4 w-[42%] max-w-[180px] object-contain pointer-events-none select-none opacity-95"
+            />
+          </Link>
+        ) : null}
 
         {/* Week calendar */}
         <div>
@@ -127,41 +145,34 @@ function Home() {
             })}
           </div>
 
-          <div className="mt-3">
-            {active.session ? (
+          {!active.session && (
+            <p className="text-[12px] text-muted-foreground text-center mt-3 font-medium">
+              Aucune séance le {heroFullDate}
+            </p>
+          )}
+
+          {/* Quick actions */}
+          <div className="mt-4 grid grid-cols-4 gap-2.5">
+            {[
+              { to: "/explorer" as const, label: "Trouver", Icon: Search, bg: "bg-lavender-soft", fg: "text-[#7C5CFF]" },
+              { to: "/results" as const, label: "Match", Icon: Zap, bg: "bg-lime/40", fg: "text-ink" },
+              { to: "/social" as const, label: "Groupes", Icon: Users, bg: "bg-peach", fg: "text-ink" },
+              { to: "/sessions" as const, label: "Planning", Icon: Clock, bg: "bg-surface border border-border", fg: "text-ink" },
+            ].map(({ to, label, Icon, bg, fg }) => (
               <Link
-                to="/sessions"
-                className="block rounded-2xl bg-surface border border-border p-4 soft-shadow animate-in fade-in slide-in-from-top-1 duration-200"
+                key={label}
+                to={to}
+                className="flex flex-col items-center gap-2 p-3 rounded-[20px] bg-surface border border-border/70 active:scale-[0.96] transition"
               >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-[11px] uppercase tracking-wider font-bold text-muted-foreground">
-                      {active.date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "short" })}
-                    </p>
-                    <p className="font-display font-bold text-[17px] leading-tight mt-1 truncate">{active.session.sport}</p>
-                    <div className="mt-1.5 flex items-center gap-3 text-[12px] text-muted-foreground">
-                      <span className="flex items-center gap-1"><Clock className="size-3" /> {active.session.time}</span>
-                      <span className="flex items-center gap-1"><MapPin className="size-3" /> {active.session.place}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Avatar name={active.session.with} size={36} ring="lavender" />
-                    <ChevronRight className="size-4 text-muted-foreground" />
-                  </div>
-                </div>
+                <span className={`size-11 grid place-items-center rounded-2xl ${bg} ${fg}`}>
+                  <Icon className="size-5" strokeWidth={2.2} />
+                </span>
+                <span className="text-[11px] font-bold text-ink">{label}</span>
               </Link>
-            ) : (
-              <div className="rounded-2xl bg-surface border border-dashed border-border p-4 text-center animate-in fade-in duration-200">
-                <p className="text-[13px] text-muted-foreground">
-                  Aucune séance le {active.date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
-                </p>
-                <Link to="/explorer" className="inline-flex items-center gap-1 mt-2 text-[12px] font-semibold text-ink">
-                  Planifier une séance <ChevronRight className="size-3" />
-                </Link>
-              </div>
-            )}
+            ))}
           </div>
         </div>
+
 
         {/* Disponibles maintenant — horizontal scroll */}
         <section>

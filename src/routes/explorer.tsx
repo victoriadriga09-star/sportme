@@ -1,12 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon } from "lucide-react";
+import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { AnimatePresence } from "framer-motion";
 import { Pill } from "@/components/Pill";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { SearchWaves } from "@/components/SearchWaves";
 import { useFilters, useUser } from "@/lib/store";
 
 export const Route = createFileRoute("/explorer")({
@@ -26,8 +28,14 @@ function Explorer() {
   const [customDur, setCustomDur] = useState(false);
   const [pickedDate, setPickedDate] = useState<Date | undefined>();
   const [dateOpen, setDateOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
+
+  const launchSearch = () => {
+    setSearching(true);
+    setTimeout(() => nav({ to: "/results" }), 1700);
+  };
 
   return (
     <main className="min-h-[100dvh] pb-40 bg-background">
@@ -41,20 +49,32 @@ function Explorer() {
       />
 
       <div className="px-5 space-y-7 mt-2">
-        {/* Intro hero — gradient lavande + orbe 3D */}
-        <section className="relative overflow-hidden rounded-[28px] p-5 bg-gradient-to-br from-lavender via-lavender-soft to-surface border border-white/60 soft-shadow">
-          <div className="absolute -right-16 -top-16 size-56 rounded-full bg-lime/40 blur-3xl" />
-          <div className="absolute -left-10 -bottom-12 size-44 rounded-full bg-lavender/60 blur-3xl" />
-          <div className="absolute inset-0 topo-dots opacity-25" />
-          <div className="relative flex items-start gap-4">
-            <div className="size-14 rounded-2xl orb-3d grid place-items-center shrink-0 violet-glow" aria-hidden />
-            <div className="min-w-0">
-              <p className="text-[10px] font-bold tracking-[0.22em] text-ink/70">SALUT {(user.prenom || "TOI").toUpperCase()}</p>
-              <h2 className="font-display font-extrabold text-[22px] leading-tight mt-1 text-ink">Trouve ton partenaire idéal</h2>
-              <p className="text-sm text-ink/75 mt-1.5 leading-snug">
-                Choisis ton sport, ton créneau, ta zone — on te montre les sportifs disponibles près de toi.
-              </p>
+        {/* Intro hero — playful card with floating shapes */}
+        <section className="relative overflow-hidden rounded-[32px] p-6 bg-gradient-to-br from-[#E9E1FF] via-lavender-soft to-[#F4EEFF] border border-white/70 soft-shadow">
+          <div className="absolute -right-10 -top-14 size-56 rounded-full bg-[#C9B8FF]/60 blur-3xl float-slow" />
+          <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-lime/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
+          <div className="absolute inset-0 topo-dots opacity-30" />
+
+          {/* floating mini-orbs */}
+          <div className="absolute right-5 top-5 size-3 rounded-full bg-[#7C5CFF]/70 shadow-[0_0_18px_4px_rgba(124,92,255,0.5)] float-slow" />
+          <div className="absolute right-14 top-16 size-2 rounded-full bg-lime/80 float-slow" style={{ animationDelay: "0.8s" }} />
+          <div className="absolute left-8 top-2 size-1.5 rounded-full bg-ink/40 float-slow" style={{ animationDelay: "1.6s" }} />
+
+          {/* hero orb */}
+          <div className="absolute -right-6 -top-6 size-32 rounded-full orb-3d shadow-2xl violet-glow rotate-12" aria-hidden />
+
+          <div className="relative max-w-[78%]">
+            <div className="inline-flex items-center gap-1.5 pill bg-white/70 backdrop-blur-md border border-white/80 px-3 py-1">
+              <Sparkles className="size-3 text-[#7C5CFF]" />
+              <p className="text-[10px] font-extrabold tracking-[0.22em] text-ink/80">SALUT {(user.prenom || "TOI").toUpperCase()}</p>
             </div>
+            <h2 className="font-display font-extrabold text-[30px] leading-[0.95] mt-3 text-ink tracking-tight">
+              Trouve ton<br />
+              <span className="italic font-display text-[#5B3FD1]">partenaire</span> idéal
+            </h2>
+            <p className="text-[13px] text-ink/70 mt-3 leading-snug font-medium">
+              Sport, créneau, zone — on te trouve les sportifs dispo près de toi.
+            </p>
           </div>
         </section>
 
@@ -211,11 +231,17 @@ function Explorer() {
 
       <div className="fixed bottom-0 inset-x-0 px-5 pb-28 pt-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
         <div className="max-w-[430px] mx-auto pointer-events-auto">
-          <button onClick={() => nav({ to: "/results" })} className="w-full pill bg-lime text-ink py-4 font-bold flex items-center justify-center lime-glow">
-            Chercher des partenaires
+          <button
+            onClick={launchSearch}
+            disabled={searching}
+            className="w-full pill bg-[#7C5CFF] text-white py-4 font-bold flex items-center justify-center gap-2 violet-glow shadow-lg active:scale-[0.99] transition"
+          >
+            <Zap className="size-4 fill-current" /> Chercher des partenaires
           </button>
         </div>
       </div>
+
+      <AnimatePresence>{searching && <SearchWaves />}</AnimatePresence>
     </main>
   );
 }

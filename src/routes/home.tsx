@@ -47,11 +47,18 @@ function Home() {
   const nextSession = days.find((d) => d.session)!;
   const livePartners = useMemo(() => PARTNERS.filter((p) => p.online).slice(0, 6), []);
 
+  const heroSession = active.session ?? nextSession.session!;
+  const heroDate = active.session ? active.date : nextSession.date;
+  const heroDayLabel = heroDate.toLocaleDateString("fr-FR", { weekday: "long" });
+  const heroFullDate = heroDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+
   return (
     <main className="min-h-[100dvh] pb-32 bg-surface">
       {/* Header */}
       <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_44px] items-center gap-3">
-        <Avatar name={user.prenom || "Toi"} size={44} ring="lavender" />
+        <Link to="/profile" aria-label="Mon profil" className="rounded-full">
+          <Avatar name={user.prenom || "Toi"} size={44} ring="lavender" />
+        </Link>
         <div className="text-center">
           <p className="font-display font-bold text-[17px] leading-tight">Hello, {firstName}</p>
           <p className="text-[12px] text-muted-foreground mt-0.5">Aujourd'hui {today}</p>

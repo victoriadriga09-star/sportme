@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
-  ChevronRight, Calendar, Users, BarChart3, Settings, LogOut,
-  Sparkles, Crown, Award, Camera, Heart, Trophy, Flame, Plus,
+  ChevronRight, Users, BarChart3, Settings, LogOut,
+  Sparkles, Crown, Award, Camera, Heart, Trophy, Flame, Plus, X,
 } from "lucide-react";
-import { Pill } from "@/components/Pill";
 import { Avatar } from "@/components/Avatar";
-import { useUser } from "@/lib/store";
+import { SportPicker } from "@/components/SportPicker";
+import { useUser, saveUser } from "@/lib/store";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [{ title: "Mon profil — ÉLAN" }] }),
@@ -27,9 +28,22 @@ const GALLERY = [
 ];
 
 function Profile() {
-  const [user] = useUser();
+  const [user, setUser] = useUser();
+  const [pickerOpen, setPickerOpen] = useState(false);
   const name = user.prenom || "Toi";
   const firstName = name.split(" ")[0];
+
+  const addSport = (s: string) => {
+    if (user.sports.includes(s)) return;
+    const next = { ...user, sports: [...user.sports, s] };
+    setUser(next);
+    saveUser(next);
+  };
+  const removeSport = (s: string) => {
+    const next = { ...user, sports: user.sports.filter((x) => x !== s) };
+    setUser(next);
+    saveUser(next);
+  };
 
   return (
     <main className="min-h-[100dvh] pb-32 bg-[#F4F1EC]">
@@ -75,75 +89,83 @@ function Profile() {
           <SocialStat value="34" label="Séances" />
         </motion.div>
 
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          <button className="pill bg-ink text-background py-3 text-sm font-bold">Suivre</button>
-          <button className="pill bg-white border border-black/10 text-ink py-3 text-sm font-bold">Message</button>
-        </div>
       </section>
 
-      {/* BENTO GRID */}
-      <section className="px-5 mt-6 grid grid-cols-6 gap-3">
-        {/* Mes séances (calendar) — primary, large */}
-        <BentoCard
-          to="/sessions"
-          className="col-span-6 bg-[#1A1A1A] text-background min-h-[148px]"
-          delay={0.05}
-        >
-          <div className="flex items-start justify-between h-full">
-            <div>
+      {/* BENTO — horizontal rows with proper proportions */}
+      <section className="px-5 mt-6 space-y-3">
+        {/* Mes séances — full width primary */}
+        <BentoCard to="/sessions" className="bg-[#1A1A1A] text-background min-h-[140px]" delay={0.05}>
+          <div className="flex items-center justify-between h-full gap-4">
+            <div className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-background/60">Mes séances</p>
-              <p className="font-display font-extrabold text-[34px] leading-none mt-3">12</p>
-              <p className="text-xs text-background/70 mt-1.5">à venir · calendrier</p>
+              <div className="flex items-baseline gap-2 mt-2">
+                <p className="font-display font-extrabold text-[40px] leading-none">12</p>
+                <p className="text-xs text-background/70">à venir</p>
+              </div>
+              <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-lime">
+                Ouvrir l'agenda <ChevronRight className="size-3.5" />
+              </div>
             </div>
-            <div className="grid grid-cols-4 gap-1.5 max-w-[140px]">
-              {[..."MMJVMMJ"].slice(0, 12).map((_, i) => (
+            <div className="grid grid-cols-4 gap-1.5 shrink-0">
+              {Array.from({ length: 12 }).map((_, i) => (
                 <span key={i} className={`size-5 rounded-md ${[3,5,7,10].includes(i) ? "bg-lime" : "bg-background/10"}`} />
               ))}
             </div>
           </div>
-          <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-lime">
-            Ouvrir l'agenda <ChevronRight className="size-3.5" />
-          </div>
         </BentoCard>
 
-        {/* Stats */}
-        <BentoCard to="/stats" className="col-span-3 bg-[#FFC9DE] text-ink min-h-[130px]" delay={0.1}>
-          <div className="flex flex-col h-full">
-            <BarChart3 className="size-5" strokeWidth={2} />
-            <p className="font-display font-extrabold text-lg mt-auto leading-tight">Mes stats</p>
-            <p className="text-[11px] text-ink/70">cette semaine</p>
-          </div>
-        </BentoCard>
+        {/* Row: Stats + Partenaires */}
+        <div className="grid grid-cols-2 gap-3">
+          <BentoCard to="/stats" className="bg-[#FFC9DE] text-ink min-h-[112px]" delay={0.1}>
+            <div className="flex items-center gap-3 h-full">
+              <span className="size-10 rounded-2xl grid place-items-center bg-white/60 shrink-0">
+                <BarChart3 className="size-5" strokeWidth={2} />
+              </span>
+              <div className="min-w-0">
+                <p className="font-display font-extrabold text-[15px] leading-tight">Mes stats</p>
+                <p className="text-[11px] text-ink/70 mt-0.5">cette semaine</p>
+              </div>
+            </div>
+          </BentoCard>
+          <BentoCard to="/partners" className="bg-[#C9B8FF] text-ink min-h-[112px]" delay={0.15}>
+            <div className="flex items-center gap-3 h-full">
+              <span className="size-10 rounded-2xl grid place-items-center bg-white/60 shrink-0">
+                <Users className="size-5" strokeWidth={2} />
+              </span>
+              <div className="min-w-0">
+                <p className="font-display font-extrabold text-[15px] leading-tight">Partenaires</p>
+                <p className="text-[11px] text-ink/70 mt-0.5">12 personnes</p>
+              </div>
+            </div>
+          </BentoCard>
+        </div>
 
-        {/* Partenaires */}
-        <BentoCard to="/partners" className="col-span-3 bg-[#C9B8FF] text-ink min-h-[130px]" delay={0.15}>
-          <div className="flex flex-col h-full">
-            <Users className="size-5" strokeWidth={2} />
-            <p className="font-display font-extrabold text-lg mt-auto leading-tight">Partenaires</p>
-            <p className="text-[11px] text-ink/70">12 personnes</p>
-          </div>
-        </BentoCard>
-
-        {/* Notes */}
-        <BentoCard to="/stats" className="col-span-2 bg-[#FFE9A8] text-ink min-h-[110px]" delay={0.2}>
-          <Trophy className="size-5" strokeWidth={2} />
-          <p className="font-display font-extrabold text-base mt-3 leading-none">4.9<span className="text-xs font-bold text-ink/60"> /5</span></p>
-          <p className="text-[10px] text-ink/70 mt-1">Note moyenne</p>
-        </BentoCard>
-
-        {/* Streak */}
-        <BentoCard to="/stats" className="col-span-2 bg-white text-ink min-h-[110px]" delay={0.25}>
-          <Flame className="size-5 text-[#FF7043]" strokeWidth={2} />
-          <p className="font-display font-extrabold text-base mt-3 leading-none">7 jours</p>
-          <p className="text-[10px] text-ink/70 mt-1">de série</p>
-        </BentoCard>
-
-        {/* Favoris */}
-        <BentoCard to="/partners" className="col-span-2 bg-[#B8E0FF] text-ink min-h-[110px]" delay={0.3}>
-          <Heart className="size-5" strokeWidth={2} />
-          <p className="font-display font-extrabold text-base mt-3 leading-none">23</p>
-          <p className="text-[10px] text-ink/70 mt-1">Favoris</p>
-        </BentoCard>
+        {/* Row: 3 KPI tiles */}
+        <div className="grid grid-cols-3 gap-3">
+          <BentoCard to="/stats" className="bg-[#FFE9A8] text-ink min-h-[104px]" delay={0.2}>
+            <div className="flex flex-col h-full">
+              <Trophy className="size-5" strokeWidth={2} />
+              <p className="font-display font-extrabold text-[18px] mt-auto leading-none">
+                4.9<span className="text-[11px] font-bold text-ink/60">/5</span>
+              </p>
+              <p className="text-[10px] text-ink/70 mt-1">Note moy.</p>
+            </div>
+          </BentoCard>
+          <BentoCard to="/stats" className="bg-white text-ink min-h-[104px]" delay={0.25}>
+            <div className="flex flex-col h-full">
+              <Flame className="size-5 text-[#FF7043]" strokeWidth={2} />
+              <p className="font-display font-extrabold text-[18px] mt-auto leading-none">7j</p>
+              <p className="text-[10px] text-ink/70 mt-1">Série</p>
+            </div>
+          </BentoCard>
+          <BentoCard to="/partners" className="bg-[#B8E0FF] text-ink min-h-[104px]" delay={0.3}>
+            <div className="flex flex-col h-full">
+              <Heart className="size-5" strokeWidth={2} />
+              <p className="font-display font-extrabold text-[18px] mt-auto leading-none">23</p>
+              <p className="text-[10px] text-ink/70 mt-1">Favoris</p>
+            </div>
+          </BentoCard>
+        </div>
       </section>
 
       {/* Photo gallery */}
@@ -174,8 +196,20 @@ function Profile() {
       <section className="px-5 mt-6">
         <h2 className="font-display font-extrabold text-lg text-ink tracking-tight mb-3">Mes sports</h2>
         <div className="flex flex-wrap gap-2">
-          {user.sports.map((s) => (<Pill key={s} tone="lime">{s}</Pill>))}
-          <Pill tone="ghost"><Plus className="size-3 inline -mt-0.5" /> Ajouter</Pill>
+          {user.sports.map((s) => (
+            <span key={s} className="inline-flex items-center gap-1.5 pill bg-lime text-ink text-xs px-3.5 py-1.5 font-semibold">
+              {s}
+              <button onClick={() => removeSport(s)} aria-label={`Retirer ${s}`} className="size-4 grid place-items-center rounded-full bg-ink/10 hover:bg-ink/20">
+                <X className="size-2.5" strokeWidth={3} />
+              </button>
+            </span>
+          ))}
+          <button
+            onClick={() => setPickerOpen(true)}
+            className="inline-flex items-center gap-1 pill bg-white border border-dashed border-ink/30 text-ink text-xs px-3.5 py-1.5 font-semibold active:scale-95 transition"
+          >
+            <Plus className="size-3.5" strokeWidth={2.5} /> Ajouter
+          </button>
         </div>
       </section>
 
@@ -211,6 +245,8 @@ function Profile() {
           <LogOut className="size-4" /> Se déconnecter
         </button>
       </section>
+
+      <SportPicker open={pickerOpen} onClose={() => setPickerOpen(false)} current={user.sports} onAdd={addSport} />
     </main>
   );
 }

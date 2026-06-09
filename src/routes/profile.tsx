@@ -246,6 +246,8 @@ function Profile() {
           <LogOut className="size-4" /> Se déconnecter
         </button>
       </section>
+
+      <SportPicker open={pickerOpen} onClose={() => setPickerOpen(false)} current={user.sports} onAdd={addSport} />
     </main>
   );
 }

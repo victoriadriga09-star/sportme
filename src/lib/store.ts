@@ -29,7 +29,7 @@ export type UserProfile = {
 };
 
 const DEFAULT_USER: UserProfile = {
-  prenom: "Viki",
+  prenom: "Viki Kiki",
   city: "Paris 11e",
   sports: ["Yoga", "Running"],
   gender: "Femme",

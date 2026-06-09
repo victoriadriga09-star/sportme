@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
-  ChevronRight, Calendar, Users, BarChart3, Settings, LogOut,
-  Sparkles, Crown, Award, Camera, Heart, Trophy, Flame, Plus,
+  ChevronRight, Users, BarChart3, Settings, LogOut,
+  Sparkles, Crown, Award, Camera, Heart, Trophy, Flame, Plus, X,
 } from "lucide-react";
 import { Pill } from "@/components/Pill";
 import { Avatar } from "@/components/Avatar";
-import { useUser } from "@/lib/store";
+import { SportPicker } from "@/components/SportPicker";
+import { useUser, saveUser } from "@/lib/store";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [{ title: "Mon profil — ÉLAN" }] }),

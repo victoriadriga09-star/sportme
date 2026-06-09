@@ -40,9 +40,18 @@ const SLIDES = [
 
 function Welcome() {
   const [i, setI] = useState(0);
+  const [showSplash, setShowSplash] = useState(true);
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("elan.splashSeen")) setShowSplash(false);
+      else sessionStorage.setItem("elan.splashSeen", "1");
+    } catch {}
+  }, []);
   const slide = SLIDES[i];
   return (
-    <main className="relative min-h-[100dvh] flex flex-col">
+    <>
+      <AnimatePresence>{showSplash && <SplashElan onDone={() => setShowSplash(false)} />}</AnimatePresence>
+      <main className="relative min-h-[100dvh] flex flex-col">
       <div className={`flex-1 ${slide.bg} relative overflow-hidden transition-colors duration-500`}>
         {/* deco blobs */}
         <div className={`absolute -top-16 -right-20 size-64 rounded-full ${slide.blobs[0]} opacity-80 blur-2xl`} />

@@ -5,7 +5,6 @@ import {
   ChevronRight, Users, BarChart3, Settings, LogOut,
   Sparkles, Crown, Award, Camera, Heart, Trophy, Flame, Plus, X,
 } from "lucide-react";
-import { Pill } from "@/components/Pill";
 import { Avatar } from "@/components/Avatar";
 import { SportPicker } from "@/components/SportPicker";
 import { useUser, saveUser } from "@/lib/store";

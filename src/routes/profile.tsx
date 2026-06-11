@@ -94,22 +94,20 @@ function Profile() {
       {/* BENTO — horizontal rows with proper proportions */}
       <section className="px-5 mt-6 space-y-3">
         {/* Mes séances — full width primary */}
-        <BentoCard to="/sessions" className="bg-[#1A1A1A] text-background min-h-[140px]" delay={0.05}>
-          <div className="flex items-center justify-between h-full gap-4">
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-background/60">Mes séances</p>
-              <div className="flex items-baseline gap-2 mt-2">
-                <p className="font-display font-extrabold text-[40px] leading-none">12</p>
-                <p className="text-xs text-background/70">à venir</p>
-              </div>
-              <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-lime">
-                Ouvrir l'agenda <ChevronRight className="size-3.5" />
-              </div>
+        <BentoCard to="/agenda" className="bg-[#1A1A1A] text-background min-h-[140px]" delay={0.05}>
+          <div className="flex flex-col items-center justify-center text-center h-full gap-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-background/60">Mes séances</p>
+            <div className="flex items-baseline justify-center gap-2">
+              <p className="font-display font-extrabold text-[40px] leading-none">12</p>
+              <p className="text-xs text-background/70">à venir</p>
             </div>
-            <div className="grid grid-cols-4 gap-1.5 shrink-0">
+            <div className="grid grid-cols-6 gap-1.5 mt-1">
               {Array.from({ length: 12 }).map((_, i) => (
-                <span key={i} className={`size-5 rounded-md ${[3,5,7,10].includes(i) ? "bg-lime" : "bg-background/10"}`} />
+                <span key={i} className="size-2.5 rounded-full bg-background/15" />
               ))}
+            </div>
+            <div className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-lime">
+              Ouvrir l'agenda <ChevronRight className="size-3.5" />
             </div>
           </div>
         </BentoCard>

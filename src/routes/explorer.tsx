@@ -219,7 +219,7 @@ function Explorer() {
                 <p className="text-xs text-muted-foreground mb-2 font-semibold">Type d'entraînement</p>
                 <div className="grid grid-cols-3 gap-2">
                   {([
-                    { v: "Tous",        icon: <Sparkles className="size-3.5" /> },
+                    { v: "Tous",        icon: <Star     className="size-3.5" /> },
                     { v: "Présentiel",  icon: <Users    className="size-3.5" /> },
                     { v: "Visio",       icon: <Video    className="size-3.5" /> },
                   ] as const).map((m) => (

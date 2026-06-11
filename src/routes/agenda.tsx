@@ -51,7 +51,8 @@ function Agenda() {
     : Object.entries(byDate).filter(([k]) => { const d = new Date(k); return d.getMonth() === cursor.getMonth() && d.getFullYear() === cursor.getFullYear(); }).flatMap(([,v]) => v);
 
   return (
-    <main className="min-h-[100dvh] pb-32 bg-background">
+    <main className="relative min-h-[100dvh] pb-32 bg-background overflow-hidden">
+      <CatPeek tone="lavender" corner="tr" size={70} delay={0.4} className="!top-2 !right-2" />
       <MobileHeader title="Agenda" back="/home" />
 
       <div className="px-5">

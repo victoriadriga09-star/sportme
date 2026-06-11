@@ -263,12 +263,13 @@ function Home() {
 }
 
 /** Avoids SSR/CSR mismatch since countThisMonth depends on the current date. */
-function ClientCount({ status }: { status: SessionStatus }) {
+function ClientCount({ status, className }: { status: SessionStatus; className?: string }) {
   const [n, setN] = useState<number | null>(null);
   useEffect(() => { setN(countThisMonth(status)); }, [status]);
   return (
-    <p className="font-display font-extrabold text-[28px] leading-none text-ink">
+    <p className={className ?? "font-display font-extrabold text-[28px] leading-none text-ink"}>
       {n ?? "—"}
     </p>
   );
 }
+

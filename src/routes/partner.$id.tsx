@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { MapPin, Sparkles as Sparkle, Clock, MessageCircle, Shield, Dumbbell, Sparkles, Quote } from "lucide-react";
+import { MapPin, Star, Clock, MessageCircle, Shield, Dumbbell, Sparkles, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
@@ -57,7 +57,7 @@ function Detail() {
         <div className="absolute inset-x-5 bottom-6">
           <h1 className="font-display font-extrabold text-4xl leading-none drop-shadow-sm">{p.name.split(" ")[0]}, {p.age}</h1>
           <div className="flex gap-2 mt-3 text-xs font-semibold">
-            <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5 flex items-center gap-1"><Sparkle className="size-3 fill-current" /> {p.rating}</span>
+            <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5 flex items-center gap-1"><Star className="size-3 fill-[#FACC15] text-[#FACC15]" /> {p.rating}</span>
             <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5">{p.sessions} séances</span>
             <span className="pill bg-white/20 backdrop-blur-xl border border-white/30 px-3 py-1.5 flex items-center gap-1"><Shield className="size-3" /> {p.reliability}%</span>
           </div>
@@ -146,7 +146,7 @@ function Detail() {
                 <Quote className="absolute top-3 right-3 size-7 text-ink/15" strokeWidth={2.5} />
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, k) => (
-                    <Sparkle key={k} className={`size-3.5 ${k < r.rating ? "fill-ink text-ink" : "text-ink/20"}`} />
+                    <Star key={k} className={`size-3.5 ${k < r.rating ? "fill-[#FACC15] text-[#FACC15]" : "text-ink/20"}`} />
                   ))}
                 </div>
                 <p className="mt-3 text-[14px] leading-snug text-ink font-medium">"{r.text}"</p>

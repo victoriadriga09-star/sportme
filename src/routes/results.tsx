@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, type PanInfo } from "framer-motion";
-import { MapPin, Sparkles as Sparkle, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
+import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";
@@ -130,7 +130,7 @@ function ListView({ list }: { list: Partner[] }) {
               <div className="flex items-center justify-between">
                 <p className="font-display font-bold text-[15px] leading-tight">{p.name.split(" ")[0]}, {p.age}</p>
                 <span className="text-[11px] text-muted-foreground flex items-center gap-1">
-                  <Sparkle className="size-3 fill-[#7C5CFF] text-[#7C5CFF]" /> {p.rating}
+                  <Star className="size-3 fill-[#FACC15] text-[#FACC15]" /> {p.rating}
                 </span>
               </div>
               <div className="flex flex-wrap gap-1.5 mt-1.5">
@@ -397,7 +397,7 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
             </p>
           </div>
           <span className="text-xs flex items-center gap-1 bg-white/25 pill px-2 py-1 font-bold">
-            <Sparkle className="size-3 fill-current" /> {partner.rating}
+            <Star className="size-3 fill-[#FACC15] text-[#FACC15]" /> {partner.rating}
           </span>
         </div>
         <div className="flex gap-1.5 mt-3">

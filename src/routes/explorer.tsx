@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { X, MapPin, ChevronDown, ChevronUp, Star, Pencil, Video, Users, CalendarIcon, Zap, Plus } from "lucide-react";
 import { TimeWheel } from "@/components/TimeWheel";
-import { CatPeek } from "@/components/CatPeek";
+import yogaGirl from "@/assets/yoga-girl.png";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AnimatePresence } from "framer-motion";

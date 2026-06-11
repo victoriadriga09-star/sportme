@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { MobileHeader } from "@/components/MobileHeader";
-import { CatPeek } from "@/components/CatPeek";
+
 import { SPORTS } from "@/data/mock";
 import { SPORT_ICONS } from "@/lib/icons";
 import { Dumbbell } from "lucide-react";

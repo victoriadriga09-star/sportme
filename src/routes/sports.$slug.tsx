@@ -201,3 +201,46 @@ function SportDetail() {
     </main>
   );
 }
+
+type MapUser = (typeof PARTNERS)[number];
+function MapView({ users }: { users: MapUser[] }) {
+  // Stylized faux-map: SVG grid + avatar pins positioned from distance/seed.
+  const pins = users.map((u, i) => {
+    const angle = (i * 137.5) % 360;
+    const r = Math.min(45, 12 + u.distanceKm * 8);
+    const x = 50 + r * Math.cos((angle * Math.PI) / 180);
+    const y = 50 + r * Math.sin((angle * Math.PI) / 180);
+    return { ...u, x, y };
+  });
+  return (
+    <div className="mt-3 rounded-3xl overflow-hidden border border-border bg-lavender-soft relative h-[320px]">
+      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+        <defs>
+          <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
+            <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#7C5CFF" strokeOpacity="0.15" strokeWidth="0.3" />
+          </pattern>
+        </defs>
+        <rect width="100" height="100" fill="url(#grid)" />
+        <path d="M0,60 Q30,50 50,55 T100,52" stroke="#7C5CFF" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+        <path d="M0,30 Q40,20 70,35 T100,28" stroke="#FF8A4C" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+        <circle cx="50" cy="50" r="3" fill="#7C5CFF" />
+        <circle cx="50" cy="50" r="8" fill="#7C5CFF" fillOpacity="0.15" />
+      </svg>
+      {pins.map((p) => (
+        <Link key={p.id} to="/partner/$id" params={{ id: p.id }}
+          className="absolute -translate-x-1/2 -translate-y-1/2 group"
+          style={{ left: `${p.x}%`, top: `${p.y}%` }}>
+          <div className="size-10 rounded-full ring-2 ring-white shadow-lg overflow-hidden bg-white grid place-items-center">
+            <Avatar name={p.name} size={36} />
+          </div>
+          <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1 pill bg-ink text-background text-[9px] font-bold px-1.5 py-0.5 whitespace-nowrap opacity-0 group-hover:opacity-100 transition">
+            {p.name.split(" ")[0]}
+          </span>
+        </Link>
+      ))}
+      <div className="absolute bottom-3 left-3 pill bg-white/90 backdrop-blur text-[10px] font-bold px-2.5 py-1 flex items-center gap-1">
+        <MapPin className="size-3 text-[#7C5CFF]" /> Toi · Paris 11e
+      </div>
+    </div>
+  );
+}

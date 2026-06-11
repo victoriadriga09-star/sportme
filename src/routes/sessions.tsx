@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { fallback, zodValidator } from "@tanstack/zod-adapter";
-import { Clock, MapPin, Star } from "lucide-react";
+import { Clock, MapPin, Sparkles } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
 import { SessionSheet } from "@/components/SessionSheet";
@@ -53,7 +53,7 @@ function Sessions() {
                 </div>
                 {s.status === "done" && (
                   <div className="flex items-center gap-0.5">
-                    <Star className="size-3.5 fill-[#F5D451] text-[#F5D451]"/>
+                    <Sparkles className="size-3.5 fill-[#7C5CFF] text-[#7C5CFF]"/>
                     <span className="text-[12px] font-bold">{s.score}</span>
                   </div>
                 )}

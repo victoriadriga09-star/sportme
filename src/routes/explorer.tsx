@@ -46,7 +46,7 @@ function Explorer() {
 
   const launchSearch = () => {
     setSearching(true);
-    setTimeout(() => nav({ to: "/results" }), 1700);
+    setTimeout(() => nav({ to: "/results" }), 3000);
   };
 
   return (

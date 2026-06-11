@@ -1,12 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, type PanInfo } from "framer-motion";
-import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles } from "lucide-react";
+import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
+import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";
 import { Pill } from "@/components/Pill";
 import { PARTNERS, type Partner } from "@/data/mock";
-import { useFilters, useFavorites } from "@/lib/store";
+import { useFilters, useFavorites, DEFAULT_FILTERS } from "@/lib/store";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/results")({
@@ -28,11 +29,28 @@ function applyFilters(list: Partner[], f: ReturnType<typeof useFilters>[0]): Par
 
 function Results() {
   const [view, setView] = useState<View>("list");
-  const [filters] = useFilters();
-  const list = useMemo(() => applyFilters(PARTNERS, filters), [filters]);
+  const [filters, setFilters] = useFilters();
+  const [showAll, setShowAll] = useState(false);
+  const list = useMemo(
+    () => (showAll ? PARTNERS : applyFilters(PARTNERS, filters)),
+    [filters, showAll]
+  );
+
+  const hasActiveFilters =
+    filters.gender !== "Peu importe" ||
+    filters.mode !== "Tous" ||
+    filters.level !== "Tous" ||
+    filters.radius < 20;
+
+  const clearFilters = () => {
+    setFilters({ ...DEFAULT_FILTERS, sport: filters.sport, city: filters.city, radius: 20 });
+    setShowAll(false);
+    toast("Filtres réinitialisés");
+  };
 
   return (
-    <main className="min-h-[100dvh] pb-32 bg-background">
+    <main className="relative min-h-[100dvh] pb-32 bg-background overflow-hidden">
+      <CatPeek tone="orange" corner="tr" size={64} delay={0.4} className="!top-3 !right-3" />
       <MobileHeader back="/explorer" title={`${list.length} partenaire${list.length > 1 ? "s" : ""}`} />
 
       <div className="px-5">
@@ -43,6 +61,25 @@ function Results() {
           <Pill tone="ghost">{filters.radius} km</Pill>
           {filters.mode !== "Tous" && <Pill tone="lavender">{filters.mode}</Pill>}
           {filters.gender !== "Peu importe" && <Pill tone="lavender">{filters.gender}</Pill>}
+        </div>
+
+        {/* Quick controls — clear filters / show all */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          <button
+            onClick={clearFilters}
+            disabled={!hasActiveFilters && !showAll}
+            className="pill bg-surface border border-border px-3 py-1.5 text-[11px] font-bold text-ink flex items-center gap-1.5 disabled:opacity-40 active:scale-95 transition"
+          >
+            <RotateCcw className="size-3" /> Effacer les filtres
+          </button>
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            className={`pill px-3 py-1.5 text-[11px] font-bold flex items-center gap-1.5 active:scale-95 transition ${
+              showAll ? "bg-ink text-background" : "bg-surface border border-border text-ink"
+            }`}
+          >
+            <UsersIcon className="size-3" /> {showAll ? "Filtrer à nouveau" : `Voir tous (${PARTNERS.length})`}
+          </button>
         </div>
 
         <div className="flex items-center justify-between mb-4">
@@ -56,8 +93,10 @@ function Results() {
         {list.length === 0 ? (
           <div className="text-center py-16 px-6">
             <p className="font-display font-bold text-xl mb-2">Aucun partenaire ne correspond</p>
-            <p className="text-sm text-muted-foreground mb-5">Élargis ton rayon ou assouplis tes filtres.</p>
-            <Link to="/explorer" className="inline-flex pill bg-ink text-background px-5 py-3 text-sm font-semibold">Modifier les filtres</Link>
+            <p className="text-sm text-muted-foreground mb-5">Élargis ton rayon ou efface les filtres.</p>
+            <button onClick={clearFilters} className="inline-flex pill bg-ink text-background px-5 py-3 text-sm font-semibold">
+              Effacer les filtres
+            </button>
           </div>
         ) : (
           <>
@@ -70,6 +109,7 @@ function Results() {
     </main>
   );
 }
+
 
 function ViewBtn({ active, onClick, icon }: { active: boolean; onClick: () => void; icon: React.ReactNode }) {
   return (
@@ -263,11 +303,20 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
   const likeOpacity = useTransform(x, [40, 140], [0, 1]);
   const nopeOpacity = useTransform(x, [-140, -40], [1, 0]);
   const isTop = layer === 0;
+  const nav = useNavigate();
 
   const handleEnd = (_: unknown, info: PanInfo) => {
     if (!onSwipe) return;
     if (info.offset.x > 110 || info.velocity.x > 600) onSwipe("right");
     else if (info.offset.x < -110 || info.velocity.x < -600) onSwipe("left");
+  };
+
+  // Tap (not drag) → open partner profile
+  const handleTap = (_: unknown, info: { point: { x: number; y: number } } & Record<string, unknown>) => {
+    if (!isTop) return;
+    if (Math.abs(x.get()) > 8) return; // ignore swipes
+    void info;
+    nav({ to: "/partner/$id", params: { id: partner.id } });
   };
 
   const gradient =
@@ -283,12 +332,13 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
       dragElastic={0.6}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleEnd}
+      onTap={handleTap}
       style={isTop ? { x, rotate, zIndex: 20 } : { zIndex: 20 - layer }}
       initial={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: layer > 2 ? 0 : 1 }}
       animate={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: 1 }}
       exit={{ x: x.get() > 0 ? 600 : -600, opacity: 0, rotate: x.get() > 0 ? 24 : -24, transition: { duration: 0.35 } }}
       transition={{ type: "spring", stiffness: 260, damping: 28 }}
-      className={`absolute inset-x-2 top-0 h-[64vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-grab active:cursor-grabbing" : ""}`}
+      className={`absolute inset-x-2 top-0 h-[64vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-pointer active:cursor-grabbing" : ""}`}
     >
       {/* gradient base */}
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />

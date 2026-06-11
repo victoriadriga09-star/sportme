@@ -1,9 +1,10 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
 import { Plus, SkipForward, Play, Pause, RotateCcw, Music2 } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { MOODS, TRACKS, type Mood, type Track } from "@/data/moodTracks";
+import { useMoodAudio } from "@/lib/audio";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/melody")({
@@ -22,6 +23,10 @@ function MelodyPage() {
 
   const tracks = mood ? TRACKS[mood] : [];
   const track: Track | undefined = tracks[trackIdx];
+
+  // Synthesized ambient pad while playing (no external audio).
+  useMoodAudio(mood, phase === "track" && playing);
+
 
   const handleMoodPicked = (m: Mood) => {
     setMood(m); setSkipCount(0); setTrackIdx(0); setPhase("searching");

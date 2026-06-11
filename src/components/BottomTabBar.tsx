@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Search, Music2, MessageCircle, User } from "lucide-react";
+import { Home, Search, Zap, MessageCircle, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function BottomTabBar() {
@@ -22,14 +22,14 @@ export function BottomTabBar() {
             <Search className="size-[22px]" strokeWidth={1.8} />
           </TabItem>
 
-          {/* FAB central = Melody (mood → music) */}
+          {/* FAB central = Flash (find a partner now) */}
           <div className="w-16 shrink-0" aria-hidden />
           <Link
-            to="/melody"
-            aria-label="Melody"
-            className="absolute left-1/2 -translate-x-1/2 -top-5 size-16 rounded-full bg-lime text-ink grid place-items-center lime-glow ring-[5px] ring-background"
+            to="/explorer"
+            aria-label="Trouver un partenaire"
+            className="absolute left-1/2 -translate-x-1/2 -top-5 size-16 rounded-full bg-lavender text-ink grid place-items-center violet-glow ring-[5px] ring-background"
           >
-            <Music2 className="size-7" strokeWidth={2.4} />
+            <Zap className="size-7 fill-current" strokeWidth={2.4} />
           </Link>
 
           <TabItem to="/social" label="Social" active={isActive("/social")}>

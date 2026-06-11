@@ -43,7 +43,9 @@ function Home() {
   const [user] = useUser();
   const [shareOpen, setShareOpen] = useState(false);
   const firstName = (user.prenom || "champion").split(" ")[0];
-  const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+  const [today, setToday] = useState<string>("");
+  useEffect(() => { setToday(new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "short" })); }, []);
+
   const days = useMemo(buildDays, []);
   const [activeKey, setActiveKey] = useState<string>("+0");
   const active = days.find((d) => d.key === activeKey)!;

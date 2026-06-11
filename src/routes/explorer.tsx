@@ -61,39 +61,29 @@ function Explorer() {
       />
 
       <div className="px-5 space-y-7 mt-2">
-        {/* Intro hero — playful card with floating shapes */}
+        {/* Intro hero — clean lavender card, black peeking cat (same as home) */}
         <section className="relative overflow-hidden rounded-[32px] p-6 bg-gradient-to-br from-[#E9E1FF] via-lavender-soft to-[#F4EEFF] border border-white/70 soft-shadow">
-          <div className="absolute -right-10 -top-14 size-56 rounded-full bg-[#C9B8FF]/60 blur-3xl float-slow" />
-          <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-lime/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
-          <div className="absolute inset-0 topo-dots opacity-30" />
+          <div className="absolute inset-0 topo-dots opacity-25" />
 
-          {/* floating mini-orbs */}
-          <div className="absolute right-5 top-5 size-3 rounded-full bg-[#7C5CFF]/70 shadow-[0_0_18px_4px_rgba(124,92,255,0.5)] float-slow" />
-          <div className="absolute right-14 top-16 size-2 rounded-full bg-lime/80 float-slow" style={{ animationDelay: "0.8s" }} />
-          <div className="absolute left-8 top-2 size-1.5 rounded-full bg-ink/40 float-slow" style={{ animationDelay: "1.6s" }} />
-
-          {/* Upside-down cat mascot in the corner */}
-          <CatPeek tone="lavender" corner="tr" size={120} delay={0.15} flip />
+          <CatPeek tone="black" corner="br" size={120} delay={0.15} />
 
           <div className="relative max-w-[78%]">
-            <h2 className="font-display font-extrabold text-[40px] leading-[0.95] text-ink tracking-[-0.02em] uppercase">
-              <span className="inline-flex items-center gap-2">
-                <Hand className="size-7 text-[#7C5CFF]" strokeWidth={2.4} />
-                Salut {user.prenom || "toi"}
-              </span>
+            <h2 className="font-display font-extrabold text-[32px] leading-[0.95] text-ink tracking-[-0.02em] uppercase">
+              Salut {user.prenom || "toi"}
             </h2>
-            <h3 className="font-display font-extrabold text-[34px] leading-[0.95] mt-3 text-ink tracking-tight">
+            <h3 className="font-display font-extrabold text-[22px] leading-[1.05] mt-3 text-ink tracking-tight">
               Trouve ton{" "}
               <span className="font-display font-extrabold uppercase tracking-[0.04em] text-[#5B3FD1]">
                 partenaire
               </span>{" "}
               idéal
             </h3>
-            <p className="text-[13px] text-ink/70 mt-3 leading-snug font-medium">
+            <p className="text-[12px] text-ink/70 mt-2 leading-snug font-medium">
               Sport, créneau, zone. On te trouve les sportifs dispo près de toi.
             </p>
           </div>
         </section>
+
 
 
         {/* Sport — grid of tiles */}

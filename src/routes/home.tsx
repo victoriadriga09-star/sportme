@@ -111,12 +111,8 @@ function Home() {
               </div>
               <ChevronRight className="ml-auto size-5 text-ink/60" />
             </div>
-            <img
-              src={heroShapes}
-              alt=""
-              className="absolute -right-4 -bottom-4 w-[42%] max-w-[180px] object-contain pointer-events-none select-none opacity-95"
-            />
           </Link>
+
         ) : null}
 
         {/* Week calendar */}
@@ -151,26 +147,26 @@ function Home() {
             </p>
           )}
 
-          {/* Quick actions */}
-          <div className="mt-4 grid grid-cols-4 gap-2.5">
+          {/* Quick actions — 3 distinct features */}
+          <div className="mt-4 grid grid-cols-3 gap-2.5">
             {[
-              { to: "/explorer" as const, label: "Trouver", Icon: Search, bg: "bg-lavender-soft", fg: "text-[#7C5CFF]" },
-              { to: "/results" as const, label: "Match", Icon: Zap, bg: "bg-lime/40", fg: "text-ink" },
-              { to: "/social" as const, label: "Groupes", Icon: Users, bg: "bg-peach", fg: "text-ink" },
-              { to: "/sessions" as const, label: "Planning", Icon: Clock, bg: "bg-surface border border-border", fg: "text-ink" },
+              { to: "/melody" as const, label: "Melody", Icon: Music2, bg: "bg-lavender-soft", fg: "text-[#7C5CFF]" },
+              { to: "/sports" as const, label: "Sports", Icon: BookOpen, bg: "bg-lime/40", fg: "text-ink" },
+              { to: "/agenda" as const, label: "Agenda", Icon: CalendarDays, bg: "bg-peach", fg: "text-ink" },
             ].map(({ to, label, Icon, bg, fg }) => (
               <Link
                 key={label}
                 to={to}
                 className="flex flex-col items-center gap-2 p-3 rounded-[20px] bg-surface border border-border/70 active:scale-[0.96] transition"
               >
-                <span className={`size-11 grid place-items-center rounded-2xl ${bg} ${fg}`}>
+                <span className={`size-12 grid place-items-center rounded-2xl ${bg} ${fg}`}>
                   <Icon className="size-5" strokeWidth={2.2} />
                 </span>
-                <span className="text-[11px] font-bold text-ink">{label}</span>
+                <span className="text-[12px] font-bold text-ink">{label}</span>
               </Link>
             ))}
           </div>
+
         </div>
 
 
@@ -223,51 +219,29 @@ function Home() {
           </div>
         </section>
 
-        {/* Section title */}
-        <h3 className="font-display font-extrabold text-[24px] tracking-tight pt-1">Ton parcours</h3>
-
-        <section className="grid grid-cols-2 gap-3">
-          {/* Daily challenge (secondaire) */}
-          <Link to="/explorer" className="rounded-[22px] bg-peach p-4 soft-shadow active:scale-[0.99] transition-transform relative overflow-hidden min-h-[150px] flex flex-col">
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="size-3.5 text-ink" />
-              <span className="text-[10px] uppercase tracking-wider font-bold text-ink/70">Challenge</span>
-            </div>
-            <p className="font-display font-extrabold text-[20px] leading-tight mt-2 text-ink">Séance avant 9h</p>
-            <div className="mt-auto inline-flex items-center gap-2 bg-white/40 backdrop-blur rounded-full pl-1 pr-3 py-1 w-fit">
-              <div className="flex -space-x-2">
-                <Avatar name="Marie D" size={20} />
-                <Avatar name="Léa M" size={20} />
-              </div>
-              <span className="text-[10px] font-bold text-ink">+4</span>
-            </div>
-          </Link>
-
-          <Link to="/stats" className="rounded-[22px] bg-ink text-background p-4 soft-shadow active:scale-[0.99] transition-transform relative overflow-hidden">
-            <div className="size-8 rounded-full grid place-items-center bg-[#7C5CFF] text-white mb-2">
-              <Trophy className="size-4" strokeWidth={2.2} />
-            </div>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-background/60">Séances</p>
-            <p className="font-display font-extrabold text-[32px] leading-none mt-1">42</p>
-            <p className="text-[10px] text-background/60 mt-1">+3 cette semaine</p>
-          </Link>
-
-          <Link to="/profile" className="col-span-2 rounded-[22px] bg-lavender-soft p-4 soft-shadow active:scale-[0.99] transition-transform relative overflow-hidden flex items-center gap-4">
-            <div className="size-12 rounded-2xl bg-white/70 backdrop-blur grid place-items-center">
-              <Flame className="size-5 text-[#7C5CFF]" strokeWidth={2.2} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[10px] uppercase tracking-wider font-bold text-ink/70">Streak</p>
-              <p className="font-display font-extrabold text-[24px] leading-none mt-0.5 text-ink">
-                7<span className="text-base font-bold text-ink/60"> jours d'affilée</span>
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 pill bg-white/60 px-3 py-1.5">
-              <Users className="size-3 text-ink" strokeWidth={2.2} />
-              <span className="text-[11px] font-bold text-ink">14</span>
-            </div>
-          </Link>
+        {/* Stats du mois */}
+        <h3 className="font-display font-extrabold text-[24px] tracking-tight pt-1">Ton mois</h3>
+        <section className="grid grid-cols-3 gap-2.5">
+          {[
+            { to: "/sessions" as const, status: "done"      as const, label: "Complétées", Icon: CheckCircle2,  bg: "bg-lime/50",       fg: "text-ink" },
+            { to: "/sessions" as const, status: "planned"   as const, label: "Planifiées", Icon: CalendarClock, bg: "bg-lavender-soft", fg: "text-[#7C5CFF]" },
+            { to: "/sessions" as const, status: "cancelled" as const, label: "Annulées",   Icon: XCircle,       bg: "bg-peach",         fg: "text-ink" },
+          ].map(({ to, status, label, Icon, bg, fg }) => (
+            <Link
+              key={label}
+              to={to}
+              search={{ status }}
+              className="rounded-[20px] bg-surface border border-border/70 p-3.5 active:scale-[0.97] transition relative"
+            >
+              <span className={`size-9 grid place-items-center rounded-xl ${bg} ${fg} mb-2`}>
+                <Icon className="size-4" strokeWidth={2.2} />
+              </span>
+              <p className="font-display font-extrabold text-[28px] leading-none text-ink">{countThisMonth(status)}</p>
+              <p className="text-[11px] text-muted-foreground font-bold mt-1">{label}</p>
+            </Link>
+          ))}
         </section>
+
       </div>
     </main>
   );

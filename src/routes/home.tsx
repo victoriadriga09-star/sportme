@@ -58,7 +58,7 @@ function Home() {
   const heroFullDate = heroDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
 
   return (
-    <main className="min-h-[100dvh] pb-40 bg-surface">
+    <main className="min-h-[100dvh] pb-24 bg-surface">
       {/* Header */}
       <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_auto] items-center gap-3">
         <Link to="/profile" aria-label="Mon profil" className="rounded-full">

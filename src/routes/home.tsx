@@ -235,7 +235,7 @@ function Home() {
         <h3 className="font-display font-extrabold text-[24px] tracking-tight pt-1">Ton mois</h3>
         <section className="grid grid-cols-3 gap-2.5">
           {[
-            { to: "/sessions" as const, status: "done"      as const, label: "Complétées", Icon: CheckCircle2,  tile: "bg-lavender-soft text-ink",         iconBg: "bg-white/70",     iconFg: "text-[#7C5CFF]", numFg: "text-[#7C5CFF]" },
+            { to: "/sessions" as const, status: "done"      as const, label: "Complétées", Icon: CheckCircle2,  tile: "bg-peach text-ink",                 iconBg: "bg-white/70",     iconFg: "text-[#C2410C]", numFg: "text-[#9A3412]" },
             { to: "/sessions" as const, status: "planned"   as const, label: "Planifiées", Icon: CalendarClock, tile: "bg-[#C9B8FF] text-ink",             iconBg: "bg-white/60",     iconFg: "text-[#4C3BCF]", numFg: "text-[#1A1A1A]" },
             { to: "/sessions" as const, status: "cancelled" as const, label: "Annulées",   Icon: XCircle,       tile: "bg-[#1A1A1A] text-background",      iconBg: "bg-peach",        iconFg: "text-ink",       numFg: "text-peach" },
           ].map(({ to, status, label, Icon, tile, iconBg, iconFg, numFg }) => (
@@ -243,7 +243,7 @@ function Home() {
               key={label}
               to={to}
               search={{ status }}
-              className={`rounded-[20px] p-3.5 active:scale-[0.97] transition relative ${tile}`}
+              className={`rounded-[20px] p-3.5 active:scale-[0.97] transition relative flex flex-col items-center text-center ${tile}`}
             >
               <span className={`size-9 grid place-items-center rounded-xl ${iconBg} ${iconFg} mb-2`}>
                 <Icon className="size-4" strokeWidth={2.2} />

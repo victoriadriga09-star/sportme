@@ -4,6 +4,7 @@ import { Search, Music2, BookOpen, CalendarDays, ChevronRight, Clock, MapPin, Za
 import { motion } from "framer-motion";
 import { Avatar } from "@/components/Avatar";
 import { CatPeek } from "@/components/CatPeek";
+import { LocationShareDialog } from "@/components/LocationShareDialog";
 import { useUser } from "@/lib/store";
 import { PARTNERS } from "@/data/mock";
 import { countThisMonth, type SessionStatus } from "@/data/sessions";
@@ -40,6 +41,7 @@ function buildDays(): DayItem[] {
 
 function Home() {
   const [user] = useUser();
+  const [shareOpen, setShareOpen] = useState(false);
   const firstName = (user.prenom || "champion").split(" ")[0];
   const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
   const days = useMemo(buildDays, []);
@@ -56,7 +58,7 @@ function Home() {
   return (
     <main className="min-h-[100dvh] pb-32 bg-surface">
       {/* Header */}
-      <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_44px] items-center gap-3">
+      <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_auto] items-center gap-3">
         <Link to="/profile" aria-label="Mon profil" className="rounded-full">
           <Avatar name={user.prenom || "Toi"} size={44} ring="lavender" />
         </Link>
@@ -64,13 +66,22 @@ function Home() {
           <p className="font-display font-bold text-[17px] leading-tight">Hello, {firstName}</p>
           <p className="text-[12px] text-muted-foreground mt-0.5">Aujourd'hui {today}</p>
         </div>
-        <Link
-          to="/explorer"
-          aria-label="Rechercher"
-          className="size-11 grid place-items-center rounded-full border border-border bg-surface"
-        >
-          <Search className="size-[18px]" strokeWidth={1.8} />
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShareOpen(true)}
+            aria-label="Partager ma position"
+            className="size-11 grid place-items-center rounded-full border border-border bg-lavender-soft text-[#7C5CFF] active:scale-95 transition"
+          >
+            <MapPin className="size-[18px]" strokeWidth={2} />
+          </button>
+          <Link
+            to="/explorer"
+            aria-label="Rechercher"
+            className="size-11 grid place-items-center rounded-full border border-border bg-surface"
+          >
+            <Search className="size-[18px]" strokeWidth={1.8} />
+          </Link>
+        </div>
       </header>
 
       <div className="px-5 mt-4 space-y-5">

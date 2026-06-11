@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { fallback, zodValidator } from "@tanstack/zod-adapter";
-import { Clock, MapPin, Sparkles } from "lucide-react";
+import { Clock, MapPin, Star } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Avatar } from "@/components/Avatar";
 import { SessionSheet } from "@/components/SessionSheet";

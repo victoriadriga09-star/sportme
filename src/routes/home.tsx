@@ -58,7 +58,7 @@ function Home() {
   const heroFullDate = heroDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
 
   return (
-    <main className="min-h-[100dvh] pb-40 bg-surface">
+    <main className="min-h-[100dvh] pb-24 bg-surface">
       {/* Header */}
       <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_auto] items-center gap-3">
         <Link to="/profile" aria-label="Mon profil" className="rounded-full">
@@ -99,7 +99,7 @@ function Home() {
 
             <div className="relative flex items-center gap-2">
               <span className="size-2 rounded-full bg-[#7C5CFF] animate-pulse" />
-              <p className="text-[11px] font-extrabold tracking-[0.22em] text-ink/70 uppercase">
+              <p className="text-[11px] font-extrabold tracking-[0.22em] text-ink/70 uppercase" suppressHydrationWarning>
                 {active.session ? "Séance" : "Prochaine séance"} · {heroDayLabel}
               </p>
             </div>

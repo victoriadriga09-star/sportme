@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
-import { Plus, SkipForward, Play, Pause, RotateCcw, Music2 } from "lucide-react";
+import { Plus, SkipForward, RotateCcw, Music2 } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
+import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { MOODS, TRACKS, type Mood, type Track } from "@/data/moodTracks";
-import { useMoodAudio } from "@/lib/audio";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/melody")({
   head: () => ({ meta: [{ title: "Melody — ÉLAN" }] }),

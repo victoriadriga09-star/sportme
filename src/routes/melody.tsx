@@ -186,8 +186,8 @@ function Searching({ mood }: { mood: Mood }) {
 }
 
 /* ---------------- Track view ---------------- */
-function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
-  track: Track; mood: Mood; playing: boolean; onPlay: () => void; onSkip: () => void; onAdd: () => void; skipsLeft: number;
+function TrackView({ track, mood, onSkip, onAdd, skipsLeft }: {
+  track: Track; mood: Mood; onSkip: () => void; onAdd: () => void; skipsLeft: number;
 }) {
   const color = MOODS.find((m) => m.id === mood)!.color;
   return (
@@ -201,11 +201,11 @@ function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
           <h2 className="font-display font-extrabold text-[28px] leading-tight mt-2 text-ink">{track.title}</h2>
           <p className="text-[14px] text-ink/70 font-semibold">{track.artist}</p>
         </div>
-        <div className="relative mt-5 flex items-center gap-3">
-          <button onClick={onPlay} className="size-14 rounded-full bg-ink text-background grid place-items-center active:scale-95 transition">
-            {playing ? <Pause className="size-5" /> : <Play className="size-5 fill-current" />}
-          </button>
-          <button onClick={onAdd} className="flex-1 pill bg-white/80 border border-black/5 py-3.5 font-bold text-ink text-sm flex items-center justify-center gap-1.5 active:scale-[0.98]">
+
+        <SpotifyEmbed spotifyId={track.spotifyId} title={track.title} artist={track.artist} />
+
+        <div className="relative mt-4">
+          <button onClick={onAdd} className="w-full pill bg-white/80 border border-black/5 py-3.5 font-bold text-ink text-sm flex items-center justify-center gap-1.5 active:scale-[0.98]">
             <Plus className="size-4"/> Ajouter à ma playlist
           </button>
         </div>
@@ -218,3 +218,4 @@ function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
     </motion.div>
   );
 }
+

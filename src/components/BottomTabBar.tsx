@@ -12,7 +12,7 @@ export function BottomTabBar() {
       aria-label="Navigation principale"
       className="fixed bottom-0 inset-x-0 z-40 pointer-events-none"
     >
-      <div className="mx-auto max-w-[430px] px-4 pb-4 pt-2 pointer-events-auto">
+      <div className="mx-auto max-w-[430px] px-4 pb-1 pt-2 pointer-events-auto">
         <div className="relative glass-dark text-background rounded-full pl-4 pr-4 py-2 flex items-center justify-between">
           <TabItem to="/home" label="Accueil" active={isActive("/home")}>
             <Home className="size-[22px]" strokeWidth={1.8} />

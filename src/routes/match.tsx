@@ -54,7 +54,6 @@ function Match() {
         );
       })}
       {/* glow */}
-      <div className="absolute -top-20 left-1/2 -translate-x-1/2 size-80 rounded-full bg-lime/30 blur-3xl" />
 
       <div className="relative flex-1 flex flex-col items-center justify-center text-center pt-10">
         <div className="flex items-center gap-3">

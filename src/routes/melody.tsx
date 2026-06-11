@@ -197,7 +197,6 @@ function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} className="pt-2">
       <div className="relative rounded-[32px] p-6 overflow-hidden border border-white/60 soft-shadow" style={{ background: `linear-gradient(160deg, ${color}55, ${color}11)` }}>
-        <div className="absolute -right-10 -top-10 size-40 rounded-full blur-3xl float-slow" style={{ background: color + "66" }} />
         <div className="relative aspect-square rounded-3xl bg-white/70 backdrop-blur grid place-items-center text-[110px] shadow-xl">
           {track.cover}
         </div>

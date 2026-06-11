@@ -343,14 +343,11 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
       {/* gradient base */}
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
       {/* glass orbs */}
-      <div className="absolute -top-20 -left-12 size-56 rounded-full bg-white/30 blur-3xl" />
-      <div className="absolute -bottom-24 -right-10 size-64 rounded-full bg-white/20 blur-3xl" />
       <div className="absolute inset-0 topo-dots opacity-15 mix-blend-overlay" />
 
       {/* avatar */}
       <div className="absolute inset-0 grid place-items-center">
         <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-white/30 blur-2xl scale-110" />
           <div className="relative rounded-full p-1.5 bg-white/25 backdrop-blur-xl border border-white/40 shadow-2xl">
             <Avatar name={partner.name} size={150} />
           </div>

@@ -20,19 +20,15 @@ function MelodyPage() {
   const [mood, setMood] = useState<Mood | null>(null);
   const [skipCount, setSkipCount] = useState(0);
   const [trackIdx, setTrackIdx] = useState(0);
-  const [playing, setPlaying] = useState(false);
 
   const tracks = mood ? TRACKS[mood] : [];
   const track: Track | undefined = tracks[trackIdx];
 
-  // Synthesized ambient pad while playing (no external audio).
-  useMoodAudio(mood, phase === "track" && playing);
-
-
   const handleMoodPicked = (m: Mood) => {
     setMood(m); setSkipCount(0); setTrackIdx(0); setPhase("searching");
-    setTimeout(() => { setPhase("track"); setPlaying(true); }, 2400);
+    setTimeout(() => { setPhase("track"); }, 2400);
   };
+
 
   const handleSkip = () => {
     if (skipCount >= 2) {

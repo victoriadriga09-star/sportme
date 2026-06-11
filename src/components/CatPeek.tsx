@@ -4,16 +4,15 @@ type Tone = "black" | "orange" | "lavender" | "white";
 type Corner = "bl" | "br" | "tl" | "tr";
 
 const TONE_FILL: Record<Tone, string> = {
-  black: "#1a1a1a",
+  black: "#1f1f1f",
   orange: "#FF8A4C",
   lavender: "#B7A6FF",
   white: "#F7F2EA",
 };
 
 /**
- * Cute peeking cat mascot — rounded face, tan inner ears,
- * white eyes with pupils, pink nose, whiskers.
- * Place inside a `relative` parent.
+ * Peeking cat mascot — rounded square head, tan inner ears,
+ * two white dot eyes, small pink nose. Minimal & cute.
  */
 export function CatPeek({
   tone = "black",
@@ -27,16 +26,13 @@ export function CatPeek({
   corner?: Corner;
   size?: number;
   delay?: number;
-  /** Flip vertically (upside-down) */
   flip?: boolean;
   className?: string;
 }) {
   const fill = TONE_FILL[tone];
-  const innerEar = "#E8B89A"; // tan
-  const nose = "#E89AA8"; // pink
-  const eyeWhite = "#FFFFFF";
-  const pupil = "#1a1a1a";
-  const whisker = tone === "white" ? "#1a1a1a" : "rgba(255,255,255,0.55)";
+  const innerEar = "#E8B89A";
+  const nose = "#D98A8A";
+  const eye = "#FFFFFF";
 
   const pos: Record<Corner, string> = {
     bl: "left-[-22px] bottom-[-28px]",
@@ -62,38 +58,22 @@ export function CatPeek({
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         style={{ filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.22))" }}
       >
-        {/* Ears — outer */}
-        <path d="M10,44 L26,8 L44,38 Z" fill={fill} />
-        <path d="M90,44 L74,8 L56,38 Z" fill={fill} />
+        {/* Ears — outer triangles */}
+        <path d="M12,46 L26,10 L46,40 Z" fill={fill} />
+        <path d="M88,46 L74,10 L54,40 Z" fill={fill} />
         {/* Inner ears */}
-        <path d="M20,38 L27,18 L36,36 Z" fill={innerEar} />
-        <path d="M80,38 L73,18 L64,36 Z" fill={innerEar} />
-        {/* Head — rounded */}
+        <path d="M22,40 L27,20 L37,38 Z" fill={innerEar} />
+        <path d="M78,40 L73,20 L63,38 Z" fill={innerEar} />
+        {/* Head — rounded square */}
         <path
-          d="M8,56 Q8,28 34,28 L66,28 Q92,28 92,56 L92,92 Q92,100 84,100 L16,100 Q8,100 8,92 Z"
+          d="M8,58 Q8,30 34,30 L66,30 Q92,30 92,58 L92,92 Q92,100 84,100 L16,100 Q8,100 8,92 Z"
           fill={fill}
         />
-        {/* Eyes — white with pupils */}
-        <ellipse cx="36" cy="62" rx="7" ry="7.5" fill={eyeWhite} />
-        <ellipse cx="64" cy="62" rx="7" ry="7.5" fill={eyeWhite} />
-        <ellipse cx="37" cy="63" rx="3" ry="3.5" fill={pupil} />
-        <ellipse cx="65" cy="63" rx="3" ry="3.5" fill={pupil} />
-        {/* Eye sparkle */}
-        <circle cx="34.5" cy="60.5" r="1.1" fill="#fff" />
-        <circle cx="62.5" cy="60.5" r="1.1" fill="#fff" />
+        {/* Eyes — white dots */}
+        <ellipse cx="36" cy="64" rx="4.2" ry="4.8" fill={eye} />
+        <ellipse cx="64" cy="64" rx="4.2" ry="4.8" fill={eye} />
         {/* Nose */}
-        <ellipse cx="50" cy="76" rx="4.2" ry="3" fill={nose} />
-        {/* Mouth */}
-        <path
-          d="M50,79 Q47,84 43,82 M50,79 Q53,84 57,82"
-          stroke={pupil}
-          strokeWidth="1.6"
-          fill="none"
-          strokeLinecap="round"
-        />
-        {/* Whiskers */}
-        <path d="M14,70 L30,72 M14,76 L30,75" stroke={whisker} strokeWidth="1.2" strokeLinecap="round" fill="none" />
-        <path d="M86,70 L70,72 M86,76 L70,75" stroke={whisker} strokeWidth="1.2" strokeLinecap="round" fill="none" />
+        <ellipse cx="50" cy="78" rx="3.4" ry="2.6" fill={nose} />
       </motion.svg>
     </motion.div>
   );

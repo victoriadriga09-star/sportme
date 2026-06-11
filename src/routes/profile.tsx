@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import {
   ChevronRight, Users, BarChart3, Settings, LogOut,
-  Sparkles, Crown, Award, Camera, Heart, Trophy, Flame, Plus, X,
+  Sparkles, Award, Camera, Heart, Trophy, Flame, Plus, X,
 } from "lucide-react";
 import { Avatar } from "@/components/Avatar";
 import { SportPicker } from "@/components/SportPicker";

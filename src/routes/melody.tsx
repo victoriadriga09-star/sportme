@@ -109,7 +109,7 @@ function MoodPicker({ onPick }: { onPick: (m: Mood) => void }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="pt-3">
-      <h2 className="font-display font-extrabold text-[34px] leading-[0.95] tracking-tight">Quel est ton mood<br/><span className="italic text-[#7C5CFF]">aujourd'hui ?</span></h2>
+      <h2 className="font-display font-extrabold text-[34px] leading-[0.95] tracking-tight">Quel est ton mood<br/><span className="text-[#7C5CFF]">aujourd'hui ?</span></h2>
       <p className="text-[13px] text-muted-foreground mt-2 font-medium">Tire le curseur sur l'émoji qui te correspond.</p>
 
       <div className="mt-8 flex justify-center">
@@ -161,7 +161,7 @@ function MoodPicker({ onPick }: { onPick: (m: Mood) => void }) {
         onClick={() => onPick(active.id)}
         className="mt-8 w-full pill bg-ink text-background py-4 font-bold flex items-center justify-center gap-2 active:scale-[0.99] transition"
       >
-        <Music2 className="size-4"/> Trouver ma vibe — {active.label}
+        <Music2 className="size-4"/> Trouver ma vibe {active.label}
       </button>
     </motion.div>
   );

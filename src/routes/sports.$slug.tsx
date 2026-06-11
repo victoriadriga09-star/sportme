@@ -106,15 +106,17 @@ function SportDetail() {
     stats: [{ label: "Cal/h", value: "—" }, { label: "Pratiquants", value: "—" }, { label: "Sessions/sem.", value: "—" }],
   };
   const users = PARTNERS.filter((p) => slugify(p.sport) === slug);
+  const [view, setView] = useState<"list" | "map">("list");
+  const Icon = SPORT_ICONS[sport.label] ?? Dumbbell;
 
   return (
     <main className="relative min-h-[100dvh] pb-32 bg-background overflow-hidden">
       <MobileHeader title={sport.label} back="/sports" />
       <div className="px-5">
         {/* Hero */}
-        <div className={`rounded-[32px] p-6 ${meta.tone} border border-white/60 soft-shadow relative overflow-hidden`}>
-          <div className="text-7xl">{sport.emoji}</div>
-          <h1 className="font-display font-extrabold text-[36px] leading-[0.95] tracking-tight mt-3">{sport.label}</h1>
+        <div className={`rounded-[32px] p-6 ${meta.tone} border border-white/60 soft-shadow relative overflow-hidden text-center`}>
+          <Icon className="size-20 mx-auto text-ink" strokeWidth={1.6} />
+          <h1 className="font-display font-extrabold text-[32px] leading-[0.95] tracking-[0.04em] uppercase mt-4">{sport.label}</h1>
           <p className="text-[14px] text-ink/75 font-medium mt-3 leading-snug">{meta.description}</p>
           <CatPeek tone={meta.cat} corner="br" size={84} delay={0.25} />
         </div>
@@ -159,11 +161,24 @@ function SportDetail() {
           ))}
         </div>
 
-        {/* Users practicing */}
-        <h2 className="font-display font-extrabold text-[22px] tracking-tight mt-7">Ils pratiquent ce sport</h2>
+        {/* Users practicing — list + map toggle */}
+        <div className="mt-7 flex items-center justify-between">
+          <h2 className="font-display font-extrabold text-[22px] tracking-tight">Près de toi</h2>
+          <div className="inline-flex rounded-full bg-surface border border-border p-1">
+            <button onClick={() => setView("list")}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition ${view === "list" ? "bg-ink text-background" : "text-ink/60"}`}>
+              <ListIcon className="size-3" /> Liste
+            </button>
+            <button onClick={() => setView("map")}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition ${view === "map" ? "bg-ink text-background" : "text-ink/60"}`}>
+              <MapIcon className="size-3" /> Carte
+            </button>
+          </div>
+        </div>
+
         {users.length === 0 ? (
           <p className="text-[13px] text-muted-foreground mt-3 font-medium">Personne dans tes alentours pour le moment.</p>
-        ) : (
+        ) : view === "list" ? (
           <div className="space-y-2.5 mt-3">
             {users.map((u) => (
               <Link key={u.id} to="/partner/$id" params={{ id: u.id }}
@@ -179,6 +194,8 @@ function SportDetail() {
               </Link>
             ))}
           </div>
+        ) : (
+          <MapView users={users} />
         )}
       </div>
     </main>

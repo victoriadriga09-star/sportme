@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, type PanInfo } from "framer-motion";
-import { MapPin, Sparkles as Sparkle, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
+import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";

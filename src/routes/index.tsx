@@ -56,7 +56,7 @@ function Welcome() {
         {/* deco blobs */}
         <div className={`absolute -top-16 -right-20 size-64 rounded-full ${slide.blobs[0]} opacity-80 blur-2xl`} />
         <div className={`absolute top-1/3 -left-20 size-48 rounded-full ${slide.blobs[1]} opacity-70 blur-2xl`} />
-        <div className="absolute inset-0 topo-dots opacity-30" />
+        
 
         <div className="relative px-6 pt-14 flex items-center justify-between">
           <span className="font-display font-extrabold text-2xl tracking-tight">ÉLAN</span>

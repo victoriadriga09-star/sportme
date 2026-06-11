@@ -51,6 +51,7 @@ export function saveUser(u: Partial<UserProfile>) {
 export type Filters = {
   sport: string;
   when: string;
+  whenTime?: string;
   duration: string;
   durationCustom?: string;
   radius: number;

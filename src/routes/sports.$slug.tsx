@@ -1,10 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, MapPin, Flame, Users, Sparkles } from "lucide-react";
+import { ChevronRight, MapPin, Flame, Users, Sparkles, List as ListIcon, Map as MapIcon, Dumbbell } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";
 import { SPORTS, PARTNERS } from "@/data/mock";
+import { SPORT_ICONS } from "@/lib/icons";
 
 export const Route = createFileRoute("/sports/$slug")({
   head: () => ({ meta: [{ title: "Sport — ÉLAN" }] }),

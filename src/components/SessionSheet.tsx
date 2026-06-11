@@ -69,7 +69,7 @@ export function SessionSheet({ session, onClose }: { session: MockSession | null
                     <p className="text-[11px] text-muted-foreground font-semibold">Satisfaction</p>
                     <div className="flex gap-1 mt-1.5">
                       {[1,2,3,4,5].map((n) => (
-                        <Sparkles key={n} className={`size-5 ${n <= (session.score ?? 0) ? "fill-[#7C5CFF] text-[#7C5CFF]" : "text-ink/20"}`}/>
+                        <Star key={n} className={`size-5 ${n <= (session.score ?? 0) ? "fill-[#FACC15] text-[#FACC15]" : "text-ink/20"}`}/>
                       ))}
                     </div>
                   </div>

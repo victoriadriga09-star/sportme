@@ -99,7 +99,7 @@ function Home() {
 
             <div className="relative flex items-center gap-2">
               <span className="size-2 rounded-full bg-[#7C5CFF] animate-pulse" />
-              <p className="text-[11px] font-extrabold tracking-[0.22em] text-ink/70 uppercase">
+              <p className="text-[11px] font-extrabold tracking-[0.22em] text-ink/70 uppercase" suppressHydrationWarning>
                 {active.session ? "Séance" : "Prochaine séance"} · {heroDayLabel}
               </p>
             </div>

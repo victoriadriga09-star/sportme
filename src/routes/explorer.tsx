@@ -144,13 +144,8 @@ function Explorer() {
                 />
               </PopoverContent>
             </Popover>
-            <div className={`h-12 px-3 rounded-2xl border flex items-center gap-2 text-sm font-semibold transition ${
-              f.whenTime ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
-            }`}>
-              <ClockIcon className="size-4" />
-              <input type="time" value={f.whenTime ?? ""} onChange={(e) => set("whenTime", e.target.value)}
-                className="bg-transparent outline-none flex-1 text-sm font-semibold"/>
-            </div>
+            <TimeWheel value={f.whenTime ?? ""} onChange={(v) => set("whenTime", v)} />
+
           </div>
         </section>
 

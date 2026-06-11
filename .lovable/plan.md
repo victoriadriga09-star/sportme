@@ -1,86 +1,80 @@
-ns
-# Plan — ÉLAN, refonte design + toutes les pages
 
-## Objectif
-Reproduire fidèlement le langage visuel des captures d'écran fournies (style mobile moderne : grandes cartes arrondies, accents lime #CCFF00 et lavande, fonds doux, photos rondes, tab-bar pilule sombre avec FAB) et construire **toutes les pages** de la spec ÉLAN comme **routes séparées** (pas une seule page).
+# Plan — Restructure home + new features + Explorer redesign
 
-## 1. Système de design (refait)
-- **Typographie** : remplacer Syne/Inter par un couple plus proche des maquettes
-  - Titres : `Bricolage Grotesque` (display moderne, géométrique, comme « Fast Feet 2.0 », « Daily challenge », « Air quality data »)
-  - Texte : `Manrope` (lisible, doux, proche des captures)
-- **Couleurs** (oklch dans `styles.css`) :
-  - `--lime` #CCFF00, `--lavender` #C8B8FF, `--ink` #1A1A1A, `--bg` #F5F5F0
-  - Ajouts pour coller aux maquettes : `--surface` blanc pur, `--surface-2` blanc cassé, `--bubble` lavande pâle, `--chip` gris très clair
-- **Composants** :
-  - Cards XL coins 24–28px, ombre douce
-  - Pills full-rounded (boutons date, filtres, sport, niveau)
-  - Hero cards à fond plein (lime, lavande, ink) avec gros titre display
-  - Tab-bar sombre flottante en pilule + FAB éclair lime surélevé
-  - Avatars ronds 40/48/56/120 avec ring lime quand actif
+## 1. Home screen restructure (`src/routes/home.tsx`)
 
-## 2. Architecture des routes (toutes les pages)
-Chaque écran = route TanStack dédiée sous `src/routes/` avec `head()` propre.
+Replace the 4 quick-action buttons (Trouver / Match / Groupes / Planning) with **3 purposeful actions** that no longer duplicate the bottom tab bar:
 
-```
-/                       Splash / Welcome (3 slides swipables)
-/login                  Connexion
-/onboarding             Flow 17 étapes (state interne, une question par écran, barre de progression)
-/home                   Dashboard
-/explorer               Paramétrage nouvelle séance
-/explorer/results       Vue Liste (+ toggle vers map/swipe via tabs internes)
-/explorer/results/map   Vue Map
-/explorer/results/swipe Vue Cards swipe
-/partner/$id            Profil détaillé partenaire
-/request/sent           Demande envoyée
-/match                  Match confirmé (animation confetti)
-/social                 Communauté (feed + stories)
-/social/new             Créer un post
-/social/messages        Liste conversations
-/social/chat/$id        Écran de chat
-/profile                Mon profil
-/profile/sessions       Mes séances (à venir / passées)
-/profile/partners       Mes partenaires
-/profile/stats          Statistiques
-/profile/settings       Paramètres
-/notifications          Centre de notifications
-```
+- **Melody** (replaces "Match" / loop) → opens `/melody` (mood→music)
+- **Sports** (replaces "Groupes") → opens `/sports` (sports library)
+- **Agenda** (replaces "Planning") → opens `/agenda` (calendar view)
 
-Layout partagé `_app.tsx` (ou wrapper dans `__root.tsx`) qui :
-- centre le viewport sur 430px max (mobile-first sur desktop)
-- gère la tab-bar pilule fixe en bas (visible sur Home/Explorer/Social/Profile, cachée sur onboarding/match/chat)
+The "Trouver" tile is removed (the search icon in the header already goes to `/explorer`).
 
-## 3. Contenu et fidélité visuelle
-- Hero cards inspirées des captures : « Daily challenge » lavande, « Run · Daily » lime, « Air quality data » dégradé, « Fast Feet 2.0 » ink + lavande
-- Photos d'illustration : générer 4–6 images (coureuse, yoga, boxe, padel, salle) en ratio portrait pour habiller les cards et l'écran Match
-- Avatars : placeholders générés (initiales sur dégradé) — pas de photos de vraies personnes
-- Icônes : Lucide (outlined, 1.5px) comme déjà en place
+Below, replace the "Ton parcours" bento (Daily challenge / Séances / Streak) with **3 KPI tiles tied to real data**:
+- **Complétées ce mois** → `/sessions?status=done`
+- **Planifiées** → `/sessions?status=planned`
+- **Annulées** → `/sessions?status=cancelled`
 
-## 4. Onboarding (17 écrans, état local)
-Une route `/onboarding` avec composant qui gère un wizard interne :
-- barre de progression fine lime en haut
-- transitions slide horizontal
-- chaque étape = composant dédié (Prénom, DDN, Genre, Email, MDP, Ville, Lieu pratique, Salle conditionnelle, Sports, Niveau, Objectif, Fréquence, Jours, Créneaux, Bio, Photo, Bienvenue)
-- bouton « Continuer » désactivé tant que pas valide
-- pas de backend — état local, redirige vers `/home` à la fin
+Each KPI is clickable and routes to a filtered list (see §5).
 
-## 5. Détails techniques
-- **TanStack Router** file-based (un fichier par route, conventions `.` = `/`, `$param` pour dynamique)
-- **Pas de backend** dans cette itération (tout en données mock dans `src/data/mock.ts`)
-- **Animations** : `tw-animate-css` déjà présent + classes utilitaires pour transitions douces ; pas d'install supplémentaire
-- **Fonts** : chargées via `<link>` Google Fonts dans `__root.tsx`
-- **SEO** : `head()` titre + description FR uniques par route
+## 2. Melody — mood → music (`src/routes/melody.tsx` + assets)
 
-## 6. Livrables
-1. `src/styles.css` refait (palette, fonts, radius, ombres)
-2. `src/routes/__root.tsx` : import fonts, layout mobile centré
-3. ~18 fichiers de routes ci-dessus
-4. `src/components/` : `BottomTabBar`, `HeroCard`, `PartnerCard`, `Pill`, `SectionTitle`, `OnboardingStep`, `ChatBubble`, etc.
-5. `src/data/mock.ts` : utilisateurs, séances, posts, messages factices
-6. 4–6 images générées dans `src/assets/`
+New full-screen flow inspired by the attached mood-slider screenshot:
 
-## Hors scope (pour itérations futures)
-- Auth réelle, base de données, push notifs réelles
-- Intégrations Calendar / Strava / Maps live
-- Système de notation post-séance (UI seulement, pas de logique)
+1. **Mood picker**: vertical track with 5 emoji stops (Excellent / Good / Fair / Poor / Worst) — draggable orange thumb snaps to the closest emoji. Built with `framer-motion` `drag="y"` + `useMotionValue` mapped to 0–4 index.
+2. **Searching state** (2–3 s): animated equalizer bars + "On cherche ta vibe…".
+3. **Track card**: cover art, title, artist, mood tag, play/pause (HTML `<audio>` with a short mock mp3 per mood).
+4. **Actions**: `Ajouter à ma playlist` (saves to `localStorage` `elan.playlist`) · `Passer` (next track, **max 3 skips**, then forces "Choisis à nouveau ton mood" reset).
 
-Si tu valides, je passe en mode build et je commence par le design system + le shell d'app (root layout + tab bar + fonts), puis Home refaite façon maquettes, puis les autres écrans.
+Mock data: `src/data/moodTracks.ts` → 4–5 tracks per mood, free CDN audio. Skip counter held in component state, reset on mood re-pick.
+
+## 3. Sports library (`src/routes/sports.tsx` + `src/routes/sports.$slug.tsx`)
+
+- Grid of sport cards (2 per row) using existing `SPORTS` from `src/data/mock.ts` (extend with `description`, `funFacts`, `cover`).
+- Tap → sport detail page with hero, "À propos", 3 fun facts, and a list of users practicing it (filtered from `PARTNERS`). Each user row links to `/partner/$id`.
+
+## 4. Agenda (`src/routes/agenda.tsx`)
+
+- Tabs **Mois / Semaine / Jour**, default Mois.
+- Reuses shadcn `Calendar` component for month view; custom week/day grids.
+- Days with sessions show a colored dot (planned = lavender, completed = lime, cancelled = muted).
+- Tap a session → **Session sheet** (shared component `SessionSheet.tsx`):
+  - Key details: sport, partner avatar+name, time, place, status.
+  - If **planned**: buttons `Annuler` and `Reprogrammer`.
+    - `Annuler` → random kind message from a list (`"C'est pas grave, on remet ça demain ?"`, `"On respire, et on repart plus fort 💪"`, etc.) + two CTAs: `Reprogrammer` (date+time picker → toast "Message envoyé à {partner}") · `Planifier une autre séance` (→ `/explorer`).
+    - `Reprogrammer` → date+time picker → same toast.
+  - If **completed**: read-only score 0–5 ⭐.
+
+Random-message helper in `src/lib/kindMessages.ts`.
+
+## 5. Stats drilldown (`src/routes/sessions.tsx`)
+
+Extend existing Sessions page to honor `?status=done|planned|cancelled` search param (validated via zod adapter). Add a third tab "Annulées". Each completed item shows a 0–5 satisfaction score.
+
+## 6. Explorer redesign (`src/routes/explorer.tsx`)
+
+- **Sports**: replace pill chips with a **3-col grid of square tiles** (emoji + label), plus an "Autre" tile that opens the existing `SportPicker` modal with search.
+- **Quand**: keep quick pills (Maintenant / Aujourd'hui / Demain) + date picker, and **add a time picker** (`<input type="time">`) right next to the date. Stored in filters as `whenTime`.
+- **Durée**: moves below "Quand" (already is — just visually grouped under the same card).
+- Tighter visual rhythm: each section becomes a rounded `bg-surface/60` card with consistent padding; the hero stays.
+
+Add `whenTime?: string` to `Filters` in `src/lib/store.ts`.
+
+## 7. Bottom tab bar
+
+Update `BottomTabBar.tsx` so the loop/center icon points to **Melody** (replacing the unused loop slot), keeping Home / Explorer / Profile as the other tabs.
+
+## Technical summary
+
+- New routes: `/melody`, `/sports`, `/sports/$slug`, `/agenda`.
+- New components: `MoodSlider`, `MelodyPlayer`, `SessionSheet`, `SportTile`, `AgendaMonth/Week/Day`.
+- New data: `src/data/moodTracks.ts`, extend `SPORTS`, `src/lib/kindMessages.ts`.
+- Store: extend `Filters` with `whenTime`; add `usePlaylist` hook.
+- Mock session data centralized in `src/data/sessions.ts` (status: planned/done/cancelled + score) so home KPIs, Sessions page, and Agenda all read from one source.
+- All animations via `framer-motion` (already installed). No backend changes — everything stays client-side with `localStorage`.
+
+## Out of scope (ask if you want them)
+
+- Real audio streaming / Spotify integration (we use mock mp3s).
+- Real push messaging to the partner on reschedule (we just toast).

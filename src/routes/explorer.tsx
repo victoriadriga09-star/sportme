@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap, Hand } from "lucide-react";
+import { useMemo, useState } from "react";
+import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap, Hand, Plus, Clock as ClockIcon } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AnimatePresence } from "framer-motion";
@@ -9,14 +9,16 @@ import { MobileHeader } from "@/components/MobileHeader";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SearchWaves } from "@/components/SearchWaves";
+import { SportPicker } from "@/components/SportPicker";
 import { useFilters, useUser } from "@/lib/store";
+import { SPORTS } from "@/data/mock";
 
 export const Route = createFileRoute("/explorer")({
   head: () => ({ meta: [{ title: "Nouvelle séance — ÉLAN" }] }),
   component: Explorer,
 });
 
-const SPORTS_PILLS = ["Yoga", "Running", "Boxe", "Pilates", "Padel", "CrossFit"];
+const TOP_SPORTS = ["Running", "Yoga", "Boxe", "Pilates", "Padel"];
 const DURATIONS = ["20 min", "30 min", "45 min", "1h", "1h30", "2h+"];
 const QUICK_TIMES = ["Maintenant", "Aujourd'hui", "Demain"];
 
@@ -29,8 +31,16 @@ function Explorer() {
   const [pickedDate, setPickedDate] = useState<Date | undefined>();
   const [dateOpen, setDateOpen] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [extraSports, setExtraSports] = useState<string[]>([]);
 
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
+
+  const sportTiles = useMemo(() => {
+    const base = TOP_SPORTS.map((label) => SPORTS.find((s) => s.label === label)!).filter(Boolean);
+    const extras = extraSports.map((label) => SPORTS.find((s) => s.label === label)).filter(Boolean) as typeof base;
+    return [...base, ...extras];
+  }, [extraSports]);
 
   const launchSearch = () => {
     setSearching(true);

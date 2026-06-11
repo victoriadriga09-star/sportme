@@ -6,7 +6,7 @@ import { SPORTS } from "@/data/mock";
 import { SPORT_ICONS } from "@/lib/icons";
 import { Dumbbell } from "lucide-react";
 
-export const Route = createFileRoute("/sports")({
+export const Route = createFileRoute("/sports/")({
   head: () => ({ meta: [{ title: "Sports — ÉLAN" }] }),
   component: SportsLibrary,
 });

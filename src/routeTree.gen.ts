@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StatsRouteImport } from './routes/stats'
-import { Route as SportsRouteImport } from './routes/sports'
 import { Route as SocialRouteImport } from './routes/social'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SessionsRouteImport } from './routes/sessions'
@@ -28,6 +27,7 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as ExplorerRouteImport } from './routes/explorer'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SportsIndexRouteImport } from './routes/sports.index'
 import { Route as SportsSlugRouteImport } from './routes/sports.$slug'
 import { Route as SocialNewRouteImport } from './routes/social.new'
 import { Route as PartnerIdRouteImport } from './routes/partner.$id'
@@ -36,11 +36,6 @@ import { Route as ChatIdRouteImport } from './routes/chat.$id'
 const StatsRoute = StatsRouteImport.update({
   id: '/stats',
   path: '/stats',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SportsRoute = SportsRouteImport.update({
-  id: '/sports',
-  path: '/sports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SocialRoute = SocialRouteImport.update({
@@ -128,10 +123,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SportsIndexRoute = SportsIndexRouteImport.update({
+  id: '/sports/',
+  path: '/sports/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SportsSlugRoute = SportsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => SportsRoute,
+  id: '/sports/$slug',
+  path: '/sports/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SocialNewRoute = SocialNewRouteImport.update({
   id: '/new',
@@ -167,12 +167,12 @@ export interface FileRoutesByFullPath {
   '/sessions': typeof SessionsRoute
   '/settings': typeof SettingsRoute
   '/social': typeof SocialRouteWithChildren
-  '/sports': typeof SportsRouteWithChildren
   '/stats': typeof StatsRoute
   '/chat/$id': typeof ChatIdRoute
   '/partner/$id': typeof PartnerIdRoute
   '/social/new': typeof SocialNewRoute
   '/sports/$slug': typeof SportsSlugRoute
+  '/sports/': typeof SportsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -192,12 +192,12 @@ export interface FileRoutesByTo {
   '/sessions': typeof SessionsRoute
   '/settings': typeof SettingsRoute
   '/social': typeof SocialRouteWithChildren
-  '/sports': typeof SportsRouteWithChildren
   '/stats': typeof StatsRoute
   '/chat/$id': typeof ChatIdRoute
   '/partner/$id': typeof PartnerIdRoute
   '/social/new': typeof SocialNewRoute
   '/sports/$slug': typeof SportsSlugRoute
+  '/sports': typeof SportsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -218,12 +218,12 @@ export interface FileRoutesById {
   '/sessions': typeof SessionsRoute
   '/settings': typeof SettingsRoute
   '/social': typeof SocialRouteWithChildren
-  '/sports': typeof SportsRouteWithChildren
   '/stats': typeof StatsRoute
   '/chat/$id': typeof ChatIdRoute
   '/partner/$id': typeof PartnerIdRoute
   '/social/new': typeof SocialNewRoute
   '/sports/$slug': typeof SportsSlugRoute
+  '/sports/': typeof SportsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -245,12 +245,12 @@ export interface FileRouteTypes {
     | '/sessions'
     | '/settings'
     | '/social'
-    | '/sports'
     | '/stats'
     | '/chat/$id'
     | '/partner/$id'
     | '/social/new'
     | '/sports/$slug'
+    | '/sports/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -270,12 +270,12 @@ export interface FileRouteTypes {
     | '/sessions'
     | '/settings'
     | '/social'
-    | '/sports'
     | '/stats'
     | '/chat/$id'
     | '/partner/$id'
     | '/social/new'
     | '/sports/$slug'
+    | '/sports'
   id:
     | '__root__'
     | '/'
@@ -295,12 +295,12 @@ export interface FileRouteTypes {
     | '/sessions'
     | '/settings'
     | '/social'
-    | '/sports'
     | '/stats'
     | '/chat/$id'
     | '/partner/$id'
     | '/social/new'
     | '/sports/$slug'
+    | '/sports/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -321,10 +321,11 @@ export interface RootRouteChildren {
   SessionsRoute: typeof SessionsRoute
   SettingsRoute: typeof SettingsRoute
   SocialRoute: typeof SocialRouteWithChildren
-  SportsRoute: typeof SportsRouteWithChildren
   StatsRoute: typeof StatsRoute
   ChatIdRoute: typeof ChatIdRoute
   PartnerIdRoute: typeof PartnerIdRoute
+  SportsSlugRoute: typeof SportsSlugRoute
+  SportsIndexRoute: typeof SportsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -334,13 +335,6 @@ declare module '@tanstack/react-router' {
       path: '/stats'
       fullPath: '/stats'
       preLoaderRoute: typeof StatsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sports': {
-      id: '/sports'
-      path: '/sports'
-      fullPath: '/sports'
-      preLoaderRoute: typeof SportsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/social': {
@@ -462,12 +456,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sports/': {
+      id: '/sports/'
+      path: '/sports'
+      fullPath: '/sports/'
+      preLoaderRoute: typeof SportsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sports/$slug': {
       id: '/sports/$slug'
-      path: '/$slug'
+      path: '/sports/$slug'
       fullPath: '/sports/$slug'
       preLoaderRoute: typeof SportsSlugRouteImport
-      parentRoute: typeof SportsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/social/new': {
       id: '/social/new'
@@ -504,17 +505,6 @@ const SocialRouteChildren: SocialRouteChildren = {
 const SocialRouteWithChildren =
   SocialRoute._addFileChildren(SocialRouteChildren)
 
-interface SportsRouteChildren {
-  SportsSlugRoute: typeof SportsSlugRoute
-}
-
-const SportsRouteChildren: SportsRouteChildren = {
-  SportsSlugRoute: SportsSlugRoute,
-}
-
-const SportsRouteWithChildren =
-  SportsRoute._addFileChildren(SportsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendaRoute: AgendaRoute,
@@ -533,11 +523,22 @@ const rootRouteChildren: RootRouteChildren = {
   SessionsRoute: SessionsRoute,
   SettingsRoute: SettingsRoute,
   SocialRoute: SocialRouteWithChildren,
-  SportsRoute: SportsRouteWithChildren,
   StatsRoute: StatsRoute,
   ChatIdRoute: ChatIdRoute,
   PartnerIdRoute: PartnerIdRoute,
+  SportsSlugRoute: SportsSlugRoute,
+  SportsIndexRoute: SportsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

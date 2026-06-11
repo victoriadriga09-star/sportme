@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { X, Clock, MapPin, Sparkles, CalendarClock } from "lucide-react";
+import { X, Clock, MapPin, Star, CalendarClock } from "lucide-react";
 import { Avatar } from "@/components/Avatar";
 import { randomKindMessage } from "@/lib/kindMessages";
 import { toast } from "sonner";

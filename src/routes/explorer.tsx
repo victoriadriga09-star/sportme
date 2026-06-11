@@ -274,6 +274,12 @@ function Explorer() {
       </div>
 
       <AnimatePresence>{searching && <SearchWaves />}</AnimatePresence>
+      <SportPicker
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        current={[...TOP_SPORTS, ...extraSports]}
+        onAdd={(s) => { setExtraSports((p) => [...p, s]); set("sport", s); setPickerOpen(false); }}
+      />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap, Hand, Plus, Clock as ClockIcon } from "lucide-react";
+import { X, MapPin, ChevronDown, ChevronUp, Star, Pencil, Video, Users, CalendarIcon, Zap, Plus } from "lucide-react";
+import { TimeWheel } from "@/components/TimeWheel";
 import { CatPeek } from "@/components/CatPeek";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";

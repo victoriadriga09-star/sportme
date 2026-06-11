@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
-import { Plus, SkipForward, Play, Pause, RotateCcw, Music2 } from "lucide-react";
+import { Plus, SkipForward, RotateCcw, Music2 } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
+import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { MOODS, TRACKS, type Mood, type Track } from "@/data/moodTracks";
-import { useMoodAudio } from "@/lib/audio";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/melody")({
   head: () => ({ meta: [{ title: "Melody — ÉLAN" }] }),
@@ -19,24 +20,20 @@ function MelodyPage() {
   const [mood, setMood] = useState<Mood | null>(null);
   const [skipCount, setSkipCount] = useState(0);
   const [trackIdx, setTrackIdx] = useState(0);
-  const [playing, setPlaying] = useState(false);
 
   const tracks = mood ? TRACKS[mood] : [];
   const track: Track | undefined = tracks[trackIdx];
 
-  // Synthesized ambient pad while playing (no external audio).
-  useMoodAudio(mood, phase === "track" && playing);
-
-
   const handleMoodPicked = (m: Mood) => {
     setMood(m); setSkipCount(0); setTrackIdx(0); setPhase("searching");
-    setTimeout(() => { setPhase("track"); setPlaying(true); }, 2400);
+    setTimeout(() => { setPhase("track"); }, 2400);
   };
+
 
   const handleSkip = () => {
     if (skipCount >= 2) {
       toast("3 skips, on recommence !", { description: "Choisis à nouveau ton mood." });
-      setPhase("mood"); setPlaying(false); return;
+      setPhase("mood"); return;
     }
     setSkipCount((s) => s + 1);
     setTrackIdx((i) => (i + 1) % tracks.length);
@@ -56,7 +53,7 @@ function MelodyPage() {
   return (
     <main className="min-h-[100dvh] pb-32 bg-gradient-to-b from-[#F4F1EC] via-background to-[#EDE6F5]">
       <MobileHeader title="Melody" back="/home" right={
-        <Link to="/melody" aria-label="Recommencer" className="size-10 grid place-items-center rounded-full bg-surface border border-border" onClick={(e) => { e.preventDefault(); setPhase("mood"); setPlaying(false); }}>
+        <Link to="/melody" aria-label="Recommencer" className="size-10 grid place-items-center rounded-full bg-surface border border-border" onClick={(e) => { e.preventDefault(); setPhase("mood"); }}>
           <RotateCcw className="size-4" />
         </Link>
       }/>
@@ -70,8 +67,6 @@ function MelodyPage() {
               key={"track-" + track.id}
               track={track}
               mood={mood!}
-              playing={playing}
-              onPlay={() => setPlaying((p) => !p)}
               onSkip={handleSkip}
               onAdd={addToPlaylist}
               skipsLeft={3 - skipCount}
@@ -81,6 +76,7 @@ function MelodyPage() {
       </div>
     </main>
   );
+
 }
 
 /* ---------------- Mood picker ---------------- */
@@ -190,8 +186,8 @@ function Searching({ mood }: { mood: Mood }) {
 }
 
 /* ---------------- Track view ---------------- */
-function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
-  track: Track; mood: Mood; playing: boolean; onPlay: () => void; onSkip: () => void; onAdd: () => void; skipsLeft: number;
+function TrackView({ track, mood, onSkip, onAdd, skipsLeft }: {
+  track: Track; mood: Mood; onSkip: () => void; onAdd: () => void; skipsLeft: number;
 }) {
   const color = MOODS.find((m) => m.id === mood)!.color;
   return (
@@ -205,11 +201,11 @@ function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
           <h2 className="font-display font-extrabold text-[28px] leading-tight mt-2 text-ink">{track.title}</h2>
           <p className="text-[14px] text-ink/70 font-semibold">{track.artist}</p>
         </div>
-        <div className="relative mt-5 flex items-center gap-3">
-          <button onClick={onPlay} className="size-14 rounded-full bg-ink text-background grid place-items-center active:scale-95 transition">
-            {playing ? <Pause className="size-5" /> : <Play className="size-5 fill-current" />}
-          </button>
-          <button onClick={onAdd} className="flex-1 pill bg-white/80 border border-black/5 py-3.5 font-bold text-ink text-sm flex items-center justify-center gap-1.5 active:scale-[0.98]">
+
+        <SpotifyEmbed spotifyId={track.spotifyId} title={track.title} artist={track.artist} />
+
+        <div className="relative mt-4">
+          <button onClick={onAdd} className="w-full pill bg-white/80 border border-black/5 py-3.5 font-bold text-ink text-sm flex items-center justify-center gap-1.5 active:scale-[0.98]">
             <Plus className="size-4"/> Ajouter à ma playlist
           </button>
         </div>
@@ -222,3 +218,4 @@ function TrackView({ track, mood, playing, onPlay, onSkip, onAdd, skipsLeft }: {
     </motion.div>
   );
 }
+

@@ -58,7 +58,7 @@ function Home() {
   const heroFullDate = heroDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
 
   return (
-    <main className="min-h-[100dvh] pb-24 bg-surface">
+    <main className="min-h-[100dvh] pb-32 bg-surface">
       {/* Header */}
       <header className="px-5 pt-6 pb-2 grid grid-cols-[44px_1fr_auto] items-center gap-3">
         <Link to="/profile" aria-label="Mon profil" className="rounded-full">
@@ -145,10 +145,10 @@ function Home() {
                   {hasSession && (
                     <span className={`absolute top-1.5 size-1.5 rounded-full ${isActive ? "bg-background" : "bg-[#7C5CFF] animate-pulse"}`} />
                   )}
-                  <span className={`text-[10px] font-semibold ${isActive ? "opacity-80" : "text-muted-foreground"}`}>
+                  <span className={`text-[10px] font-semibold ${isActive ? "opacity-80" : "text-muted-foreground"}`} suppressHydrationWarning>
                     {DOW_FR[day.date.getDay()]}
                   </span>
-                  <span className="text-[15px] font-display font-bold leading-none mt-1">{day.date.getDate()}</span>
+                  <span className="text-[15px] font-display font-bold leading-none mt-1" suppressHydrationWarning>{day.date.getDate()}</span>
                 </button>
               );
             })}

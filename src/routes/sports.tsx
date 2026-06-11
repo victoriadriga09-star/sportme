@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { SPORTS } from "@/data/mock";
+import { SPORT_ICONS } from "@/lib/icons";
+import { Dumbbell } from "lucide-react";
 
 export const Route = createFileRoute("/sports")({
   head: () => ({ meta: [{ title: "Sports — ÉLAN" }] }),
@@ -21,24 +23,35 @@ function SportsLibrary() {
       <CatPeek tone="orange" corner="tr" size={72} delay={0.3} className="!top-3 !right-3" />
       <MobileHeader title="Sports" back="/home" />
       <div className="px-5">
-        <h2 className="font-display font-extrabold text-[34px] leading-[0.95] tracking-tight">Explore les<br/><span className="italic text-[#7C5CFF]">disciplines</span></h2>
-        <p className="text-[13px] text-muted-foreground mt-2 font-medium">Découvre chaque sport et les personnes qui le pratiquent.</p>
-
-        <div className="grid grid-cols-2 gap-3 mt-6">
-          {SPORTS.map((s, i) => (
-            <motion.div key={s.label}
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.03, duration: 0.4, ease: [0.22,1,0.36,1] }}>
-              <Link to="/sports/$slug" params={{ slug: slugify(s.label) }}
-                className={`block rounded-3xl p-4 aspect-square ${TONES[i % TONES.length]} border border-white/60 soft-shadow active:scale-[0.97] hover:scale-[1.02] transition cursor-pointer relative overflow-hidden`}>
-                <span className="text-4xl">{s.emoji}</span>
-                <p className="font-display font-extrabold text-[18px] leading-tight mt-auto absolute bottom-4 left-4 right-4">{s.label}</p>
-              </Link>
-            </motion.div>
-          ))}
+        <div className="text-center">
+          <h2 className="font-display font-extrabold text-[34px] leading-[0.95] tracking-tight">
+            Explore les
+          </h2>
+          <h2 className="font-display font-extrabold text-[34px] leading-[0.95] tracking-[0.06em] uppercase text-[#7C5CFF] mt-1">
+            disciplines
+          </h2>
+          <p className="text-[13px] text-muted-foreground mt-3 font-medium">
+            Découvre chaque sport et les personnes qui le pratiquent.
+          </p>
         </div>
 
-        {/* Cat hiding bottom-left */}
+        <div className="grid grid-cols-2 gap-3 mt-6">
+          {SPORTS.map((s, i) => {
+            const Icon = SPORT_ICONS[s.label] ?? Dumbbell;
+            return (
+              <motion.div key={s.label}
+                initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.03, duration: 0.4, ease: [0.22,1,0.36,1] }}>
+                <Link to="/sports/$slug" params={{ slug: slugify(s.label) }}
+                  className={`block rounded-3xl p-4 aspect-square ${TONES[i % TONES.length]} border border-white/60 soft-shadow active:scale-[0.97] hover:scale-[1.02] transition cursor-pointer relative overflow-hidden flex flex-col items-center justify-center text-center`}>
+                  <Icon className="size-16 text-ink" strokeWidth={1.6} />
+                  <p className="font-display font-extrabold text-[18px] leading-tight mt-4 tracking-[0.04em] uppercase">{s.label}</p>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+
         <div className="relative h-16 mt-8">
           <CatPeek tone="black" corner="bl" size={64} delay={0.5} />
         </div>
@@ -46,4 +59,3 @@ function SportsLibrary() {
     </main>
   );
 }
-

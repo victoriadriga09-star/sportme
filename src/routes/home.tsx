@@ -84,7 +84,7 @@ function Home() {
             <div className="absolute -right-10 -top-12 size-44 rounded-full bg-white/40 blur-3xl float-slow" />
             <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-[#7C5CFF]/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
             <div className="absolute inset-0 topo-dots opacity-25" />
-            <CatPeek tone="black" corner="br" size={88} delay={0.2} />
+            <CatPeek tone="black" corner="br" size={130} delay={0.2} />
 
             <div className="relative flex items-center gap-2">
               <span className="size-2 rounded-full bg-[#7C5CFF] animate-pulse" />

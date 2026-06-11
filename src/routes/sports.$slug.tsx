@@ -1,10 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, MapPin, Flame, Users, Sparkles } from "lucide-react";
+import { ChevronRight, MapPin, Flame, Users, Sparkles, List as ListIcon, Map as MapIcon, Dumbbell } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";
 import { SPORTS, PARTNERS } from "@/data/mock";
+import { SPORT_ICONS } from "@/lib/icons";
 
 export const Route = createFileRoute("/sports/$slug")({
   head: () => ({ meta: [{ title: "Sport — ÉLAN" }] }),
@@ -104,15 +106,17 @@ function SportDetail() {
     stats: [{ label: "Cal/h", value: "—" }, { label: "Pratiquants", value: "—" }, { label: "Sessions/sem.", value: "—" }],
   };
   const users = PARTNERS.filter((p) => slugify(p.sport) === slug);
+  const [view, setView] = useState<"list" | "map">("list");
+  const Icon = SPORT_ICONS[sport.label] ?? Dumbbell;
 
   return (
     <main className="relative min-h-[100dvh] pb-32 bg-background overflow-hidden">
       <MobileHeader title={sport.label} back="/sports" />
       <div className="px-5">
         {/* Hero */}
-        <div className={`rounded-[32px] p-6 ${meta.tone} border border-white/60 soft-shadow relative overflow-hidden`}>
-          <div className="text-7xl">{sport.emoji}</div>
-          <h1 className="font-display font-extrabold text-[36px] leading-[0.95] tracking-tight mt-3">{sport.label}</h1>
+        <div className={`rounded-[32px] p-6 ${meta.tone} border border-white/60 soft-shadow relative overflow-hidden text-center`}>
+          <Icon className="size-20 mx-auto text-ink" strokeWidth={1.6} />
+          <h1 className="font-display font-extrabold text-[32px] leading-[0.95] tracking-[0.04em] uppercase mt-4">{sport.label}</h1>
           <p className="text-[14px] text-ink/75 font-medium mt-3 leading-snug">{meta.description}</p>
           <CatPeek tone={meta.cat} corner="br" size={84} delay={0.25} />
         </div>
@@ -157,11 +161,24 @@ function SportDetail() {
           ))}
         </div>
 
-        {/* Users practicing */}
-        <h2 className="font-display font-extrabold text-[22px] tracking-tight mt-7">Ils pratiquent ce sport</h2>
+        {/* Users practicing — list + map toggle */}
+        <div className="mt-7 flex items-center justify-between">
+          <h2 className="font-display font-extrabold text-[22px] tracking-tight">Près de toi</h2>
+          <div className="inline-flex rounded-full bg-surface border border-border p-1">
+            <button onClick={() => setView("list")}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition ${view === "list" ? "bg-ink text-background" : "text-ink/60"}`}>
+              <ListIcon className="size-3" /> Liste
+            </button>
+            <button onClick={() => setView("map")}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition ${view === "map" ? "bg-ink text-background" : "text-ink/60"}`}>
+              <MapIcon className="size-3" /> Carte
+            </button>
+          </div>
+        </div>
+
         {users.length === 0 ? (
           <p className="text-[13px] text-muted-foreground mt-3 font-medium">Personne dans tes alentours pour le moment.</p>
-        ) : (
+        ) : view === "list" ? (
           <div className="space-y-2.5 mt-3">
             {users.map((u) => (
               <Link key={u.id} to="/partner/$id" params={{ id: u.id }}
@@ -177,8 +194,53 @@ function SportDetail() {
               </Link>
             ))}
           </div>
+        ) : (
+          <MapView users={users} />
         )}
       </div>
     </main>
+  );
+}
+
+type MapUser = (typeof PARTNERS)[number];
+function MapView({ users }: { users: MapUser[] }) {
+  // Stylized faux-map: SVG grid + avatar pins positioned from distance/seed.
+  const pins = users.map((u, i) => {
+    const angle = (i * 137.5) % 360;
+    const r = Math.min(45, 12 + u.distanceKm * 8);
+    const x = 50 + r * Math.cos((angle * Math.PI) / 180);
+    const y = 50 + r * Math.sin((angle * Math.PI) / 180);
+    return { ...u, x, y };
+  });
+  return (
+    <div className="mt-3 rounded-3xl overflow-hidden border border-border bg-lavender-soft relative h-[320px]">
+      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+        <defs>
+          <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
+            <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#7C5CFF" strokeOpacity="0.15" strokeWidth="0.3" />
+          </pattern>
+        </defs>
+        <rect width="100" height="100" fill="url(#grid)" />
+        <path d="M0,60 Q30,50 50,55 T100,52" stroke="#7C5CFF" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+        <path d="M0,30 Q40,20 70,35 T100,28" stroke="#FF8A4C" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+        <circle cx="50" cy="50" r="3" fill="#7C5CFF" />
+        <circle cx="50" cy="50" r="8" fill="#7C5CFF" fillOpacity="0.15" />
+      </svg>
+      {pins.map((p) => (
+        <Link key={p.id} to="/partner/$id" params={{ id: p.id }}
+          className="absolute -translate-x-1/2 -translate-y-1/2 group"
+          style={{ left: `${p.x}%`, top: `${p.y}%` }}>
+          <div className="size-10 rounded-full ring-2 ring-white shadow-lg overflow-hidden bg-white grid place-items-center">
+            <Avatar name={p.name} size={36} />
+          </div>
+          <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1 pill bg-ink text-background text-[9px] font-bold px-1.5 py-0.5 whitespace-nowrap opacity-0 group-hover:opacity-100 transition">
+            {p.name.split(" ")[0]}
+          </span>
+        </Link>
+      ))}
+      <div className="absolute bottom-3 left-3 pill bg-white/90 backdrop-blur text-[10px] font-bold px-2.5 py-1 flex items-center gap-1">
+        <MapPin className="size-3 text-[#7C5CFF]" /> Toi · Paris 11e
+      </div>
+    </div>
   );
 }

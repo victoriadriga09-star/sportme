@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { X, Clock, MapPin, Star, CalendarClock } from "lucide-react";
+import { X, Clock, MapPin, Sparkles, CalendarClock } from "lucide-react";
 import { Avatar } from "@/components/Avatar";
 import { randomKindMessage } from "@/lib/kindMessages";
 import { toast } from "sonner";
@@ -69,7 +69,7 @@ export function SessionSheet({ session, onClose }: { session: MockSession | null
                     <p className="text-[11px] text-muted-foreground font-semibold">Satisfaction</p>
                     <div className="flex gap-1 mt-1.5">
                       {[1,2,3,4,5].map((n) => (
-                        <Star key={n} className={`size-5 ${n <= (session.score ?? 0) ? "fill-[#F5D451] text-[#F5D451]" : "text-ink/20"}`}/>
+                        <Sparkles key={n} className={`size-5 ${n <= (session.score ?? 0) ? "fill-[#7C5CFF] text-[#7C5CFF]" : "text-ink/20"}`}/>
                       ))}
                     </div>
                   </div>

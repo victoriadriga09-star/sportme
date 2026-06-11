@@ -24,7 +24,7 @@ export function SearchWaves({ label = "Recherche de partenaires…" }: { label?:
       className="fixed inset-0 z-[100] grid place-items-center bg-gradient-to-br from-[#2A1F8F] via-[#3E2DBC] to-[#1A1366] overflow-hidden"
     >
       {/* dot grid */}
-      <div className="absolute inset-0 topo-dots opacity-20" />
+      
 
       {/* concentric waves */}
       <div className="relative size-[320px] grid place-items-center">

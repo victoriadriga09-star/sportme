@@ -343,7 +343,7 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
       {/* gradient base */}
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
       {/* glass orbs */}
-      <div className="absolute inset-0 topo-dots opacity-15 mix-blend-overlay" />
+      
 
       {/* avatar */}
       <div className="absolute inset-0 grid place-items-center">

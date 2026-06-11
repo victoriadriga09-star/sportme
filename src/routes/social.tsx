@@ -107,7 +107,7 @@ function Feed() {
               <button aria-label="Plus"><MoreHorizontal className="size-5 text-muted-foreground" /></button>
             </div>
             <div className={`aspect-[4/3] ${p.bg === "lime" ? "bg-lime" : p.bg === "lavender" ? "bg-lavender" : "bg-ink"} relative`}>
-              <div className="absolute inset-0 topo-dots opacity-30" />
+              
               <div className="absolute inset-0 grid place-items-center">
                 <Pill tone={p.bg === "ink" ? "lime" : "ink"} size="lg">{p.sport}</Pill>
               </div>

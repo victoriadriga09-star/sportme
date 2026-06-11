@@ -63,7 +63,7 @@ function Explorer() {
       <div className="px-5 space-y-7 mt-2">
         {/* Intro hero — clean lavender card, black peeking cat (same as home) */}
         <section className="relative overflow-hidden rounded-[32px] p-6 bg-gradient-to-br from-[#E9E1FF] via-lavender-soft to-[#F4EEFF] border border-white/70 soft-shadow">
-          <div className="absolute inset-0 topo-dots opacity-25" />
+          
 
           <CatPeek tone="black" corner="br" size={120} delay={0.15} />
 

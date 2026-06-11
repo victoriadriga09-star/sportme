@@ -40,7 +40,7 @@ function Detail() {
       {/* hero — violet liquid glass */}
       <div className="relative h-[48vh] overflow-hidden text-background">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7C5CFF] via-[#9B7BFF] to-[#5B3FD1]" />
-        <div className="absolute inset-0 topo-dots opacity-20" />
+        
         <div className="relative z-10">
           <MobileHeader back transparent />
         </div>
@@ -64,7 +64,7 @@ function Detail() {
       <div className="px-5 -mt-6 relative space-y-6 pt-2">
         {/* Sport · Dispo · Lieu — restylé */}
         <section className="relative rounded-[28px] bg-surface border border-white/60 p-5 soft-shadow overflow-hidden">
-          <div className="absolute inset-0 topo-dots opacity-30 pointer-events-none" />
+          
 
           {/* Sport */}
           <div className="relative flex items-start gap-3">

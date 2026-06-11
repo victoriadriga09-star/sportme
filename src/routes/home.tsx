@@ -81,7 +81,7 @@ function Home() {
             to="/sessions"
             className="relative block overflow-hidden rounded-[28px] bg-gradient-to-br from-[#E9E1FF] via-lavender to-[#C9B8FF] p-6 min-h-[220px] soft-shadow active:scale-[0.99] transition-transform border border-white/60"
           >
-            <div className="absolute inset-0 topo-dots opacity-25" />
+            
             <CatPeek tone="black" corner="br" size={130} delay={0.2} />
 
             <div className="relative flex items-center gap-2">

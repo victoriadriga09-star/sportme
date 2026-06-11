@@ -303,11 +303,20 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
   const likeOpacity = useTransform(x, [40, 140], [0, 1]);
   const nopeOpacity = useTransform(x, [-140, -40], [1, 0]);
   const isTop = layer === 0;
+  const nav = useNavigate();
 
   const handleEnd = (_: unknown, info: PanInfo) => {
     if (!onSwipe) return;
     if (info.offset.x > 110 || info.velocity.x > 600) onSwipe("right");
     else if (info.offset.x < -110 || info.velocity.x < -600) onSwipe("left");
+  };
+
+  // Tap (not drag) → open partner profile
+  const handleTap = (_: unknown, info: { point: { x: number; y: number } } & Record<string, unknown>) => {
+    if (!isTop) return;
+    if (Math.abs(x.get()) > 8) return; // ignore swipes
+    void info;
+    nav({ to: "/partner/$id", params: { id: partner.id } });
   };
 
   const gradient =
@@ -323,12 +332,13 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
       dragElastic={0.6}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleEnd}
+      onTap={handleTap}
       style={isTop ? { x, rotate, zIndex: 20 } : { zIndex: 20 - layer }}
       initial={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: layer > 2 ? 0 : 1 }}
       animate={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: 1 }}
       exit={{ x: x.get() > 0 ? 600 : -600, opacity: 0, rotate: x.get() > 0 ? 24 : -24, transition: { duration: 0.35 } }}
       transition={{ type: "spring", stiffness: 260, damping: 28 }}
-      className={`absolute inset-x-2 top-0 h-[64vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-grab active:cursor-grabbing" : ""}`}
+      className={`absolute inset-x-2 top-0 h-[64vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-pointer active:cursor-grabbing" : ""}`}
     >
       {/* gradient base */}
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />

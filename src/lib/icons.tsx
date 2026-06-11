@@ -4,6 +4,7 @@ import {
   CalendarDays, Shuffle, MapPin, type LucideIcon,
   Footprints, Flower2, Activity, Swords, Waves,
   Bike, Music2, Mountain, CircleDot, Volleyball, Target,
+  Shield,
 } from "lucide-react";
 
 export const LIEU_ICONS: Record<string, LucideIcon> = {
@@ -38,14 +39,14 @@ export const SPORT_ICONS: Record<string, LucideIcon> = {
   Natation: Waves,
   Cycling: Bike,
   Danse: Music2,
-  Randonnée: Mountain,
+  Randonnée: Trees,
   Tennis: CircleDot,
   Football: Volleyball,
   Basketball: Target,
   Escalade: Mountain,
   CrossFit: Flame,
   Stretching: Wind,
-  "Arts martiaux": Swords,
+  "Arts martiaux": Shield,
 };
 
 export { MapPin };

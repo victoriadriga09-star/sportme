@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { X, MapPin, ChevronDown, ChevronUp, Sparkles, Pencil, Video, Users, CalendarIcon, Zap, Hand, Plus, Clock as ClockIcon } from "lucide-react";
+import { CatPeek } from "@/components/CatPeek";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AnimatePresence } from "framer-motion";
@@ -48,7 +49,7 @@ function Explorer() {
   };
 
   return (
-    <main className="min-h-[100dvh] pb-40 bg-background">
+    <main className="min-h-[100dvh] pb-56 bg-background">
       <MobileHeader
         title="Nouvelle séance"
         right={
@@ -70,20 +71,25 @@ function Explorer() {
           <div className="absolute right-14 top-16 size-2 rounded-full bg-lime/80 float-slow" style={{ animationDelay: "0.8s" }} />
           <div className="absolute left-8 top-2 size-1.5 rounded-full bg-ink/40 float-slow" style={{ animationDelay: "1.6s" }} />
 
-          {/* hero orb */}
-          <div className="absolute -right-6 -top-6 size-32 rounded-full orb-3d shadow-2xl violet-glow rotate-12" aria-hidden />
+          {/* Upside-down cat mascot in the corner */}
+          <CatPeek tone="lavender" corner="tr" size={120} delay={0.15} flip />
 
-          <div className="relative max-w-[82%]">
-            <div className="inline-flex items-center gap-2 pill bg-white/75 backdrop-blur-md border border-white/80 px-3.5 py-1.5">
-              <Hand className="size-3.5 text-[#7C5CFF]" strokeWidth={2.4} />
-              <p className="text-[12px] font-extrabold text-ink/80">Salut {user.prenom || "toi"}</p>
-            </div>
-            <h2 className="font-display font-extrabold text-[44px] leading-[0.92] mt-4 text-ink tracking-tight">
-              Trouve ton<br />
-              <span className="italic font-display text-[#5B3FD1]">partenaire</span> idéal
+          <div className="relative max-w-[78%]">
+            <h2 className="font-display font-extrabold text-[40px] leading-[0.95] text-ink tracking-[-0.02em] uppercase">
+              <span className="inline-flex items-center gap-2">
+                <Hand className="size-7 text-[#7C5CFF]" strokeWidth={2.4} />
+                Salut {user.prenom || "toi"}
+              </span>
             </h2>
+            <h3 className="font-display font-extrabold text-[34px] leading-[0.95] mt-3 text-ink tracking-tight">
+              Trouve ton{" "}
+              <span className="font-display font-extrabold uppercase tracking-[0.04em] text-[#5B3FD1]">
+                partenaire
+              </span>{" "}
+              idéal
+            </h3>
             <p className="text-[13px] text-ink/70 mt-3 leading-snug font-medium">
-              Sport, créneau, zone — on te trouve les sportifs dispo près de toi.
+              Sport, créneau, zone. On te trouve les sportifs dispo près de toi.
             </p>
           </div>
         </section>
@@ -261,7 +267,7 @@ function Explorer() {
         </section>
       </div>
 
-      <div className="fixed bottom-0 inset-x-0 px-5 pb-28 pt-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
+      <div className="fixed bottom-0 inset-x-0 px-5 pb-24 pt-6 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none">
         <div className="max-w-[430px] mx-auto pointer-events-auto">
           <button
             onClick={launchSearch}

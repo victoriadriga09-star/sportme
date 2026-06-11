@@ -213,22 +213,6 @@ function Profile() {
         </div>
       </section>
 
-      {/* Pro membership — moved to secondary */}
-      <section className="px-5 mt-6">
-        <Link to="/stats" className="block">
-          <motion.div whileTap={{ scale: 0.98 }} className="relative overflow-hidden rounded-3xl p-4 flex items-center gap-3 bg-gradient-to-r from-[#1A1A1A] via-[#2A1F4A] to-[#7C5CFF] text-background shadow-lg">
-            <div className="absolute -right-6 -top-6 size-28 rounded-full bg-white/10 blur-2xl" />
-            <span className="size-11 rounded-2xl grid place-items-center bg-white/15 backdrop-blur">
-              <Crown className="size-5 text-[#FFD58B]" />
-            </span>
-            <div className="flex-1 min-w-0">
-              <p className="font-display font-extrabold text-[15px] leading-tight">Devenir membre Pro</p>
-              <p className="text-[11px] text-background/70 mt-0.5">Stats avancées, sans pub, badge exclusif</p>
-            </div>
-            <ChevronRight className="size-5" />
-          </motion.div>
-        </Link>
-      </section>
 
       {/* Objective */}
       <section className="px-5 mt-5">

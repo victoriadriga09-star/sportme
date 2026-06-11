@@ -235,24 +235,25 @@ function Home() {
         <h3 className="font-display font-extrabold text-[24px] tracking-tight pt-1">Ton mois</h3>
         <section className="grid grid-cols-3 gap-2.5">
           {[
-            { to: "/sessions" as const, status: "done"      as const, label: "Complétées", Icon: CheckCircle2,  bg: "bg-lime/50",       fg: "text-ink" },
-            { to: "/sessions" as const, status: "planned"   as const, label: "Planifiées", Icon: CalendarClock, bg: "bg-lavender-soft", fg: "text-[#7C5CFF]" },
-            { to: "/sessions" as const, status: "cancelled" as const, label: "Annulées",   Icon: XCircle,       bg: "bg-peach",         fg: "text-ink" },
-          ].map(({ to, status, label, Icon, bg, fg }) => (
+            { to: "/sessions" as const, status: "done"      as const, label: "Complétées", Icon: CheckCircle2,  tile: "bg-lavender-soft text-ink",         iconBg: "bg-white/70",     iconFg: "text-[#7C5CFF]", numFg: "text-[#7C5CFF]" },
+            { to: "/sessions" as const, status: "planned"   as const, label: "Planifiées", Icon: CalendarClock, tile: "bg-[#C9B8FF] text-ink",             iconBg: "bg-white/60",     iconFg: "text-[#4C3BCF]", numFg: "text-[#1A1A1A]" },
+            { to: "/sessions" as const, status: "cancelled" as const, label: "Annulées",   Icon: XCircle,       tile: "bg-[#1A1A1A] text-background",      iconBg: "bg-peach",        iconFg: "text-ink",       numFg: "text-peach" },
+          ].map(({ to, status, label, Icon, tile, iconBg, iconFg, numFg }) => (
             <Link
               key={label}
               to={to}
               search={{ status }}
-              className="rounded-[20px] bg-surface border border-border/70 p-3.5 active:scale-[0.97] transition relative"
+              className={`rounded-[20px] p-3.5 active:scale-[0.97] transition relative ${tile}`}
             >
-              <span className={`size-9 grid place-items-center rounded-xl ${bg} ${fg} mb-2`}>
+              <span className={`size-9 grid place-items-center rounded-xl ${iconBg} ${iconFg} mb-2`}>
                 <Icon className="size-4" strokeWidth={2.2} />
               </span>
-              <ClientCount status={status} />
-              <p className="text-[11px] text-muted-foreground font-bold mt-1">{label}</p>
+              <ClientCount status={status} className={`font-display font-extrabold text-[28px] leading-none ${numFg}`} />
+              <p className="text-[11px] font-bold mt-1 opacity-70">{label}</p>
             </Link>
           ))}
         </section>
+
 
       </div>
 
@@ -262,12 +263,13 @@ function Home() {
 }
 
 /** Avoids SSR/CSR mismatch since countThisMonth depends on the current date. */
-function ClientCount({ status }: { status: SessionStatus }) {
+function ClientCount({ status, className }: { status: SessionStatus; className?: string }) {
   const [n, setN] = useState<number | null>(null);
   useEffect(() => { setN(countThisMonth(status)); }, [status]);
   return (
-    <p className="font-display font-extrabold text-[28px] leading-none text-ink">
+    <p className={className ?? "font-display font-extrabold text-[28px] leading-none text-ink"}>
       {n ?? "—"}
     </p>
   );
 }
+

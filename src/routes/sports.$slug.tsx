@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronRight, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+import { ChevronRight, MapPin, Flame, Users, Sparkles } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
+import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";
 import { SPORTS, PARTNERS } from "@/data/mock";
 
@@ -13,32 +15,138 @@ function slugify(s: string) {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-const META: Record<string, { description: string; facts: string[]; tone: string }> = {
-  running:   { description: "Sortir, respirer, avaler les kilomètres. Le running, c'est le réinitialiseur ultime.", facts: ["20 min suffisent à réduire le stress", "Brûle 600+ kcal/h", "Renforce le système immunitaire"], tone: "bg-lime/40" },
-  yoga:      { description: "Mouvement, souffle, présence. Le yoga unit corps et esprit.", facts: ["Réduit le cortisol", "Améliore le sommeil", "Augmente la mobilité de 35%"], tone: "bg-lavender-soft" },
-  boxe:      { description: "Précision, vitesse, mental. La boxe muscle le corps et la concentration.", facts: ["Brûle 800 kcal/h", "Améliore les réflexes", "Libère un max d'endorphines"], tone: "bg-peach" },
-  pilates:   { description: "Contrôle, gainage profond, alignement. Le pilates renforce de l'intérieur.", facts: ["Centre = source de force", "Posture améliorée en 10 séances", "Très peu d'impact articulaire"], tone: "bg-blush" },
-  padel:     { description: "Mix tennis et squash. Convivial, addictif, ultra-rapide à prendre en main.", facts: ["Match moyen = 90 min de cardio", "Sport en duo par essence", "L'un des plus dynamiques au monde"], tone: "bg-sky" },
-  musculation:{description:"Construire, sculpter, progresser. La muscu, c'est l'art de la régularité.", facts:["Densifie les os","Booste le métabolisme 24h","Excellente contre le stress"], tone:"bg-lavender-soft" },
+type Meta = {
+  description: string;
+  facts: string[];
+  tone: string;
+  cat: "black" | "orange" | "lavender" | "white";
+  photos: string[];
+  stats: { label: string; value: string }[];
+};
+
+const FALLBACK_PHOTOS = [
+  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&auto=format&fit=crop",
+];
+
+const META: Record<string, Meta> = {
+  running: {
+    description: "Sortir, respirer, avaler les kilomètres. Le running, c'est le réinitialiseur ultime.",
+    facts: ["20 min suffisent à réduire le stress", "Brûle 600+ kcal/h", "Renforce le système immunitaire"],
+    tone: "bg-lime/40", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1486218119243-13883505764c?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "600" }, { label: "Pratiquants Paris 11e", value: "12k" }, { label: "Sessions/sem.", value: "3,2" }],
+  },
+  yoga: {
+    description: "Mouvement, souffle, présence. Le yoga unit corps et esprit.",
+    facts: ["Réduit le cortisol", "Améliore le sommeil", "+35% de mobilité en 10 séances"],
+    tone: "bg-lavender-soft", cat: "orange",
+    photos: [
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "250" }, { label: "Pratiquants", value: "8k" }, { label: "Niveau moyen", value: "Inter." }],
+  },
+  boxe: {
+    description: "Précision, vitesse, mental. La boxe muscle le corps et la concentration.",
+    facts: ["Brûle 800 kcal/h", "Améliore les réflexes", "Énorme libération d'endorphines"],
+    tone: "bg-peach", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "800" }, { label: "Salles 11e", value: "6" }, { label: "Sessions/sem.", value: "2,4" }],
+  },
+  pilates: {
+    description: "Contrôle, gainage profond, alignement. Le pilates renforce de l'intérieur.",
+    facts: ["Posture améliorée en 10 séances", "Très peu d'impact articulaire", "Recruté chez +90% des danseurs pro"],
+    tone: "bg-blush", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "320" }, { label: "Studios 11e", value: "9" }, { label: "Sessions/sem.", value: "2" }],
+  },
+  padel: {
+    description: "Mix tennis et squash. Convivial, addictif, ultra-rapide à prendre en main.",
+    facts: ["Match moyen = 90 min de cardio", "Sport en duo par essence", "L'un des plus dynamiques au monde"],
+    tone: "bg-sky", cat: "orange",
+    photos: [
+      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/match", value: "900" }, { label: "Clubs Paris", value: "24" }, { label: "Match moyen", value: "90 min" }],
+  },
+  musculation: {
+    description: "Construire, sculpter, progresser. La muscu, c'est l'art de la régularité.",
+    facts: ["Densifie les os", "Booste le métabolisme 24h", "Excellente contre le stress chronique"],
+    tone: "bg-peach", cat: "white",
+    photos: [
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "450" }, { label: "Salles 11e", value: "14" }, { label: "Sessions/sem.", value: "3,5" }],
+  },
 };
 
 function SportDetail() {
   const { slug } = Route.useParams();
   const sport = SPORTS.find((s) => slugify(s.label) === slug);
   if (!sport) throw notFound();
-  const meta = META[slug] ?? { description: `Le ${sport.label} : un excellent moyen de bouger, se dépasser et créer du lien.`, facts: ["Bon pour la santé cardio", "Améliore l'humeur", "Crée du lien social"], tone: "bg-lavender-soft" };
+  const meta: Meta = META[slug] ?? {
+    description: `Le ${sport.label} : un excellent moyen de bouger, se dépasser et créer du lien.`,
+    facts: ["Bon pour la santé cardio", "Améliore l'humeur", "Crée du lien social"],
+    tone: "bg-lavender-soft", cat: "black",
+    photos: FALLBACK_PHOTOS,
+    stats: [{ label: "Cal/h", value: "—" }, { label: "Pratiquants", value: "—" }, { label: "Sessions/sem.", value: "—" }],
+  };
   const users = PARTNERS.filter((p) => slugify(p.sport) === slug);
 
   return (
-    <main className="min-h-[100dvh] pb-32 bg-background">
+    <main className="relative min-h-[100dvh] pb-32 bg-background overflow-hidden">
       <MobileHeader title={sport.label} back="/sports" />
       <div className="px-5">
+        {/* Hero */}
         <div className={`rounded-[32px] p-6 ${meta.tone} border border-white/60 soft-shadow relative overflow-hidden`}>
           <div className="text-7xl">{sport.emoji}</div>
           <h1 className="font-display font-extrabold text-[36px] leading-[0.95] tracking-tight mt-3">{sport.label}</h1>
           <p className="text-[14px] text-ink/75 font-medium mt-3 leading-snug">{meta.description}</p>
+          <CatPeek tone={meta.cat} corner="br" size={84} delay={0.25} />
         </div>
 
+        {/* Photos */}
+        <div className="mt-5 flex gap-3 overflow-x-auto no-scrollbar -mx-5 px-5 snap-x snap-mandatory pb-2">
+          {meta.photos.map((src, i) => (
+            <motion.div key={src}
+              initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="shrink-0 snap-start w-[240px] h-[160px] rounded-3xl overflow-hidden bg-muted relative">
+              <img src={src} alt={`${sport.label} ${i+1}`} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <span className="absolute bottom-2 left-3 text-white text-[11px] font-bold tracking-wider uppercase">{sport.label}</span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Key numbers */}
+        <h2 className="font-display font-extrabold text-[22px] tracking-tight mt-6">En chiffres</h2>
+        <div className="mt-3 grid grid-cols-3 gap-2.5">
+          {meta.stats.map((s, i) => {
+            const Icon = i === 0 ? Flame : i === 1 ? Users : Sparkles;
+            return (
+              <div key={s.label} className="rounded-2xl bg-surface border border-border p-3.5">
+                <Icon className="size-4 text-[#7C5CFF]" strokeWidth={2.2} />
+                <p className="font-display font-extrabold text-[22px] leading-none mt-2">{s.value}</p>
+                <p className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mt-1">{s.label}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Fun facts */}
         <h2 className="font-display font-extrabold text-[22px] tracking-tight mt-7">Le sais-tu ?</h2>
         <div className="grid gap-2.5 mt-3">
           {meta.facts.map((f, i) => (
@@ -49,6 +157,7 @@ function SportDetail() {
           ))}
         </div>
 
+        {/* Users practicing */}
         <h2 className="font-display font-extrabold text-[22px] tracking-tight mt-7">Ils pratiquent ce sport</h2>
         {users.length === 0 ? (
           <p className="text-[13px] text-muted-foreground mt-3 font-medium">Personne dans tes alentours pour le moment.</p>

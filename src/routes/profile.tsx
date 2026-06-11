@@ -113,6 +113,22 @@ function Profile() {
           </div>
         </BentoCard>
 
+        {/* Sessions quick link */}
+        <BentoCard to="/sessions" className="bg-lime text-ink min-h-[68px]" delay={0.08}>
+          <div className="flex items-center gap-3 h-full">
+            <span className="size-10 rounded-2xl grid place-items-center bg-white/60 shrink-0">
+              <ListChecks className="size-5" strokeWidth={2} />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="font-display font-extrabold text-[15px] leading-tight">Sessions</p>
+              <p className="text-[11px] text-ink/70 mt-0.5">Historique & à venir</p>
+            </div>
+            <ChevronRight className="size-4 text-ink/70" />
+          </div>
+        </BentoCard>
+
+
+
         {/* Row: Stats + Partenaires */}
         <div className="grid grid-cols-2 gap-3">
           <BentoCard to="/stats" className="bg-[#FFC9DE] text-ink min-h-[112px]" delay={0.1}>

@@ -196,7 +196,7 @@ function Explorer() {
         </section>
 
         {/* Où */}
-        <section>
+        <section id="ou-section">
           <Label>Où ?</Label>
           <div className="relative mt-3">
             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />

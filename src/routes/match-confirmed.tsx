@@ -30,8 +30,6 @@ function MatchConfirmed() {
 
   return (
     <main className="relative min-h-[100dvh] bg-background overflow-hidden flex flex-col px-6 py-10">
-      <div className="absolute -top-24 left-1/2 -translate-x-1/2 size-96 rounded-full bg-lime/30 blur-3xl" />
-      <div className="absolute -bottom-24 -right-20 size-80 rounded-full bg-lavender/40 blur-3xl" />
 
       <div className="relative flex-1 flex flex-col items-center justify-center text-center">
         <div className="size-20 rounded-full bg-lime grid place-items-center lime-glow mb-6">

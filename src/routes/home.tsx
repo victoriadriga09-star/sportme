@@ -81,8 +81,6 @@ function Home() {
             to="/sessions"
             className="relative block overflow-hidden rounded-[28px] bg-gradient-to-br from-[#E9E1FF] via-lavender to-[#C9B8FF] p-6 min-h-[220px] soft-shadow active:scale-[0.99] transition-transform border border-white/60"
           >
-            <div className="absolute -right-10 -top-12 size-44 rounded-full bg-white/40 blur-3xl float-slow" />
-            <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-[#7C5CFF]/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
             <div className="absolute inset-0 topo-dots opacity-25" />
             <CatPeek tone="black" corner="br" size={130} delay={0.2} />
 
@@ -198,7 +196,6 @@ function Home() {
                   params={{ id: p.id }}
                   className="block rounded-[22px] bg-surface border border-white/60 soft-shadow p-3 active:scale-[0.98] transition relative overflow-hidden"
                 >
-                  <div className="absolute -top-6 -right-6 size-20 rounded-full bg-lavender-soft/80 blur-2xl" />
                   <div className="relative flex items-center justify-between">
                     <div className="relative">
                       <Avatar name={p.name} size={48} ring="lavender" />

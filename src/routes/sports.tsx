@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { MobileHeader } from "@/components/MobileHeader";
-import { CatPeek } from "@/components/CatPeek";
+
 import { SPORTS } from "@/data/mock";
 import { SPORT_ICONS } from "@/lib/icons";
 import { Dumbbell } from "lucide-react";
@@ -20,7 +20,6 @@ function slugify(s: string) {
 function SportsLibrary() {
   return (
     <main className="relative min-h-[100dvh] pb-32 bg-background overflow-hidden">
-      <CatPeek tone="orange" corner="tr" size={72} delay={0.3} className="!top-3 !right-3" />
       <MobileHeader title="Sports" back="/home" />
       <div className="px-5">
         <div className="text-center">
@@ -52,9 +51,6 @@ function SportsLibrary() {
           })}
         </div>
 
-        <div className="relative h-16 mt-8">
-          <CatPeek tone="black" corner="bl" size={64} delay={0.5} />
-        </div>
       </div>
     </main>
   );

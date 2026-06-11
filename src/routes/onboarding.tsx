@@ -174,9 +174,6 @@ function Onboarding() {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background text-ink relative overflow-hidden">
       {/* Ambient floating shapes — pastel sur fond clair */}
-      <div className="pointer-events-none absolute -top-24 -left-20 size-72 rounded-full bg-lavender/50 blur-3xl float-slow" />
-      <div className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-lime/30 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
-      <div className="pointer-events-none absolute bottom-0 left-1/4 size-64 rounded-full bg-lavender-soft/70 blur-3xl float-slow" style={{ animationDelay: "3s" }} />
 
       {/* Top bar — segmented progress */}
       <div className="relative px-5 pt-6 pb-2 z-10">

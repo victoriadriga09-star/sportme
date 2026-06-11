@@ -11,13 +11,13 @@ const TONE_FILL: Record<Tone, string> = {
 };
 
 /**
- * Peeking cat mascot — rounded square head, tan inner ears,
- * two white dot eyes, small pink nose. Minimal & cute.
+ * Peeking cat mascot — soft blob head with pointed ears,
+ * tiny dark eyes and a small "ω" mouth. Mirrors the reference art.
  */
 export function CatPeek({
   tone = "black",
   corner = "bl",
-  size = 84,
+  size = 64,
   delay = 0,
   flip = false,
   className = "",
@@ -30,20 +30,19 @@ export function CatPeek({
   className?: string;
 }) {
   const fill = TONE_FILL[tone];
-  const innerEar = "#E8B89A";
-  const nose = "#D98A8A";
-  const eye = "#FFFFFF";
+  // Dark facial features — slightly darker than the head fill, near-black always
+  const feat = tone === "black" ? "#0a0a0a" : "#2A1F4A";
 
   const pos: Record<Corner, string> = {
-    bl: "left-[-22px] bottom-[-28px]",
-    br: "right-[-22px] bottom-[-28px] -scale-x-100",
-    tl: "left-[-22px] top-[-28px]",
-    tr: "right-[-22px] top-[-28px] -scale-x-100",
+    bl: "left-[-18px] bottom-[-22px]",
+    br: "right-[-18px] bottom-[-22px] -scale-x-100",
+    tl: "left-[-18px] top-[-22px]",
+    tr: "right-[-18px] top-[-22px] -scale-x-100",
   };
 
   return (
     <motion.div
-      initial={{ y: 12, opacity: 0 }}
+      initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`pointer-events-none absolute ${pos[corner]} ${className}`}
@@ -56,24 +55,35 @@ export function CatPeek({
         height={size}
         animate={{ rotate: [0, -1.5, 0, 1.5, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        style={{ filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.22))" }}
+        style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.20))" }}
       >
-        {/* Ears — outer triangles */}
-        <path d="M12,46 L26,10 L46,40 Z" fill={fill} />
-        <path d="M88,46 L74,10 L54,40 Z" fill={fill} />
-        {/* Inner ears */}
-        <path d="M22,40 L27,20 L37,38 Z" fill={innerEar} />
-        <path d="M78,40 L73,20 L63,38 Z" fill={innerEar} />
-        {/* Head — rounded square */}
+        {/* Soft blob head with two pointed ears — single path */}
         <path
-          d="M8,58 Q8,30 34,30 L66,30 Q92,30 92,58 L92,92 Q92,100 84,100 L16,100 Q8,100 8,92 Z"
+          d="
+            M50,8
+            L30,32
+            Q14,34 10,52
+            Q6,72 18,86
+            Q34,98 50,98
+            Q66,98 82,86
+            Q94,72 90,52
+            Q86,34 70,32
+            Z
+          "
           fill={fill}
         />
-        {/* Eyes — white dots */}
-        <ellipse cx="36" cy="64" rx="4.2" ry="4.8" fill={eye} />
-        <ellipse cx="64" cy="64" rx="4.2" ry="4.8" fill={eye} />
-        {/* Nose */}
-        <ellipse cx="50" cy="78" rx="3.4" ry="2.6" fill={nose} />
+        {/* Tiny dark eyes — small dots */}
+        <ellipse cx="38" cy="58" rx="3.2" ry="3.6" fill={feat} />
+        <ellipse cx="62" cy="58" rx="3.2" ry="3.6" fill={feat} />
+        {/* Small ω mouth */}
+        <path
+          d="M44,70 Q47,74 50,71 Q53,74 56,70"
+          stroke={feat}
+          strokeWidth="1.8"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </motion.svg>
     </motion.div>
   );

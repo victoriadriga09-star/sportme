@@ -45,7 +45,7 @@ const META: Record<string, Meta> = {
   yoga: {
     description: "Mouvement, souffle, présence. Le yoga unit corps et esprit.",
     facts: ["Réduit le cortisol", "Améliore le sommeil", "+35% de mobilité en 10 séances"],
-    tone: "bg-lavender-soft", cat: "orange",
+    tone: "bg-lavender-soft", cat: "lavender",
     photos: [
       "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&q=80&auto=format&fit=crop",
@@ -75,7 +75,7 @@ const META: Record<string, Meta> = {
   padel: {
     description: "Mix tennis et squash. Convivial, addictif, ultra-rapide à prendre en main.",
     facts: ["Match moyen = 90 min de cardio", "Sport en duo par essence", "L'un des plus dynamiques au monde"],
-    tone: "bg-sky", cat: "orange",
+    tone: "bg-sky", cat: "lavender",
     photos: [
       "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80&auto=format&fit=crop",
@@ -85,12 +85,122 @@ const META: Record<string, Meta> = {
   musculation: {
     description: "Construire, sculpter, progresser. La muscu, c'est l'art de la régularité.",
     facts: ["Densifie les os", "Booste le métabolisme 24h", "Excellente contre le stress chronique"],
-    tone: "bg-peach", cat: "white",
+    tone: "bg-peach", cat: "black",
     photos: [
       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&q=80&auto=format&fit=crop",
     ],
     stats: [{ label: "Cal/h", value: "450" }, { label: "Salles 11e", value: "14" }, { label: "Sessions/sem.", value: "3,5" }],
+  },
+  natation: {
+    description: "Glisser, respirer, s'étirer. La natation libère le corps et l'esprit.",
+    facts: ["Sollicite 80% des muscles", "Zéro impact articulaire", "Améliore la capacité pulmonaire"],
+    tone: "bg-sky", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1576678927484-cc907957088c?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "550" }, { label: "Piscines 11e", value: "4" }, { label: "Sessions/sem.", value: "2" }],
+  },
+  cycling: {
+    description: "Pédaler, accélérer, dévorer la ville. Le vélo, c'est la liberté en mouvement.",
+    facts: ["Renforce le bas du corps", "Excellent cardio à faible impact", "Réduit le stress quotidien"],
+    tone: "bg-lime/40", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1502744688674-c619d1586c9e?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "650" }, { label: "Pratiquants", value: "9k" }, { label: "Sessions/sem.", value: "3" }],
+  },
+  danse: {
+    description: "Bouger, vibrer, exprimer. La danse, c'est le sport qui devient art.",
+    facts: ["Brûle 400 kcal/h", "Améliore la coordination", "Booste l'estime de soi"],
+    tone: "bg-blush", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1535525153412-5a092d46317e?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "400" }, { label: "Studios 11e", value: "11" }, { label: "Sessions/sem.", value: "2" }],
+  },
+  randonnee: {
+    description: "Marcher, respirer, contempler. La rando, c'est se reconnecter à l'essentiel.",
+    facts: ["Réduit l'anxiété de 40%", "Renforce le cœur", "Améliore la créativité"],
+    tone: "bg-lime/40", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "430" }, { label: "Groupes IDF", value: "18" }, { label: "Sorties/mois", value: "3" }],
+  },
+  tennis: {
+    description: "Frapper, courir, anticiper. Le tennis aiguise corps et stratégie.",
+    facts: ["1h = 600 kcal", "Améliore les réflexes", "Sport social par essence"],
+    tone: "bg-sky", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "600" }, { label: "Clubs Paris", value: "32" }, { label: "Match moyen", value: "75 min" }],
+  },
+  football: {
+    description: "Courir, passer, marquer. Le foot, c'est l'énergie collective à l'état pur.",
+    facts: ["Brûle 700 kcal/match", "Renforce l'esprit d'équipe", "Excellent cardio explosif"],
+    tone: "bg-lime/40", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/match", value: "700" }, { label: "Terrains 11e", value: "5" }, { label: "Joueurs", value: "14k" }],
+  },
+  basketball: {
+    description: "Dribbler, sauter, viser. Le basket muscle le mental autant que le corps.",
+    facts: ["Brûle 750 kcal/h", "Améliore la détente", "Sport ultra-cardio"],
+    tone: "bg-peach", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518614368389-9b4ac8b8b6c0?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "750" }, { label: "Playgrounds", value: "8" }, { label: "Sessions/sem.", value: "2,5" }],
+  },
+  escalade: {
+    description: "Grimper, calculer, dépasser ses peurs. L'escalade, c'est un puzzle vertical.",
+    facts: ["Renforce tout le haut du corps", "Booste la concentration", "Créatif et social"],
+    tone: "bg-peach", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "650" }, { label: "Salles Paris", value: "12" }, { label: "Sessions/sem.", value: "2" }],
+  },
+  crossfit: {
+    description: "Intensité, variété, dépassement. Le CrossFit, c'est se transformer en 45 min.",
+    facts: ["Brûle 800 kcal/h", "Combine cardio + force", "Communauté très soudée"],
+    tone: "bg-peach", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "800" }, { label: "Boxes 11e", value: "7" }, { label: "Sessions/sem.", value: "4" }],
+  },
+  stretching: {
+    description: "Étirer, relâcher, respirer. Le stretching, c'est l'antidote au quotidien.",
+    facts: ["Réduit les tensions", "Améliore la posture", "Récupération accélérée"],
+    tone: "bg-lavender-soft", cat: "lavender",
+    photos: [
+      "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "180" }, { label: "Studios", value: "10" }, { label: "Sessions/sem.", value: "3" }],
+  },
+  "arts-martiaux": {
+    description: "Discipline, respect, puissance. Les arts martiaux forgent le corps et le caractère.",
+    facts: ["Améliore la confiance", "Brûle 700 kcal/h", "Renforce la discipline mentale"],
+    tone: "bg-blush", cat: "black",
+    photos: [
+      "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=800&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=800&q=80&auto=format&fit=crop",
+    ],
+    stats: [{ label: "Cal/h", value: "700" }, { label: "Dojos Paris", value: "16" }, { label: "Sessions/sem.", value: "2" }],
   },
 };
 

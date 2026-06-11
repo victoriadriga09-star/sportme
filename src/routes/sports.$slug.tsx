@@ -45,7 +45,7 @@ const META: Record<string, Meta> = {
   yoga: {
     description: "Mouvement, souffle, présence. Le yoga unit corps et esprit.",
     facts: ["Réduit le cortisol", "Améliore le sommeil", "+35% de mobilité en 10 séances"],
-    tone: "bg-lavender-soft", cat: "orange",
+    tone: "bg-lavender-soft", cat: "lavender",
     photos: [
       "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&q=80&auto=format&fit=crop",
@@ -75,7 +75,7 @@ const META: Record<string, Meta> = {
   padel: {
     description: "Mix tennis et squash. Convivial, addictif, ultra-rapide à prendre en main.",
     facts: ["Match moyen = 90 min de cardio", "Sport en duo par essence", "L'un des plus dynamiques au monde"],
-    tone: "bg-sky", cat: "orange",
+    tone: "bg-sky", cat: "lavender",
     photos: [
       "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80&auto=format&fit=crop",

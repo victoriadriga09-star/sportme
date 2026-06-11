@@ -33,7 +33,7 @@ function MelodyPage() {
   const handleSkip = () => {
     if (skipCount >= 2) {
       toast("3 skips, on recommence !", { description: "Choisis à nouveau ton mood." });
-      setPhase("mood"); setPlaying(false); return;
+      setPhase("mood"); return;
     }
     setSkipCount((s) => s + 1);
     setTrackIdx((i) => (i + 1) % tracks.length);
@@ -53,7 +53,7 @@ function MelodyPage() {
   return (
     <main className="min-h-[100dvh] pb-32 bg-gradient-to-b from-[#F4F1EC] via-background to-[#EDE6F5]">
       <MobileHeader title="Melody" back="/home" right={
-        <Link to="/melody" aria-label="Recommencer" className="size-10 grid place-items-center rounded-full bg-surface border border-border" onClick={(e) => { e.preventDefault(); setPhase("mood"); setPlaying(false); }}>
+        <Link to="/melody" aria-label="Recommencer" className="size-10 grid place-items-center rounded-full bg-surface border border-border" onClick={(e) => { e.preventDefault(); setPhase("mood"); }}>
           <RotateCcw className="size-4" />
         </Link>
       }/>
@@ -67,8 +67,6 @@ function MelodyPage() {
               key={"track-" + track.id}
               track={track}
               mood={mood!}
-              playing={playing}
-              onPlay={() => setPlaying((p) => !p)}
               onSkip={handleSkip}
               onAdd={addToPlaylist}
               skipsLeft={3 - skipCount}
@@ -78,6 +76,7 @@ function MelodyPage() {
       </div>
     </main>
   );
+
 }
 
 /* ---------------- Mood picker ---------------- */

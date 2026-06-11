@@ -161,7 +161,7 @@ function MoodPicker({ onPick }: { onPick: (m: Mood) => void }) {
         onClick={() => onPick(active.id)}
         className="mt-8 w-full pill bg-ink text-background py-4 font-bold flex items-center justify-center gap-2 active:scale-[0.99] transition"
       >
-        <Music2 className="size-4"/> Trouver ma vibe — {active.label}
+        <Music2 className="size-4"/> Trouver ma vibe {active.label}
       </button>
     </motion.div>
   );

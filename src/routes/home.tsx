@@ -253,6 +253,8 @@ function Home() {
         </section>
 
       </div>
+
+      <LocationShareDialog open={shareOpen} onClose={() => setShareOpen(false)} />
     </main>
   );
 }

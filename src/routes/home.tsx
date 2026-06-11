@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Search, Flame, Trophy, Users, ChevronRight, Clock, MapPin, Zap, Sparkles } from "lucide-react";
+import { Search, Music2, BookOpen, CalendarDays, ChevronRight, Clock, MapPin, Zap, CheckCircle2, XCircle, CalendarClock } from "lucide-react";
 import { motion } from "framer-motion";
 import { Avatar } from "@/components/Avatar";
 import { useUser } from "@/lib/store";
 import { PARTNERS } from "@/data/mock";
-import heroShapes from "@/assets/hero-shapes.png";
+import { countThisMonth } from "@/data/sessions";
 
 export const Route = createFileRoute("/home")({
   head: () => ({

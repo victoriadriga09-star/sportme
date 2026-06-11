@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { Check } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
+import { CatPeek } from "@/components/CatPeek";
 import { SessionSheet } from "@/components/SessionSheet";
 import { SESSIONS, type MockSession } from "@/data/sessions";
 
@@ -83,14 +85,29 @@ function Agenda() {
                 const inMonth = d.getMonth() === cursor.getMonth();
                 const items = byDate[iso(d)] ?? [];
                 const isToday = iso(d) === iso(new Date());
+                const hasDone = items.some((s) => s.status === "done");
+                const hasPlanned = items.some((s) => s.status === "planned");
+                const hasCancelled = !hasDone && !hasPlanned && items.some((s) => s.status === "cancelled");
                 return (
                   <button key={i} onClick={() => { setCursor(d); setView("day"); }}
-                    className={`aspect-square rounded-xl flex flex-col items-center justify-center text-[12px] font-semibold relative ${inMonth ? "text-ink" : "text-muted-foreground/40"} ${isToday ? "bg-ink text-background" : "hover:bg-muted/50"}`}>
-                    {d.getDate()}
-                    {items.length > 0 && (
-                      <div className="absolute bottom-1 flex gap-0.5">
-                        {items.slice(0,3).map((s) => <span key={s.id} className={`size-1.5 rounded-full ${statusColor(s.status)}`}/>)}
-                      </div>
+                    className={`aspect-square rounded-xl flex items-center justify-center text-[12px] font-semibold relative ${inMonth ? "text-ink" : "text-muted-foreground/40"} ${isToday && !hasPlanned && !hasDone ? "bg-ink text-background" : ""}`}>
+                    {/* status circle around the date */}
+                    {hasDone && (
+                      <span className="absolute inset-1.5 rounded-full border-2 border-dashed border-lime" />
+                    )}
+                    {hasPlanned && (
+                      <span className="absolute inset-1.5 rounded-full bg-[#7C5CFF] text-white grid place-items-center font-extrabold">
+                        {d.getDate()}
+                      </span>
+                    )}
+                    {hasCancelled && (
+                      <span className="absolute inset-1.5 rounded-full border-2 border-muted-foreground/40" />
+                    )}
+                    {!hasPlanned && <span className="relative">{d.getDate()}</span>}
+                    {hasDone && (
+                      <span className="absolute -top-0.5 -right-0.5 size-4 rounded-full bg-lime text-ink grid place-items-center">
+                        <Check className="size-2.5" strokeWidth={3.5} />
+                      </span>
                     )}
                   </button>
                 );

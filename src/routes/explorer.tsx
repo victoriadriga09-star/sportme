@@ -62,25 +62,37 @@ function Explorer() {
 
       <div className="px-5 space-y-7 mt-2">
         {/* Intro hero — clean lavender card, black peeking cat (same as home) */}
-        <section className="relative overflow-hidden rounded-[32px] p-6 bg-gradient-to-br from-[#E9E1FF] via-lavender-soft to-[#F4EEFF] border border-white/70 soft-shadow">
-          
-
-          <CatPeek tone="black" corner="br" size={120} delay={0.15} />
-
-          <div className="relative max-w-[78%]">
-            <h2 className="font-display font-extrabold text-[32px] leading-[0.95] text-ink tracking-[-0.02em] uppercase">
-              Salut {user.prenom || "toi"}
-            </h2>
-            <h3 className="font-display font-extrabold text-[22px] leading-[1.05] mt-3 text-ink tracking-tight">
-              Trouve ton{" "}
-              <span className="font-display font-extrabold uppercase tracking-[0.04em] text-[#5B3FD1]">
-                partenaire
-              </span>{" "}
-              idéal
-            </h3>
-            <p className="text-[12px] text-ink/70 mt-2 leading-snug font-medium">
-              Sport, créneau, zone. On te trouve les sportifs dispo près de toi.
-            </p>
+        <section className="relative overflow-hidden rounded-[32px] p-6 bg-gradient-to-br from-[#EFE7FF] via-lavender-soft to-[#F4EEFF] border border-white/70 soft-shadow">
+          <div className="relative flex items-start gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="font-display font-extrabold text-[15px] text-[#7C5CFF]">
+                Hey {user.prenom || "toi"} <span className="inline-block">👋</span>
+              </p>
+              <h2 className="font-display font-extrabold text-[34px] leading-[1.0] text-ink tracking-tight mt-2">
+                Prête à
+              </h2>
+              <h2 className="font-display font-extrabold text-[34px] leading-[1.0] text-[#7C5CFF] tracking-tight">
+                te dépasser ?
+              </h2>
+              <p className="text-[13px] text-ink/70 mt-3 leading-snug font-medium max-w-[200px]">
+                Choisis ton sport et on te trouve les sportifs dispo près de toi.
+              </p>
+              <button
+                onClick={() => { const el = document.getElementById("ou-section"); el?.scrollIntoView({ behavior: "smooth" }); }}
+                className="mt-4 inline-flex items-center gap-2 pill bg-white text-ink border border-white/80 px-4 py-2.5 text-[12px] font-bold soft-shadow active:scale-[0.98]"
+              >
+                <MapPin className="size-4 text-[#7C5CFF]" /> Sportifs dispo près de toi
+              </button>
+            </div>
+            <img
+              src={yogaGirl}
+              alt=""
+              aria-hidden
+              width={1024}
+              height={1024}
+              className="absolute -right-6 -bottom-2 w-[180px] h-auto pointer-events-none select-none"
+              loading="lazy"
+            />
           </div>
         </section>
 

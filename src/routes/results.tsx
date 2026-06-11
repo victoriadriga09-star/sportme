@@ -397,7 +397,7 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
             </p>
           </div>
           <span className="text-xs flex items-center gap-1 bg-white/25 pill px-2 py-1 font-bold">
-            <Sparkle className="size-3 fill-current" /> {partner.rating}
+            <Star className="size-3 fill-[#FACC15] text-[#FACC15]" /> {partner.rating}
           </span>
         </div>
         <div className="flex gap-1.5 mt-3">

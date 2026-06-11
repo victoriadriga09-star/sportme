@@ -160,11 +160,7 @@ function Explorer() {
         {/* Durée */}
         <section>
           <Label>Durée</Label>
-
-
-
-          <div className="flex items-center justify-between mt-5 mb-2">
-            <p className="text-xs text-muted-foreground font-semibold">Durée</p>
+          <div className="flex items-center justify-end mt-3 mb-2">
             <button
               onClick={() => setCustomDur((v) => !v)}
               className={`pill text-[11px] font-semibold px-3 py-1.5 border flex items-center gap-1 ${customDur ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"}`}

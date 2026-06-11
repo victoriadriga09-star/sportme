@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, Music2, BookOpen, CalendarDays, ChevronRight, Clock, MapPin, Zap, CheckCircle2, XCircle, CalendarClock } from "lucide-react";
 import { motion } from "framer-motion";
 import { Avatar } from "@/components/Avatar";
+import { CatPeek } from "@/components/CatPeek";
 import { useUser } from "@/lib/store";
 import { PARTNERS } from "@/data/mock";
-import { countThisMonth } from "@/data/sessions";
+import { countThisMonth, type SessionStatus } from "@/data/sessions";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -83,6 +84,7 @@ function Home() {
             <div className="absolute -right-10 -top-12 size-44 rounded-full bg-white/40 blur-3xl float-slow" />
             <div className="absolute -left-12 -bottom-16 size-48 rounded-full bg-[#7C5CFF]/30 blur-3xl float-slow" style={{ animationDelay: "1.2s" }} />
             <div className="absolute inset-0 topo-dots opacity-25" />
+            <CatPeek tone="black" corner="br" size={88} delay={0.2} />
 
             <div className="relative flex items-center gap-2">
               <span className="size-2 rounded-full bg-[#7C5CFF] animate-pulse" />
@@ -236,7 +238,7 @@ function Home() {
               <span className={`size-9 grid place-items-center rounded-xl ${bg} ${fg} mb-2`}>
                 <Icon className="size-4" strokeWidth={2.2} />
               </span>
-              <p className="font-display font-extrabold text-[28px] leading-none text-ink">{countThisMonth(status)}</p>
+              <ClientCount status={status} />
               <p className="text-[11px] text-muted-foreground font-bold mt-1">{label}</p>
             </Link>
           ))}
@@ -244,5 +246,16 @@ function Home() {
 
       </div>
     </main>
+  );
+}
+
+/** Avoids SSR/CSR mismatch since countThisMonth depends on the current date. */
+function ClientCount({ status }: { status: SessionStatus }) {
+  const [n, setN] = useState<number | null>(null);
+  useEffect(() => { setN(countThisMonth(status)); }, [status]);
+  return (
+    <p className="font-display font-extrabold text-[28px] leading-none text-ink">
+      {n ?? "—"}
+    </p>
   );
 }

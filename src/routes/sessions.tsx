@@ -53,7 +53,7 @@ function Sessions() {
                 </div>
                 {s.status === "done" && (
                   <div className="flex items-center gap-0.5">
-                    <Sparkles className="size-3.5 fill-[#7C5CFF] text-[#7C5CFF]"/>
+                    <Star className="size-3.5 fill-[#FACC15] text-[#FACC15]"/>
                     <span className="text-[12px] font-bold">{s.score}</span>
                   </div>
                 )}

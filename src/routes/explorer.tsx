@@ -89,20 +89,31 @@ function Explorer() {
         </section>
 
 
-        {/* Sport */}
+        {/* Sport — grid of tiles */}
         <section>
           <Label>Quel sport ?</Label>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {SPORTS_PILLS.map((s) => (
-              <button key={s} onClick={() => set("sport", s)}
-                className={`pill text-sm font-semibold px-4 py-2.5 border transition ${
-                  s === f.sport ? "bg-lime text-ink border-ink" : "bg-surface text-ink border-border"
-                }`}>{s}</button>
-            ))}
+          <div className="grid grid-cols-3 gap-2.5 mt-3">
+            {sportTiles.map((s) => {
+              const active = s.label === f.sport;
+              return (
+                <button key={s.label} onClick={() => set("sport", s.label)}
+                  className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1.5 border transition active:scale-[0.97] ${
+                    active ? "bg-lime border-ink text-ink shadow-lg" : "bg-surface border-border text-ink"
+                  }`}>
+                  <span className="text-3xl">{s.emoji}</span>
+                  <span className="text-[12px] font-bold leading-none text-center px-1">{s.label}</span>
+                </button>
+              );
+            })}
+            <button onClick={() => setPickerOpen(true)}
+              className="aspect-square rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-dashed border-ink/30 bg-surface/60 text-ink/70 active:scale-[0.97] transition">
+              <Plus className="size-6" strokeWidth={2.2} />
+              <span className="text-[12px] font-bold leading-none">Autre</span>
+            </button>
           </div>
         </section>
 
-        {/* Quand + Durée */}
+        {/* Quand */}
         <section>
           <Label>Quand ?</Label>
           <div className="flex flex-wrap gap-2 mt-3">
@@ -112,15 +123,17 @@ function Explorer() {
                   t === f.when && !pickedDate ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
                 }`}>{t}</button>
             ))}
+          </div>
+          <div className="grid grid-cols-2 gap-2 mt-3">
             <Popover open={dateOpen} onOpenChange={setDateOpen}>
               <PopoverTrigger asChild>
                 <button
-                  className={`pill text-sm font-semibold px-4 py-2.5 border transition flex items-center gap-1.5 ${
+                  className={`h-12 px-4 rounded-2xl border transition flex items-center gap-2 text-sm font-semibold ${
                     pickedDate ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
                   }`}
                 >
-                  <CalendarIcon className="size-3.5" />
-                  {pickedDate ? format(pickedDate, "EEE d MMM", { locale: fr }) : "Choisir…"}
+                  <CalendarIcon className="size-4" />
+                  {pickedDate ? format(pickedDate, "EEE d MMM", { locale: fr }) : "Date"}
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0 rounded-2xl" align="start">
@@ -134,7 +147,20 @@ function Explorer() {
                 />
               </PopoverContent>
             </Popover>
+            <div className={`h-12 px-3 rounded-2xl border flex items-center gap-2 text-sm font-semibold transition ${
+              f.whenTime ? "bg-ink text-background border-ink" : "bg-surface text-ink border-border"
+            }`}>
+              <ClockIcon className="size-4" />
+              <input type="time" value={f.whenTime ?? ""} onChange={(e) => set("whenTime", e.target.value)}
+                className="bg-transparent outline-none flex-1 text-sm font-semibold"/>
+            </div>
           </div>
+        </section>
+
+        {/* Durée */}
+        <section>
+          <Label>Durée</Label>
+
 
 
           <div className="flex items-center justify-between mt-5 mb-2">

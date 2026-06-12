@@ -164,7 +164,7 @@ function Home() {
           <div className="mt-4 grid grid-cols-3 gap-2.5">
             {[
               { to: "/melody" as const, label: "Music", Icon: Music2, bg: "bg-lavender-soft", fg: "text-[#7C5CFF]" },
-              { to: "/sports" as const, label: "Sports", Icon: BookOpen, bg: "bg-lime/40", fg: "text-ink" },
+              { to: "/sports" as const, label: "Sports", Icon: Dumbbell, bg: "bg-lime/40", fg: "text-ink" },
               { to: "/agenda" as const, label: "Agenda", Icon: CalendarDays, bg: "bg-peach", fg: "text-ink" },
             ].map(({ to, label, Icon, bg, fg }) => (
               <Link

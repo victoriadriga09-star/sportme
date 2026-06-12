@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileHeader } from "@/components/MobileHeader";
+import { GoogleButton } from "@/components/GoogleButton";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Connexion — ÉLAN" }] }),
@@ -14,7 +15,9 @@ function Login() {
         <h1 className="font-display font-extrabold text-[32px] leading-tight">Content de te<br/>revoir.</h1>
         <p className="text-muted-foreground mt-2">Connecte-toi pour retrouver tes partenaires.</p>
 
-        <div className="mt-8 space-y-3">
+        <div className="mt-8 space-y-4">
+          <GoogleButton />
+          <div className="space-y-3">
           <label className="block">
             <span className="text-xs font-semibold text-muted-foreground">Email</span>
             <input

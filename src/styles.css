@@ -232,6 +232,7 @@
       box-shadow: 0 30px 80px -30px rgba(20,20,30,0.35), 0 4px 12px -4px rgba(20,20,30,0.15);
       outline: 8px solid var(--color-ink);
       min-height: calc(100dvh - 48px);
+      overflow: hidden;
     }
   }
 }

@@ -5,7 +5,7 @@ import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
 import { saveUser } from "@/lib/store";
 import { LIEU_ICONS, CRENEAU_ICONS, GOAL_ICONS, RYTHME_ICONS, SPORT_ICONS } from "@/lib/icons";
-import { GoogleButton } from "@/components/GoogleButton";
+import { GoogleButton, OrDivider } from "@/components/GoogleButton";
 
 
 export const Route = createFileRoute("/onboarding")({
@@ -49,8 +49,9 @@ function Onboarding() {
     { eyebrow: "Compte", title: "Ton adresse email", sub: "Pour ton compte et tes notifications.", ok: /.+@.+\..+/.test(f.email),
       node: (
         <div className="space-y-4">
-          <GoogleButton onAfter={() => { update("email", "demo@google.com"); }} />
           <Input type="email" value={f.email} onChange={(v) => update("email", v)} placeholder="email@exemple.com" />
+          <OrDivider />
+          <GoogleButton />
         </div>
       ) },
     { eyebrow: "Compte", title: "Choisis un mot de passe", sub: "Minimum 8 caractères.", ok: f.password.length >= 8,

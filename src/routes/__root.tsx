@@ -130,6 +130,29 @@ function AppShell() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  useEffect(() => {
+    let mounted = true;
+    import("@/integrations/supabase/client").then(({ supabase }) => {
+      if (!mounted) return;
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+        if (event === "SIGNED_IN") {
+          router.navigate({ to: "/home" });
+          router.invalidate();
+          queryClient.invalidateQueries();
+        } else if (event === "SIGNED_OUT") {
+          queryClient.clear();
+          router.navigate({ to: "/" });
+        }
+      });
+      (window as unknown as { __elanAuthSub?: { unsubscribe: () => void } }).__elanAuthSub = subscription;
+    });
+    return () => {
+      mounted = false;
+      const sub = (window as unknown as { __elanAuthSub?: { unsubscribe: () => void } }).__elanAuthSub;
+      sub?.unsubscribe();
+    };
+  }, [router, queryClient]);
   return (
     <QueryClientProvider client={queryClient}>
       <AppShell />

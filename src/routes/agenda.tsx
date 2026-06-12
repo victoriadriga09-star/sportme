@@ -145,7 +145,7 @@ function Agenda() {
           {visible.map((s) => (
             <button key={s.id} onClick={() => setSheet(s)} className="w-full text-left flex items-center gap-3 rounded-2xl bg-surface border border-border p-3.5 active:scale-[0.99] transition">
               <span className={`size-10 rounded-full grid place-items-center text-white ${statusColor(s.status)}`}>
-                {s.status === "planned" ? "📅" : s.status === "done" ? "✓" : "✕"}
+                {s.status === "planned" ? <CalendarDays className="size-5" strokeWidth={2.2} /> : s.status === "done" ? <Check className="size-5" strokeWidth={2.6} /> : <XIcon className="size-5" strokeWidth={2.6} />}
               </span>
               <div className="flex-1 min-w-0">
                 <p className="font-display font-bold text-[15px] leading-tight">{s.sport}</p>

@@ -216,23 +216,38 @@
       repeating-linear-gradient(45deg, color-mix(in oklab, var(--ink) 10%, transparent) 0 1px, transparent 1px 8px);
   }
 
-  /* mobile frame on wider screens */
+  /* Fixed mobile frame — same dimensions on every screen.
+     On mobile it fills the viewport; on desktop it locks to a phone-like
+     size and the inner .mobile-scroll handles overflow. */
   .mobile-frame {
+    width: 100%;
     max-width: 430px;
+    height: 100dvh;
     margin-inline: auto;
-    min-height: 100dvh;
     background: var(--color-background);
     position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
   }
   @media (min-width: 640px) {
+    body { min-height: 100dvh; display: flex; align-items: center; justify-content: center; }
     .mobile-frame {
       margin-block: 24px;
+      width: 430px;
+      height: 844px;
+      max-height: calc(100dvh - 48px);
       border-radius: 44px;
       box-shadow: 0 30px 80px -30px rgba(20,20,30,0.35), 0 4px 12px -4px rgba(20,20,30,0.15);
       outline: 8px solid var(--color-ink);
-      min-height: calc(100dvh - 48px);
-      overflow: hidden;
     }
   }
 }

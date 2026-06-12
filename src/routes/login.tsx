@@ -35,6 +35,7 @@ function Login() {
             />
           </label>
           <button className="text-xs text-muted-foreground underline underline-offset-4">Mot de passe oublié ?</button>
+          </div>
         </div>
       </div>
 

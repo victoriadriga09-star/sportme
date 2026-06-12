@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Search, Music2, BookOpen, CalendarDays, ChevronRight, Clock, MapPin, Zap, CheckCircle2, XCircle, CalendarClock } from "lucide-react";
+import { Search, Music2, Dumbbell, CalendarDays, ChevronRight, Clock, MapPin, Zap, CheckCircle2, XCircle, CalendarClock } from "lucide-react";
 import { motion } from "framer-motion";
 import { Avatar } from "@/components/Avatar";
 import { CatPeek } from "@/components/CatPeek";

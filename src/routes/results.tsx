@@ -6,9 +6,16 @@ import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { Avatar } from "@/components/Avatar";
 import { Pill } from "@/components/Pill";
-import { PARTNERS, type Partner } from "@/data/mock";
+import { FilterPill } from "@/components/FilterPill";
+import { PARTNERS, SPORTS, type Partner } from "@/data/mock";
 import { useFilters, useFavorites, DEFAULT_FILTERS } from "@/lib/store";
 import { toast } from "sonner";
+
+const WHEN_OPTIONS = ["Peu importe", "Aujourd'hui", "Demain", "Cette semaine", "Ce week-end"];
+const DURATION_OPTIONS = ["Peu importe", "30 min", "45 min", "60 min", "90 min"];
+const RADIUS_OPTIONS = [2, 5, 10, 20, 50];
+const MODE_OPTIONS: Array<"Tous" | "Présentiel" | "Visio"> = ["Tous", "Présentiel", "Visio"];
+const GENDER_OPTIONS = ["Peu importe", "Femme", "Homme", "Non-binaire"];
 
 export const Route = createFileRoute("/results")({
   head: () => ({ meta: [{ title: "Résultats — ÉLAN" }] }),
@@ -19,6 +26,10 @@ type View = "list" | "map" | "swipe";
 
 function applyFilters(list: Partner[], f: ReturnType<typeof useFilters>[0]): Partner[] {
   return list.filter((p) => {
+    if (f.sport && f.sport !== "Peu importe" && p.sport !== f.sport) return false;
+    if (f.city && f.city !== "Peu importe" && p.place && !p.place.toLowerCase().includes(f.city.toLowerCase().split(" ")[0]) && p.place !== f.city) {
+      // soft city match — keep the previous radius check below as the main geo filter
+    }
     if (f.gender !== "Peu importe" && p.gender !== f.gender) return false;
     if (f.mode !== "Tous" && p.mode !== f.mode) return false;
     if (f.level !== "Tous" && p.level !== f.level) return false;
@@ -55,12 +66,53 @@ function Results() {
 
       <div className="px-5">
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3 -mx-5 px-5">
-          <Pill tone="lime">{filters.sport}</Pill>
-          <Pill tone="ghost">{filters.when} · {filters.durationCustom ? `${filters.durationCustom} min` : filters.duration}</Pill>
-          <Pill tone="ghost">{filters.city}</Pill>
-          <Pill tone="ghost">{filters.radius} km</Pill>
-          {filters.mode !== "Tous" && <Pill tone="lavender">{filters.mode}</Pill>}
-          {filters.gender !== "Peu importe" && <Pill tone="lavender">{filters.gender}</Pill>}
+          <FilterPill
+            tone="lime"
+            label={filters.sport || "Sport"}
+            value={filters.sport}
+            anyValue="Peu importe"
+            options={SPORTS.map((s) => ({ value: s.label, label: `${s.emoji} ${s.label}` }))}
+            onChange={(v) => setFilters({ ...filters, sport: v })}
+          />
+          <FilterPill
+            label={`${filters.when} · ${filters.duration}`}
+            value={filters.when}
+            options={WHEN_OPTIONS.map((v) => ({ value: v, label: v }))}
+            onChange={(v) => setFilters({ ...filters, when: v })}
+          />
+          <FilterPill
+            label={filters.duration}
+            value={filters.duration}
+            options={DURATION_OPTIONS.map((v) => ({ value: v, label: v }))}
+            onChange={(v) => setFilters({ ...filters, duration: v, durationCustom: undefined })}
+          />
+          <FilterPill
+            label={filters.city || "Ville"}
+            value={filters.city}
+            anyValue="Peu importe"
+            options={Array.from(new Set(PARTNERS.map((p) => p.place))).map((v) => ({ value: v, label: v }))}
+            onChange={(v) => setFilters({ ...filters, city: v })}
+          />
+          <FilterPill
+            label={`${filters.radius} km`}
+            value={String(filters.radius)}
+            options={RADIUS_OPTIONS.map((v) => ({ value: String(v), label: `${v} km` }))}
+            onChange={(v) => setFilters({ ...filters, radius: Number(v) })}
+          />
+          <FilterPill
+            tone={filters.mode !== "Tous" ? "lavender" : "ghost"}
+            label={filters.mode}
+            value={filters.mode}
+            options={MODE_OPTIONS.map((v) => ({ value: v, label: v }))}
+            onChange={(v) => setFilters({ ...filters, mode: v as typeof filters.mode })}
+          />
+          <FilterPill
+            tone={filters.gender !== "Peu importe" ? "lavender" : "ghost"}
+            label={filters.gender}
+            value={filters.gender}
+            options={GENDER_OPTIONS.map((v) => ({ value: v, label: v }))}
+            onChange={(v) => setFilters({ ...filters, gender: v })}
+          />
         </div>
 
         {/* Quick controls — clear filters / show all */}

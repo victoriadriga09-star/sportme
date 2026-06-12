@@ -160,7 +160,7 @@ function Detail() {
       </div>
 
       {/* sticky actions */}
-      <div className="fixed bottom-0 inset-x-0 px-5 pb-7 pt-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
+      <div className="absolute bottom-0 inset-x-0 px-5 pb-7 pt-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
         <div className="max-w-[430px] mx-auto flex gap-2 pointer-events-auto">
           <Link to="/chat/$id" params={{ id: p.id }} className="flex-1 pill border border-ink text-ink py-3.5 font-semibold flex items-center justify-center gap-2">
             <MessageCircle className="size-4" /> Écrire

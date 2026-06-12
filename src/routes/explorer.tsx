@@ -265,7 +265,7 @@ function Explorer() {
         </section>
       </div>
 
-      <div className="fixed bottom-0 inset-x-0 px-5 pb-24 pt-6 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none">
+      <div className="absolute bottom-0 inset-x-0 px-5 pb-24 pt-6 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none">
         <div className="max-w-[430px] mx-auto pointer-events-auto">
           <button
             onClick={launchSearch}

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Check } from "lucide-react";
+import { Check, X as XIcon, CalendarDays } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
 import { CatPeek } from "@/components/CatPeek";
 import { SessionSheet } from "@/components/SessionSheet";

@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import { MobileHeader } from "@/components/MobileHeader";
 
 import { SPORTS } from "@/data/mock";
-import { SPORT_ICONS } from "@/lib/icons";
-import { Dumbbell } from "lucide-react";
 
 export const Route = createFileRoute("/sports/")({
   head: () => ({ meta: [{ title: "Sports — ÉLAN" }] }),

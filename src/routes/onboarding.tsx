@@ -5,6 +5,7 @@ import { Pill } from "@/components/Pill";
 import { SPORTS } from "@/data/mock";
 import { saveUser } from "@/lib/store";
 import { LIEU_ICONS, CRENEAU_ICONS, GOAL_ICONS, RYTHME_ICONS, SPORT_ICONS } from "@/lib/icons";
+import { GoogleButton } from "@/components/GoogleButton";
 
 
 export const Route = createFileRoute("/onboarding")({
@@ -46,7 +47,12 @@ function Onboarding() {
     { eyebrow: "Profil", title: "Comment tu te définis ?", sub: "Certains préfèrent s'entraîner avec une personne du même genre.", ok: !!f.gender,
       node: <CardChoices value={f.gender} onChange={(v) => update("gender", v)} options={["Femme", "Homme", "Non-binaire", "Je préfère ne pas dire"]} /> },
     { eyebrow: "Compte", title: "Ton adresse email", sub: "Pour ton compte et tes notifications.", ok: /.+@.+\..+/.test(f.email),
-      node: <Input type="email" value={f.email} onChange={(v) => update("email", v)} placeholder="email@exemple.com" /> },
+      node: (
+        <div className="space-y-4">
+          <GoogleButton onAfter={() => { update("email", "demo@google.com"); }} />
+          <Input type="email" value={f.email} onChange={(v) => update("email", v)} placeholder="email@exemple.com" />
+        </div>
+      ) },
     { eyebrow: "Compte", title: "Choisis un mot de passe", sub: "Minimum 8 caractères.", ok: f.password.length >= 8,
       node: <PasswordInput value={f.password} onChange={(v) => update("password", v)} /> },
     { eyebrow: "Localisation", title: "Où est-ce que tu habites ?", sub: "Pour te proposer des partenaires près de chez toi.", ok: f.city.trim().length >= 2,

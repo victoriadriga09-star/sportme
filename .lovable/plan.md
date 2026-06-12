@@ -1,47 +1,28 @@
-## Goal
+## 1. "Continuer avec Google" button on /login and /onboarding
 
-On `/melody`, swap the fake synthesized pad for real Spotify playback using Spotify's open embed player — no Spotify account, no API key, no OAuth.
+- Add a Google button (white pill, Google "G" icon, "Continuer avec Google") above the email/password block on `src/routes/login.tsx` and on the relevant step of `src/routes/onboarding.tsx`.
+- Below it, a thin divider "ou" separating it from the email flow.
+- Visual only — no auth backend in this pass. Clicking shows a toast ("Bientôt disponible") and routes the user forward like the existing CTA, so the demo flow keeps working.
+- If you want it actually wired to Google sign-in, that needs Lovable Cloud + Google provider enabled; tell me and I'll do that in a follow-up.
 
-## How Spotify embeds work
+## 2. Editable filter pills on /results
 
-Spotify exposes a public iframe player at `https://open.spotify.com/embed/track/{TRACK_ID}` (also `/playlist/{ID}`, `/album/{ID}`). Anyone can press play and hear a 30-second preview; logged-in Spotify users hear the full track. We just need the canonical Spotify track ID for each curated song.
+Today the row of pills at the top of `src/routes/results.tsx` (Sport / Quand+durée / Ville / Rayon / Mode / Genre) is read-only. Make each pill a dropdown trigger:
 
-## Changes
+- Click a pill → small popover opens just below it with a scrollable list of options + a "Peu importe" entry at the top (French equivalent of "any") to clear that filter.
+- Selecting an option updates the shared filters store (`useFilters` in `src/lib/store.ts`) and closes the popover; the results list re-filters immediately.
+- Active pill keeps the lime/lavender tone; reset pills use the neutral ghost tone. A small chevron is added to each pill to signal it's interactive.
 
-### 1. `src/data/moodTracks.ts`
-Add a `spotifyId` field to the `Track` type and fill it in for the 25 curated songs (5 per mood). IDs are the 22-character string from each track's Spotify URL (e.g. `Espresso` → `2qSkIjg1o9h3YT9RAgYN75`). The emoji `cover` stays as a graceful fallback.
+Pill → options mapping:
+- **Sport**: list from `SPORTS` in `src/data/mock.ts` (Yoga, Course, Tennis, …).
+- **Quand · durée**: two-section popover — "Quand" (Aujourd'hui, Demain, Cette semaine, Peu importe) and "Durée" (30, 45, 60, 90 min, Peu importe).
+- **Ville**: list of cities present in `PARTNERS` + "Peu importe".
+- **Rayon**: 2, 5, 10, 20, 50 km + "Peu importe" (= 50 km max).
+- **Mode** (only shown when active today — will always be visible now): Tous, Présentiel, Visio.
+- **Genre**: Peu importe, Femmes, Hommes, Mixte.
 
-### 2. New `src/components/SpotifyEmbed.tsx`
-Tiny wrapper that renders the official iframe with the right attributes:
+Implementation uses the existing shadcn `Popover` component to stay consistent with the rest of the UI; no new deps.
 
-```tsx
-<iframe
-  src={`https://open.spotify.com/embed/track/${id}?utm_source=elan`}
-  width="100%" height="152" loading="lazy"
-  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
-  className="rounded-2xl border-0"
-  title={`Spotify – ${title}`}
-/>
-```
-
-Heights: 152 px (compact) or 352 px (with cover art). We'll use 152 to keep the existing emoji cover as the visual hero.
-
-### 3. `src/routes/melody.tsx`
-- Remove the `useMoodAudio` synthesizer call (the embed handles playback).
-- Remove the custom Play/Pause button — Spotify's embed has its own transport. Keep Skip and "Ajouter à ma playlist".
-- Drop the big emoji cover down a bit and mount `<SpotifyEmbed id={track.spotifyId} title={track.title}/>` directly under the title/artist block.
-- Keep the mood picker, searching animation, and skip/add flow untouched.
-
-### 4. Graceful fallback
-If a track has no `spotifyId` (or the iframe fails), keep the emoji card visible and show a small "Aperçu indisponible" hint instead of the player. No app crash.
-
-## What this does NOT do
-
-- No Spotify login, no per-user playlists in the user's Spotify account, no "save to Spotify library" button (that requires OAuth — separate plan).
-- No live search by mood. The mood → track mapping stays our curated list.
-- No `LocationShareDialog`-style backend; everything stays client-side.
-
-## Files touched
-- `src/data/moodTracks.ts` — add `spotifyId` per track
-- `src/components/SpotifyEmbed.tsx` — new
-- `src/routes/melody.tsx` — drop synth + custom play button, mount embed
+## Out of scope
+- Real Google OAuth wiring (needs backend opt-in).
+- Changes to the bottom tab bar or other screens.

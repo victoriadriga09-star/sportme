@@ -34,15 +34,15 @@ function SportsLibrary() {
 
         <div className="grid grid-cols-2 gap-3 mt-6">
           {SPORTS.map((s, i) => {
-            const Icon = SPORT_ICONS[s.label] ?? Dumbbell;
             return (
               <motion.div key={s.label}
                 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.03, duration: 0.4, ease: [0.22,1,0.36,1] }}>
                 <Link to="/sports/$slug" params={{ slug: slugify(s.label) }}
                   className={`block rounded-3xl p-4 aspect-square ${TONES[i % TONES.length]} border border-white/60 soft-shadow active:scale-[0.97] hover:scale-[1.02] transition cursor-pointer relative overflow-hidden flex flex-col items-center justify-center text-center`}>
-                  <Icon className="size-16 text-ink" strokeWidth={1.6} />
+                  <span className="text-[64px] leading-none" role="img" aria-label={s.label}>{s.emoji}</span>
                   <p className="font-display font-extrabold text-[18px] leading-tight mt-4 tracking-[0.04em] uppercase">{s.label}</p>
+
                 </Link>
               </motion.div>
             );

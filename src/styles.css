@@ -216,12 +216,13 @@
       repeating-linear-gradient(45deg, color-mix(in oklab, var(--ink) 10%, transparent) 0 1px, transparent 1px 8px);
   }
 
-  /* Fixed mobile frame — same dimensions on every screen.
-     On mobile it fills the viewport; on desktop it locks to a phone-like
-     size and the inner .mobile-scroll handles overflow. */
+  /* Fixed mobile frame — iPhone 14 viewport (390x844).
+     On mobile devices it fills the viewport. On desktop it locks to iPhone 14
+     proportions and is proportionally scaled down when the browser is too
+     small. Aspect ratio is never distorted. */
   .mobile-frame {
     width: 100%;
-    max-width: 430px;
+    max-width: 390px;
     height: 100dvh;
     margin-inline: auto;
     background: var(--color-background);
@@ -239,15 +240,25 @@
     -webkit-overflow-scrolling: touch;
   }
   @media (min-width: 640px) {
-    body { min-height: 100dvh; display: flex; align-items: center; justify-content: center; }
+    body {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Scale factor: shrink frame proportionally if viewport height is
+         smaller than the iPhone 14 frame + breathing room. Never upscale. */
+      --frame-scale: min(1, calc((100dvh - 48px) / 844));
+    }
     .mobile-frame {
-      margin-block: 24px;
-      width: 430px;
+      width: 390px;
       height: 844px;
-      max-height: calc(100dvh - 48px);
-      border-radius: 44px;
+      max-height: none;
+      flex: 0 0 auto;
+      border-radius: 42px;
       box-shadow: 0 30px 80px -30px rgba(20,20,30,0.35), 0 4px 12px -4px rgba(20,20,30,0.15);
       outline: 8px solid var(--color-ink);
+      transform: scale(var(--frame-scale, 1));
+      transform-origin: center center;
     }
   }
 }

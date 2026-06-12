@@ -10,7 +10,7 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="absolute inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+12px)] z-40 pointer-events-none"
+      className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+34px)] z-40 pointer-events-none"
     >
       <div className="mx-auto max-w-[430px] px-4 pointer-events-auto">
         <div className="relative glass-dark text-background rounded-full pl-4 pr-4 py-2 flex items-center justify-between">

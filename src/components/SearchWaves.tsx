@@ -21,7 +21,7 @@ export function SearchWaves({ label = "Recherche de partenaires…" }: { label?:
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35 }}
-      className="absolute inset-0 z-[100] grid place-items-center overflow-hidden"
+      className="fixed inset-0 z-[100] grid place-items-center overflow-hidden"
       style={{
         background:
           "radial-gradient(circle at 50% 50%, #7C5CFF 0%, #A98BFF 22%, #D9CCFF 45%, #F3EEFF 70%, #FFFFFF 100%)",

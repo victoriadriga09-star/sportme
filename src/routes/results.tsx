@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, type PanInfo } from "framer-motion";
 import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";
@@ -211,41 +211,56 @@ function ListView({ list }: { list: Partner[] }) {
   );
 }
 
+const CITY_COORDS: Record<string, [number, number]> = {
+  paris: [48.8566, 2.3522],
+  lyon: [45.7640, 4.8357],
+  marseille: [43.2965, 5.3698],
+  bordeaux: [44.8378, -0.5792],
+  toulouse: [43.6047, 1.4442],
+  lille: [50.6292, 3.0573],
+  nantes: [47.2184, -1.5536],
+  nice: [43.7102, 7.2620],
+  strasbourg: [48.5734, 7.7521],
+  rennes: [48.1173, -1.6778],
+  montpellier: [43.6108, 3.8767],
+};
+
 function MapView({ list, city }: { list: Partner[]; city: string }) {
   const positions = [
     { l: "22%", t: "30%" }, { l: "70%", t: "26%" }, { l: "65%", t: "60%" },
     { l: "28%", t: "65%" }, { l: "50%", t: "20%" }, { l: "44%", t: "78%" },
     { l: "82%", t: "45%" }, { l: "15%", t: "50%" },
   ];
-  // Carte Google Static réelle de la ville (style minimal lavande)
-  const browserKey = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY as string | undefined;
-  const styleParams = [
-    "feature:poi|visibility:off",
-    "feature:transit|visibility:off",
-    "feature:road|element:labels|visibility:off",
-    "feature:administrative|element:labels.text.fill|color:0x6b6485",
-    "feature:water|color:0xd9e2ef",
-    "feature:landscape|color:0xf3eefb",
-    "feature:road|color:0xffffff",
-  ].map((s) => `style=${encodeURIComponent(s)}`).join("&");
-  const mapUrl = browserKey
-    ? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(city)}&zoom=13&size=600x900&scale=2&${styleParams}&key=${browserKey}`
-    : null;
+
+  const initialKey = (city || "paris").toLowerCase().split(" ")[0];
+  const [coords, setCoords] = useState<[number, number]>(CITY_COORDS[initialKey] ?? CITY_COORDS.paris);
+
+  useEffect(() => {
+    const k = (city || "paris").toLowerCase().split(" ")[0];
+    if (CITY_COORDS[k]) { setCoords(CITY_COORDS[k]); return; }
+    let cancelled = false;
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(city)}`)
+      .then((r) => r.json())
+      .then((data: Array<{ lat: string; lon: string }>) => {
+        if (cancelled || !data?.[0]) return;
+        setCoords([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [city]);
+
+  const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${coords[0]},${coords[1]}&zoom=13&size=600x900&maptype=mapnik`;
 
   return (
     <div className="relative rounded-3xl overflow-hidden border border-border h-[70vh] bg-[#f3eefb]">
-      {mapUrl ? (
-        <img
-          src={mapUrl}
-          alt={`Carte de ${city}`}
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="lazy"
-        />
-      ) : (
-        <div className="absolute inset-0 grid place-items-center text-xs text-muted-foreground p-6 text-center">
-          Carte indisponible — connecte Google Maps pour voir la ville réelle.
-        </div>
-      )}
+      <img
+        src={mapUrl}
+        alt={`Carte de ${city}`}
+        className="absolute inset-0 w-full h-full object-cover opacity-90"
+        loading="lazy"
+        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/10 via-[#A98BFF]/10 to-[#F3EEFB]/40 pointer-events-none" />
 
       {/* city pill */}
       <div className="absolute top-3 left-3 glass-strong pill px-3 py-1.5 text-[11px] font-bold text-ink flex items-center gap-1.5">

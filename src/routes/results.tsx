@@ -9,7 +9,9 @@ import { Pill } from "@/components/Pill";
 import { FilterPill } from "@/components/FilterPill";
 import { PARTNERS, SPORTS, type Partner } from "@/data/mock";
 import { useFilters, useFavorites, DEFAULT_FILTERS } from "@/lib/store";
+import { MapView } from "@/components/ResultsMap";
 import { toast } from "sonner";
+
 
 const WHEN_OPTIONS = ["Peu importe", "Aujourd'hui", "Demain", "Cette semaine", "Ce week-end"];
 const DURATION_OPTIONS = ["Peu importe", "30 min", "45 min", "60 min", "90 min"];

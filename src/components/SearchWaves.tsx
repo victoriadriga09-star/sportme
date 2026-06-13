@@ -1,11 +1,18 @@
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 /**
  * Fullscreen search animation — radial violet glow fading to white at edges,
  * concentric pulse rings + orbiting nodes + connection lines.
  */
 export function SearchWaves({ label = "Recherche de partenaires…" }: { label?: string }) {
+  const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    setMountNode(document.getElementById("phone-overlay-root"));
+  }, []);
+
   const nodes = [
     { x: 0,    y: -110, d: 0.05 },
     { x: 95,   y: -55,  d: 0.15 },

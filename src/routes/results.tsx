@@ -249,18 +249,21 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
     return () => { cancelled = true; };
   }, [city]);
 
-  const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${coords[0]},${coords[1]}&zoom=13&size=600x900&maptype=mapnik`;
+  const d = 0.018;
+  const bbox = `${coords[1] - d},${coords[0] - d},${coords[1] + d},${coords[0] + d}`;
+  const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
 
   return (
     <div className="relative rounded-3xl overflow-hidden border border-border h-[70vh] bg-[#f3eefb]">
-      <img
+      <iframe
+        key={mapUrl}
+        title={`Carte de ${city}`}
         src={mapUrl}
-        alt={`Carte de ${city}`}
-        className="absolute inset-0 w-full h-full object-cover opacity-90"
+        className="absolute inset-0 w-full h-full pointer-events-none"
         loading="lazy"
-        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/10 via-[#A98BFF]/10 to-[#F3EEFB]/40 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/15 via-[#A98BFF]/15 to-[#F3EEFB]/40 pointer-events-none" />
+
 
       {/* city pill */}
       <div className="absolute top-3 left-3 glass-strong pill px-3 py-1.5 text-[11px] font-bold text-ink flex items-center gap-1.5">

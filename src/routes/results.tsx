@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, type PanInfo } from "framer-motion";
 import { MapPin, Star, Clock, List, Map as MapIcon, Layers, Heart, X, Check, Video, Users as UsersIcon, Sparkles, RotateCcw } from "lucide-react";
 import { MobileHeader } from "@/components/MobileHeader";

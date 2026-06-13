@@ -86,15 +86,16 @@ export function SplashElan({ onDone, duration = 2400 }: { onDone?: () => void; d
           />
         </svg>
 
-        {/* Traveling dot */}
+        {/* Traveling dot — sits on the SVG baseline (svg top=0, baseline at 30px) */}
         <motion.span
           className="absolute size-2 rounded-full"
           style={{
-            top: `calc(${BASELINE} + 0px)`,
+            top: 30,
+            left: 0,
             background: ACCENT,
             boxShadow: `0 0 12px ${ACCENT}`,
-            transform: "translate(-50%, -50%)",
-            left: 0,
+            marginLeft: -4,
+            marginTop: -4,
           }}
           initial={{ x: 0, opacity: 1 }}
           animate={{
@@ -107,6 +108,7 @@ export function SplashElan({ onDone, duration = 2400 }: { onDone?: () => void; d
             ease: "linear",
           }}
         />
+
       </div>
 
       {/* Subtle tagline beneath */}

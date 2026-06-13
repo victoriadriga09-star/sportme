@@ -1,14 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
   ChevronRight, Users, BarChart3, Settings, LogOut,
   Sparkles, Award, Camera, Heart, Trophy, Flame, Plus, X, ListChecks,
 } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Avatar } from "@/components/Avatar";
 import { SportPicker } from "@/components/SportPicker";
 import { useUser, saveUser } from "@/lib/store";
+
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [{ title: "Mon profil — ÉLAN" }] }),

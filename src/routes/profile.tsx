@@ -262,9 +262,14 @@ function Profile() {
       </section>
 
       <section className="px-5 mt-5">
-        <button className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-destructive/80 hover:text-destructive transition">
-          <LogOut className="size-4" /> Se déconnecter
+        <button
+          onClick={handleLogout}
+          disabled={signingOut}
+          className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-destructive/80 hover:text-destructive transition disabled:opacity-50"
+        >
+          <LogOut className="size-4" /> {signingOut ? "Déconnexion…" : "Se déconnecter"}
         </button>
+
       </section>
 
       <SportPicker open={pickerOpen} onClose={() => setPickerOpen(false)} current={user.sports} onAdd={addSport} />

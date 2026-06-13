@@ -126,8 +126,10 @@ function AppShell() {
         </AnimatePresence>
       </div>
       {!hide && <BottomTabBar />}
+      <div id="phone-overlay-root" className="absolute inset-0 pointer-events-none z-[200]" />
       <Toaster position="top-center" />
     </div>
+
   );
 }
 

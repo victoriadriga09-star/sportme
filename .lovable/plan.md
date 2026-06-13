@@ -1,57 +1,42 @@
-# Plan
+## 1. `/results` — real map background
 
-## 1. Move "Continuer avec Google" below "Se connecter"
+The current `MapView` loads `https://staticmap.openstreetmap.de/...` which is unreliable and is currently rendering as a blank/error in the preview. Replace it with the **OpenStreetMap embed iframe** (no API key, always works), which produces the exact tiled map look from the attached reference (street names, neighborhoods, etc.).
 
-**`src/routes/login.tsx`**
-- Remove `<GoogleButton />` and its "ou" divider from the top of the form (above Email).
-- In the bottom CTA block, render order becomes:
-  1. `Se connecter` (existing lavender pill)
-  2. `ou` divider
-  3. `Continuer avec Google` (white pill)
-  4. `Pas encore de compte ? Créer un compte`
-
-**`src/routes/onboarding.tsx`**
-- Same reorder on the email step: Google button moves from above the email input to below the "Continuer" primary CTA, with an `ou` divider between them.
-
-**`src/components/GoogleButton.tsx`**
-- Split into two pieces so the divider can live separately from the button (the divider currently sits above the button — we need it on top when the button is below the primary CTA).
-- Export `<GoogleButton />` (just the button) and `<OrDivider />` (the "— ou —" line).
-- Wire the button's `onClick` to the real OAuth call (see step 2). Remove the "bientôt disponible" toast.
-
-## 2. Real Google sign-in via Lovable Cloud
-
-- **Enable Lovable Cloud** (Supabase under the hood).
-- **Configure Google provider** in Supabase Auth (managed via the social auth tool — no manual dashboard step for the user).
-- **Schema migration** — create `profiles` table linked to `auth.users`:
-  - Columns: `id uuid PK references auth.users(id) on delete cascade`, `email text`, `display_name text`, `avatar_url text`, `created_at timestamptz default now()`, `updated_at timestamptz default now()`.
-  - `GRANT SELECT, INSERT, UPDATE ON public.profiles TO authenticated;` + `GRANT ALL ... TO service_role;`.
-  - RLS enabled. Policies: a user can `SELECT`/`UPDATE` only their own row (`auth.uid() = id`).
-  - Trigger `handle_new_user()` on `auth.users` insert → creates a matching `profiles` row, prefilling `email`, `display_name` (from `raw_user_meta_data->>'full_name'` or `name`), and `avatar_url` (from `raw_user_meta_data->>'avatar_url' / 'picture'`).
-- **Sign-in call** in `GoogleButton.onClick`:
-  ```ts
-  await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: `${window.location.origin}/home` },
-  });
+In `src/routes/results.tsx` (MapView):
+- Compute a small bbox from the existing `coords` (delta ~0.018° → roughly the zoom level shown in the reference).
+- Replace the `<img>` with:
+  ```tsx
+  <iframe
+    title={`Carte de ${city}`}
+    src={`https://www.openstreetmap.org/export/embed.html?bbox=${minLon},${minLat},${maxLon},${maxLat}&layer=mapnik`}
+    className="absolute inset-0 w-full h-full pointer-events-none"
+    loading="lazy"
+  />
   ```
-  (uses the browser client from `@/integrations/supabase/client`).
-- **Session listener** — add a single `supabase.auth.onAuthStateChange` in `src/routes/__root.tsx`:
-  - On `SIGNED_IN` redirect to `/home`; on `SIGNED_OUT` redirect to `/`.
-  - Also call `router.invalidate()` so any user-scoped data refetches.
-- **Email/password buttons** keep their current demo behavior in this pass (the user only asked for Google to be functional). We can wire email/password to `supabase.auth.signInWithPassword` in a follow-up.
+- Keep the existing lavender gradient overlay on top so the map keeps the ÉLAN tint from the reference.
+- Keep all pins, radius circle, "Toi" marker, and bottom sheet unchanged — they already match the attachment.
+- Keep the `useEffect` Nominatim geocoder for unknown cities.
 
-## 3. Consistent phone frame on every screen
+## 2. SearchWaves — center on one iPhone screen, no scroll
 
-The root layout (`src/routes/__root.tsx`) already wraps every route in `<div className="mobile-frame">` (max-width 430px, rounded outline on ≥640px). Every route currently uses `min-h-[100dvh]` inside that frame, so width is already consistent.
+Root cause: `SearchWaves` is rendered inside `explorer.tsx`'s `<main>`, which lives inside `.mobile-scroll` (the scrollable area of the iPhone frame). Even with `absolute inset-0`, it stretches to the full scrollable content height (explorer is taller than 844px), so the logo sits high and the page can still scroll.
 
-What can still drift: total height varies by content, and a few screens (`profile`, `melody`) use their own background, which leaks outside the rounded frame on desktop because backgrounds are set on `<main>` instead of the frame.
+Fix: render the overlay as a **direct child of `.mobile-frame`** (sibling of `.mobile-scroll`) via a React portal. Then `absolute inset-0` maps to exactly one iPhone screen (390×844) with no scroll.
 
-Fixes:
-- In `src/styles.css` `.mobile-frame`, set `overflow: hidden` (currently `overflow-x: hidden`) on the ≥640px breakpoint so any inner background clips to the rounded corners.
-- Audit and normalize: every route's outer wrapper uses `min-h-[100dvh]` (already the case) and avoids `w-screen` / `100vw` (none currently do — verified).
-- No change to per-screen layouts otherwise; this preserves the existing design while guaranteeing every screen has identical width and the same outer rounded frame.
+Changes:
+1. **`src/routes/__root.tsx`** — inside `AppShell`'s `.mobile-frame` div, add a fixed overlay mount node:
+   ```tsx
+   <div id="phone-overlay-root" className="absolute inset-0 pointer-events-none z-[200]" />
+   ```
+   (sibling of `.mobile-scroll` and `<BottomTabBar />`, last child so it stacks on top).
 
-## Out of scope
-- Email/password real auth (Google only this pass, as requested).
-- Apple sign-in.
-- Profile editor UI — we just create the table + auto-fill; existing `useUser()` mock stays for display until you ask to wire it to the real profile row.
+2. **`src/components/SearchWaves.tsx`** — wrap the returned JSX in `createPortal(..., document.getElementById("phone-overlay-root"))` (guarded for SSR with a `useEffect` + `mounted` flag). The overlay keeps `absolute inset-0 grid place-items-center overflow-hidden` and gets `pointer-events-auto` so it blocks interaction while visible.
+
+3. No changes needed in `explorer.tsx` — `{searching && <SearchWaves />}` still works; the portal redirects rendering to the frame-level node.
+
+Result: the loop icon + concentric waves are perfectly centered in the iPhone 14 viewport, the label/progress bar sit near the bottom of that same screen, and the page beneath cannot scroll while the animation is showing.
+
+## Files touched
+- `src/routes/results.tsx` — swap broken static map for OSM embed iframe in `MapView`.
+- `src/routes/__root.tsx` — add `#phone-overlay-root` inside `.mobile-frame`.
+- `src/components/SearchWaves.tsx` — portal into `#phone-overlay-root`.

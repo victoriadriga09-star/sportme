@@ -33,9 +33,25 @@ const GALLERY = [
 
 function Profile() {
   const [user, setUser] = useUser();
+  const nav = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const name = user.prenom || "Toi";
   const firstName = name.split(" ")[0];
+
+  const handleLogout = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await supabase.auth.signOut();
+      toast.success("Déconnecté·e. À bientôt !");
+      setTimeout(() => nav({ to: "/login" }), 400);
+    } catch {
+      toast.error("Impossible de se déconnecter");
+      setSigningOut(false);
+    }
+  };
+
 
   const addSport = (s: string) => {
     if (user.sports.includes(s)) return;

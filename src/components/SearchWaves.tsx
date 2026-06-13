@@ -22,18 +22,21 @@ export function SearchWaves({ label = "Recherche de partenaires…" }: { label?:
     { x: -90,  y: -60,  d: 0.55 },
   ];
 
-  return (
+  if (!mountNode) return null;
+
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35 }}
-      className="absolute inset-0 z-[100] grid place-items-center overflow-hidden"
+      className="absolute inset-0 z-[100] grid place-items-center overflow-hidden pointer-events-auto"
       style={{
         background:
           "radial-gradient(circle at 50% 50%, #7C5CFF 0%, #A98BFF 22%, #D9CCFF 45%, #F3EEFF 70%, #FFFFFF 100%)",
       }}
     >
+
       {/* overlay pulse — soft expanding violet blob */}
       <motion.span
         initial={{ scale: 0.4, opacity: 0.55 }}

@@ -114,6 +114,8 @@ export function SearchWaves({ label = "Recherche de partenaires…" }: { label?:
         transition={{ delay: 0.5, duration: 2.2, ease: "easeInOut" }}
         className="absolute bottom-[14%] h-[3px] rounded-full bg-[#7C5CFF]"
       />
-    </motion.div>
+    </motion.div>,
+    mountNode
   );
+
 }

@@ -1,14 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
   ChevronRight, Users, BarChart3, Settings, LogOut,
   Sparkles, Award, Camera, Heart, Trophy, Flame, Plus, X, ListChecks,
 } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Avatar } from "@/components/Avatar";
 import { SportPicker } from "@/components/SportPicker";
 import { useUser, saveUser } from "@/lib/store";
+
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [{ title: "Mon profil — ÉLAN" }] }),
@@ -30,9 +33,25 @@ const GALLERY = [
 
 function Profile() {
   const [user, setUser] = useUser();
+  const nav = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const name = user.prenom || "Toi";
   const firstName = name.split(" ")[0];
+
+  const handleLogout = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await supabase.auth.signOut();
+      toast.success("Déconnecté·e. À bientôt !");
+      setTimeout(() => nav({ to: "/login" }), 400);
+    } catch {
+      toast.error("Impossible de se déconnecter");
+      setSigningOut(false);
+    }
+  };
+
 
   const addSport = (s: string) => {
     if (user.sports.includes(s)) return;
@@ -243,9 +262,14 @@ function Profile() {
       </section>
 
       <section className="px-5 mt-5">
-        <button className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-destructive/80 hover:text-destructive transition">
-          <LogOut className="size-4" /> Se déconnecter
+        <button
+          onClick={handleLogout}
+          disabled={signingOut}
+          className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-destructive/80 hover:text-destructive transition disabled:opacity-50"
+        >
+          <LogOut className="size-4" /> {signingOut ? "Déconnexion…" : "Se déconnecter"}
         </button>
+
       </section>
 
       <SportPicker open={pickerOpen} onClose={() => setPickerOpen(false)} current={user.sports} onAdd={addSport} />

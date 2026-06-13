@@ -226,11 +226,13 @@ const CITY_COORDS: Record<string, [number, number]> = {
 };
 
 function MapView({ list, city }: { list: Partner[]; city: string }) {
-  const positions = [
-    { l: "22%", t: "30%" }, { l: "70%", t: "26%" }, { l: "65%", t: "60%" },
-    { l: "28%", t: "65%" }, { l: "50%", t: "20%" }, { l: "44%", t: "78%" },
-    { l: "82%", t: "45%" }, { l: "15%", t: "50%" },
-  ];
+  const getPos = (i: number) => {
+    const angle = (i * 137.5 * Math.PI) / 180;
+    const radius = 22 + Math.floor(i / 8) * 12;
+    const left = Math.min(86, Math.max(12, 50 + radius * Math.cos(angle)));
+    const top = Math.min(86, Math.max(12, 50 + radius * Math.sin(angle)));
+    return { l: `${left}%`, t: `${top}%` };
+  };
 
   const initialKey = (city || "paris").toLowerCase().split(" ")[0];
   const [coords, setCoords] = useState<[number, number]>(CITY_COORDS[initialKey] ?? CITY_COORDS.paris);

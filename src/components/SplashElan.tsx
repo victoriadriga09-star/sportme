@@ -20,8 +20,8 @@ export function SplashElan({ onDone, duration = 2400 }: { onDone?: () => void; d
 
   // Geometry — a horizontal line stretched across most of the screen width.
   const LINE_W = 280;
-  const BASELINE = "52%"; // vertical position of the trail line
   const TRAVEL_MS = 1400;
+
 
   // Pulse-monitor profile: subtle dip then a sharp QRS-like spike, then flat.
   // Each point is a fraction of LINE_W → vertical offset in px (negative = up).

@@ -70,7 +70,7 @@ function Onboarding() {
     },
     { eyebrow: "Sport", title: "Quels sports tu aimes ?", sub: "Choisis tout ce qui te parle.", ok: f.sports.length >= 1,
       node: (
-        <div className="flex flex-wrap gap-2 justify-center max-h-[42vh] overflow-y-auto no-scrollbar pb-2">
+        <div className="flex flex-wrap gap-2 justify-center max-h-[38vh] overflow-y-auto no-scrollbar pb-2">
           {SPORTS.map((s) => {
             const on = f.sports.includes(s.label);
             const Icon = SPORT_ICONS[s.label] ?? Sparkles;
@@ -124,7 +124,7 @@ function Onboarding() {
           <textarea
             value={f.bio} onChange={(e) => update("bio", e.target.value.slice(0, 300))}
             placeholder="Ex : J'adore courir le matin dans le parc. Je cherche quelqu'un pour me motiver les jours où Netflix gagne..."
-            className="w-full h-40 p-4 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none resize-none"
+            className="w-full h-32 p-4 rounded-2xl bg-surface border border-border text-ink placeholder:text-muted-foreground focus:ring-2 focus:ring-ink outline-none resize-none"
           />
           <span className="absolute bottom-3 right-4 text-[11px] text-muted-foreground">{f.bio.length}/300</span>
         </div>
@@ -134,20 +134,20 @@ function Onboarding() {
         <div className="flex justify-center">
           <button
             onClick={() => update("photo", !f.photo)}
-            className={`size-36 rounded-full grid place-items-center transition relative ${
+            className={`size-28 rounded-full grid place-items-center transition relative ${
               f.photo ? "orb-3d ink-shadow" : "bg-surface border-2 border-dashed border-border"
             }`}
           >
-            <Camera className={`size-10 ${f.photo ? "text-ink" : "text-muted-foreground"}`} strokeWidth={1.6} />
-            {f.photo && <span className="absolute -top-1 -right-1 size-9 rounded-full bg-ink text-background grid place-items-center ink-shadow"><Check className="size-5" strokeWidth={3} /></span>}
+            <Camera className={`size-9 ${f.photo ? "text-ink" : "text-muted-foreground"}`} strokeWidth={1.6} />
+            {f.photo && <span className="absolute -top-1 -right-1 size-8 rounded-full bg-ink text-background grid place-items-center ink-shadow"><Check className="size-4" strokeWidth={3} /></span>}
           </button>
         </div>
       ) },
     { eyebrow: "Terminé", title: `Bienvenue, ${f.prenom || "champion"} !`, sub: "Ton profil est prêt. Trouve ton premier partenaire.", ok: true,
       node: (
         <div className="text-center space-y-5">
-          <div className="mx-auto size-24 rounded-full grid place-items-center orb-3d violet-glow">
-            <Sparkles className="size-10 text-ink" strokeWidth={2} />
+          <div className="mx-auto size-20 rounded-full grid place-items-center orb-3d violet-glow">
+            <Sparkles className="size-8 text-ink" strokeWidth={2} />
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
             {f.sports.slice(0, 3).map((s) => <Pill key={s} tone="lime" size="md">{s}</Pill>)}
@@ -179,11 +179,11 @@ function Onboarding() {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-background text-ink relative overflow-hidden">
+    <div className="h-[100dvh] overflow-hidden flex flex-col bg-background text-ink relative">
       {/* Ambient floating shapes — pastel sur fond clair */}
 
       {/* Top bar — segmented progress */}
-      <div className="relative px-5 pt-6 pb-2 z-10">
+      <div className="relative px-5 pt-4 pb-1 z-10">
         <div className="flex items-center gap-1.5">
           {Array.from({ length: totalSegments }).map((_, i) => (
             <div key={i} className="flex-1 h-1 rounded-full overflow-hidden bg-ink/10">
@@ -193,7 +193,7 @@ function Onboarding() {
             </div>
           ))}
         </div>
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mt-3 flex items-center justify-between">
           <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-ink/70">{current.eyebrow}</p>
           <span className="text-[11px] tabular-nums font-semibold text-muted-foreground">
             étape {step + 1}/{totalSegments}
@@ -202,24 +202,23 @@ function Onboarding() {
       </div>
 
       {/* Content card — liquid glass clair, contenu centré */}
-      <div className="relative z-10 flex-1 px-4 pt-6 pb-2 flex flex-col">
+      <div className="relative z-10 flex-1 min-h-0 px-4 pt-3 pb-1 flex flex-col">
         <div
           key={step}
-          className="glass-strong rounded-[36px] p-7 pt-8 flex-1 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400"
+          className="glass-strong rounded-[36px] p-5 pt-6 flex-1 min-h-0 flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-400 overflow-hidden"
         >
           <div className="text-center max-w-[340px] mx-auto">
-            <h1 className="font-display font-extrabold text-[28px] leading-[1.08] text-ink">
+            <h1 className="font-display font-extrabold text-[26px] leading-[1.08] text-ink">
               {current.title}
             </h1>
-            {current.sub && <p className="text-sm text-muted-foreground mt-2.5 leading-relaxed">{current.sub}</p>}
+            {current.sub && <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{current.sub}</p>}
           </div>
-          {/* Réponses placées plus bas, à mi-hauteur de la carte */}
-          <div className="flex-1 mt-10 flex flex-col justify-center">{current.node}</div>
+          <div className="flex-1 min-h-0 mt-5 flex flex-col justify-center overflow-y-auto no-scrollbar">{current.node}</div>
         </div>
       </div>
 
       {/* Footer — pill nav */}
-      <div className="relative z-10 px-5 pb-8 pt-4">
+      <div className="relative z-10 px-5 pb-5 pt-2">
         <div className="flex items-center gap-3">
           <button
             onClick={prev}
@@ -243,7 +242,7 @@ function Onboarding() {
         {isLast && (
           <button
             onClick={() => { saveUser({ prenom: f.prenom, city: f.city, sports: f.sports, gender: f.gender }); nav({ to: "/home" }); }}
-            className="block mx-auto mt-4 text-xs text-muted-foreground underline-offset-4 hover:underline"
+            className="block mx-auto mt-3 text-xs text-muted-foreground underline-offset-4 hover:underline"
           >
             Explorer l'app sans matcher
           </button>

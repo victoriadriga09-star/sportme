@@ -226,11 +226,13 @@ const CITY_COORDS: Record<string, [number, number]> = {
 };
 
 function MapView({ list, city }: { list: Partner[]; city: string }) {
-  const positions = [
-    { l: "22%", t: "30%" }, { l: "70%", t: "26%" }, { l: "65%", t: "60%" },
-    { l: "28%", t: "65%" }, { l: "50%", t: "20%" }, { l: "44%", t: "78%" },
-    { l: "82%", t: "45%" }, { l: "15%", t: "50%" },
-  ];
+  const getPos = (i: number) => {
+    const angle = (i * 137.5 * Math.PI) / 180;
+    const radius = 22 + Math.floor(i / 8) * 12;
+    const left = Math.min(86, Math.max(12, 50 + radius * Math.cos(angle)));
+    const top = Math.min(86, Math.max(12, 50 + radius * Math.sin(angle)));
+    return { l: `${left}%`, t: `${top}%` };
+  };
 
   const initialKey = (city || "paris").toLowerCase().split(" ")[0];
   const [coords, setCoords] = useState<[number, number]>(CITY_COORDS[initialKey] ?? CITY_COORDS.paris);
@@ -254,59 +256,55 @@ function MapView({ list, city }: { list: Partner[]; city: string }) {
   const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
 
   return (
-    <div className="relative rounded-3xl overflow-hidden border border-border h-[70vh] bg-[#f3eefb]">
-      <iframe
-        key={mapUrl}
-        title={`Carte de ${city}`}
-        src={mapUrl}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        loading="lazy"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/15 via-[#A98BFF]/15 to-[#F3EEFB]/40 pointer-events-none" />
+    <div className="space-y-4">
+      <div className="relative rounded-3xl overflow-hidden border border-border h-[52vh] bg-[#f3eefb]">
+        <iframe
+          key={mapUrl}
+          title={`Carte de ${city}`}
+          src={mapUrl}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#7C5CFF]/15 via-[#A98BFF]/15 to-[#F3EEFB]/40 pointer-events-none" />
 
-
-      {/* city pill */}
-      <div className="absolute top-3 left-3 glass-strong pill px-3 py-1.5 text-[11px] font-bold text-ink flex items-center gap-1.5">
-        <MapPin className="size-3" /> {city}
-      </div>
-
-      {/* radius */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-64 rounded-full bg-lime/15 border-2 border-lime/60" />
-      {/* user */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-6 rounded-full bg-ink ring-4 ring-background grid place-items-center">
-        <span className="size-2 rounded-full bg-lime animate-pulse" />
-      </div>
-      <span className="absolute left-1/2 top-1/2 translate-x-3 -translate-y-9 glass-strong pill px-2 py-0.5 text-[9px] font-bold text-ink whitespace-nowrap">
-        Toi
-      </span>
-
-      {/* pins with info tooltip */}
-      {list.slice(0, positions.length).map((p, i) => {
-        const pos = positions[i];
-        return (
-          <Link to="/partner/$id" params={{ id: p.id }} key={p.id} style={{ left: pos.l, top: pos.t }}
-            className="absolute -translate-x-1/2 -translate-y-1/2 group">
-            <div className="absolute left-1/2 -translate-x-1/2 -top-12 glass-strong pill px-2 py-1 text-[10px] font-bold text-ink whitespace-nowrap flex items-center gap-1.5">
-              <Clock className="size-2.5" /> {p.timeShort}
-              <span className="text-muted-foreground">·</span>
-              {p.distanceKm} km
-            </div>
-            <div className="size-11 rounded-full bg-lime ring-4 ring-background grid place-items-center ink-shadow group-active:scale-95 transition">
-              <Avatar name={p.name} size={30} />
-            </div>
-          </Link>
-        );
-      })}
-
-      {/* bottom sheet preview */}
-      <div className="absolute inset-x-3 bottom-3 glass-strong rounded-2xl p-3 flex items-center gap-3">
-        <Avatar name={list[0].name} size={42} ring="lavender" />
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm leading-none text-ink">{list[0].name.split(" ")[0]} · {list[0].sport}</p>
-          <p className="text-[11px] text-ink/70 mt-1">{list[0].distanceKm} km · {list[0].when}</p>
+        {/* city pill */}
+        <div className="absolute top-3 left-3 glass-strong pill px-3 py-1.5 text-[11px] font-bold text-ink flex items-center gap-1.5">
+          <MapPin className="size-3" /> {city}
         </div>
-        <Link to="/partner/$id" params={{ id: list[0].id }} className="pill bg-ink text-background text-xs font-semibold px-3 py-2">Voir</Link>
+
+        {/* radius */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-64 rounded-full bg-lime/15 border-2 border-lime/60" />
+
+        {/* user marker — bigger pulse, smaller dot */}
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-10 rounded-full bg-[#7C5CFF]/40 animate-ping" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 rounded-full bg-ink ring-4 ring-background" />
+        <span className="absolute left-1/2 top-1/2 translate-x-2 -translate-y-6 glass-strong pill px-2 py-0.5 text-[9px] font-bold text-ink whitespace-nowrap">
+          Toi
+        </span>
+
+        {/* pins with info tooltip */}
+        {list.map((p, i) => {
+          const pos = getPos(i);
+          return (
+            <Link to="/partner/$id" params={{ id: p.id }} key={p.id} style={{ left: pos.l, top: pos.t }}
+              className="absolute -translate-x-1/2 -translate-y-1/2 group">
+              <div className="absolute left-1/2 -translate-x-1/2 -top-7 glass-strong pill px-2 py-0.5 text-[10px] font-bold text-ink whitespace-nowrap flex items-center gap-1.5">
+                <Clock className="size-2.5" /> {p.timeShort}
+                <span className="text-muted-foreground">·</span>
+                {p.distanceKm} km
+              </div>
+              <div className="size-11 rounded-full bg-lime ring-4 ring-background grid place-items-center ink-shadow group-active:scale-95 transition">
+                <Avatar name={p.name} size={30} />
+              </div>
+            </Link>
+          );
+        })}
       </div>
+
+      <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-ink/70 px-1">
+        {list.length} partenaire{list.length > 1 ? "s" : ""} sur la carte
+      </p>
+      <ListView list={list} />
     </div>
   );
 }
@@ -324,7 +322,7 @@ function SwipeView({ list }: { list: Partner[] }) {
   };
 
   return (
-    <div className="relative h-[68vh] select-none">
+    <div className="relative h-[58vh] select-none">
       <AnimatePresence initial={false}>
         {visible.map((p, layer) => (
           <SwipeCard
@@ -408,7 +406,7 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
       animate={{ scale: 1 - layer * 0.05, y: layer * 14, opacity: 1 }}
       exit={{ x: x.get() > 0 ? 600 : -600, opacity: 0, rotate: x.get() > 0 ? 24 : -24, transition: { duration: 0.35 } }}
       transition={{ type: "spring", stiffness: 260, damping: 28 }}
-      className={`absolute inset-x-2 top-0 h-[64vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-pointer active:cursor-grabbing" : ""}`}
+      className={`absolute inset-x-2 top-0 h-[54vh] rounded-[32px] overflow-hidden ${isTop ? "cursor-pointer active:cursor-grabbing" : ""}`}
     >
       {/* gradient base */}
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
@@ -419,7 +417,7 @@ function SwipeCard({ partner, layer, onSwipe }: { partner: Partner; layer: numbe
       <div className="absolute inset-0 grid place-items-center">
         <div className="relative">
           <div className="relative rounded-full p-1.5 bg-white/25 backdrop-blur-xl border border-white/40 shadow-2xl">
-            <Avatar name={partner.name} size={150} />
+            <Avatar name={partner.name} size={130} />
           </div>
         </div>
       </div>
